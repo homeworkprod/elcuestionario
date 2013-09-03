@@ -1,0 +1,58 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+body {
+    background-color: #EEE;
+    color: #333;
+    font-family: Verdana, Helvetica, Arial, Sans-Serif;
+    font-size: .9em;
+    text-align: center;
+}
+
+#main {
+    width: 620px;
+    margin: 0 auto;
+    padding: 0;
+    text-align: left;
+}
+
+fieldset,
+legend {
+    border: 1px solid #333;
+}
+fieldset {
+    margin: 1em 0;
+    background-color: #DDD;
+    padding: 1em 1em 1em 2em;
+}
+legend {
+    margin: 0.5em 0 0.5em -1em;
+    background-color: #CCC;
+    padding: .2em .4em;
+    font-size: 1em;
+    font-weight: bold;
+}
+label {
+    padding: 0.1em 0.2em;
+}
+label:hover {
+    background-color: #666;
+    color: #FFF;
+    cursor: pointer;
+}
+
+a {
+    color: #A00;
+}
+
+.warning {
+    color: #F00;
+    font-weight: bold;
+}
+.result {
+    margin: 0;
+    font-size: 4em;
+    font-style: italic;
+    font-weight: bold;
+}
