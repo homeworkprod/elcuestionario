@@ -9,6 +9,7 @@
 # |_|_|___|_|_|_|___|_____|___|_| |_|_\
 #   http://homework.nwsnet.de/
 
+from collections import namedtuple
 import random
 import sha
 import sys
@@ -102,6 +103,15 @@ class Survey(object):
             if score >= minscore:
                 return self.ratingLevels[minscore]
 
+    def getResult(self):
+        """Return the evaluation result."""
+        score = self.calculateScore()
+        rating = self.getRating(score)
+        return Result(score, rating)
+
+
+Result = namedtuple('Result', 'score rating')
+
 # ---------------------------------------------------------------- #
 
 class QuestionPool(dict):
@@ -174,23 +184,14 @@ class Answer(ObjectWithHash):
 
 # ---------------------------------------------------------------- #
 
-class Result(object):
-    """A user's survey result."""
-
-    def __init__(self, **kwargs):
-        for k, v in kwargs.iteritems():
-            setattr(self, k, v)
-
-# ---------------------------------------------------------------- #
-
 @app.route('/')
 def view():
     survey = Survey(FILE_SURVEY)
 
     output = {
-        'submitted': False,
         'title': survey.title,
         'questions': survey.questions,
+        'submitted': False,
     }
 
     return render_template('questionnaire.html', **output)
@@ -198,13 +199,11 @@ def view():
 @app.route('/evaluate', methods=['POST'])
 def evaluate():
     survey = Survey(FILE_SURVEY)
-
     username = request.form['username']
+
     output = {
-        'submitted': True,
-        'username': username,
         'title': survey.title,
-        'questions': survey.questions,
+        'username': username,
     }
 
     # Examine which questions were answered and which answer was selected.
@@ -212,16 +211,15 @@ def evaluate():
         if name.startswith('q_') and value.startswith('a_'):
             survey.questions[name[2:]].answer(value[2:])
 
-    # Compile result.
     if survey.questions.allAnswered():
-        score = survey.calculateScore()
-        output['result'] = Result(
-            username=username,
-            score=score,
-            rating=survey.getRating(score))
+        output['result'] = survey.getResult()
         return render_template('result.html', **output)
     else:
+        output['questions'] = survey.questions
+        output['submitted'] = True
         return render_template('questionnaire.html', **output)
+
+# ---------------------------------------------------------------- #
 
 if __name__ == '__main__':
     app.run(port=8080, debug=False)
