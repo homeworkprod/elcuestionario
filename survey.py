@@ -46,7 +46,7 @@ class ObjectWithHash(object):
     caption = property(_get_caption, _set_caption)
 
 
-def randomizedValues(self):
+def randomized_values(self):
     """Return a randomized list of values."""
     l = self.values()
     random.shuffle(l)
@@ -60,7 +60,7 @@ class Survey(object):
     def __init__(self, file=None):
         self.title = u'Untitled'
         self.questions = QuestionPool()
-        self.ratingLevels = {}
+        self.rating_levels = {}
 
         # Read XML data from file.
         if file is not None:
@@ -79,34 +79,34 @@ class Survey(object):
 
             # ratings
             for re in etree.getiterator('rating'):
-                self.ratingLevels[int(re.get('minscore'))] = re.text
+                self.rating_levels[int(re.get('minscore'))] = re.text
 
     def __str__(self):
         return '<%s, %d questions, %d rating levels>' \
             % (self.__class__.__name__, len(self.questions),
-                len(self.ratingLevels))
+                len(self.rating_levels))
 
-    def calculateScore(self):
+    def calculate_score(self):
         """Calculate the score depending on the given answers."""
-        assert self.questions.allAnswered()
+        assert self.questions.all_answered()
         score = 0
         for q in self.questions.values():
-            score += q.selectedAnswer().weighting
+            score += q.selected_answer().weighting
         return int(float(score) / len(self.questions) * 100)
 
-    def getRating(self, score):
+    def get_rating(self, score):
         """Return the rating text for the given score."""
-        minscores = self.ratingLevels.keys()
+        minscores = self.rating_levels.keys()
         minscores.sort()
         minscores.reverse()
         for minscore in minscores:
             if score >= minscore:
-                return self.ratingLevels[minscore]
+                return self.rating_levels[minscore]
 
-    def getResult(self):
+    def get_result(self):
         """Return the evaluation result."""
-        score = self.calculateScore()
-        rating = self.getRating(score)
+        score = self.calculate_score()
+        rating = self.get_rating(score)
         return Result(score, rating)
 
 
@@ -117,9 +117,9 @@ Result = namedtuple('Result', 'score rating')
 class QuestionPool(dict):
     """A pool of questions."""
 
-    getQuestions = randomizedValues
+    get_questions = randomized_values
 
-    def numberAnswered(self):
+    def number_answered(self):
         """Return the number of questions that have already been answered."""
         n = 0
         for q in self.values():
@@ -127,11 +127,11 @@ class QuestionPool(dict):
                 n += 1
         return n
 
-    def numberUnanswered(self):
+    def number_unanswered(self):
         """Return the number of questions that have not been answered yet."""
-        return len(self) - self.numberAnswered()
+        return len(self) - self.number_answered()
 
-    def allAnswered(self):
+    def all_answered(self):
         """Tell if all questions in the pool were answered."""
         for q in self.values():
             if not q.answered:
@@ -153,18 +153,18 @@ class Question(dict, ObjectWithHash):
                 self.caption.encode('latin-1'),
                 len(self), self.answered)
 
-    def answer(self, answerHash):
+    def answer(self, answer_hash):
         """Answer the question by choosing an answer."""
-        self[answerHash].selected = True
+        self[answer_hash].selected = True
         self.answered = True
 
-    def selectedAnswer(self):
+    def selected_answer(self):
         """Return the chosen answer."""
         for a in self.values():
             if a.selected:
                 return a
 
-    getAnswers = randomizedValues
+    get_answers = randomized_values
 
 # ---------------------------------------------------------------- #
 
@@ -211,8 +211,8 @@ def evaluate():
         if name.startswith('q_') and value.startswith('a_'):
             survey.questions[name[2:]].answer(value[2:])
 
-    if survey.questions.allAnswered():
-        output['result'] = survey.getResult()
+    if survey.questions.all_answered():
+        output['result'] = survey.get_result()
         return render_template('result.html', **output)
     else:
         output['questions'] = survey.questions

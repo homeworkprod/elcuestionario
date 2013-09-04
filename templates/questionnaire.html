@@ -13,20 +13,20 @@
         <fieldset>
           <legend>Errors</legend>
           <p class="warning">
-            Only {{ questions.numberAnswered() }} of {{ questions|length }} questions were answered so far.<br/>
-            The remaining {{ questions.numberUnanswered() }} questions must be answered for final evaluation.
+            Only {{ questions.number_answered() }} of {{ questions|length }} questions were answered so far.<br/>
+            The remaining {{ questions.number_unanswered() }} questions must be answered for final evaluation.
           </p>
         </fieldset>
         {% endif %}
 
-        {% for q in questions.getQuestions() %}
+        {% for q in questions.get_questions() %}
         <fieldset>
           <legend>{{ loop.index }}. {{ q.caption }}</legend>
           {% if submitted and not q.answered %}
           <p class="warning">This question has not been answered yet.</p>
           {% endif %}
 
-          {% for a in q.getAnswers() %}
+          {% for a in q.get_answers() %}
           <input type="radio" id="q_{{ q.hash }}__a_{{ a.hash }}" name="q_{{ q.hash }}" value="a_{{ a.hash }}"{% if a.selected %} checked="checked"{% endif %}/><label for="q_{{ q.hash }}__a_{{ a.hash }}">{{ a.caption }}</label><br/>
           {% endfor %}
         </fieldset>
