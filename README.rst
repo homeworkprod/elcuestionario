@@ -18,7 +18,7 @@ Requirements
 ------------
 
 - Python_ 2.5+ (tested with 2.7.3)
-- `Jinja 2`_ (tested with 2.7.1)
+- Flask_ (tested with 0.10.1)
 
 
 Installation
@@ -26,12 +26,9 @@ Installation
 
 - Make sure the required software is installed.
 
-- *Note:* `Jinja 2`_ is a pure-Python package and thus can be installed
-  (especially on webspace-only hostings) by simply uploading it.
-
-- Make the package available to your script. If it is not already in
-  your ``PYTHONPATH``, set the path in the imports section of the main
-  script.
+- Make additionally installed packages available to your script. If
+  they are not already in your ``PYTHONPATH``, set the path in the
+  imports section of the main script.
 
 - The main script has to be executable:
 
@@ -44,8 +41,8 @@ Installation
   ``FILE_SURVEY`` variable in the main script accordingly.
 
 
-.. _Python: http://www.python.org/
-.. _Jinja 2: http://jinja.pocoo.org/
+.. _Python:   http://www.python.org/
+.. _Flask:    http://flask.pocoo.org/
 
 
 :Copyright: 2005-2013 `Jochen Kupperschmidt <http://homework.nwsnet.de/>`_

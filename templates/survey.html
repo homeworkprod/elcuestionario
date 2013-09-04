@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="utf-8"?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
-    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}"/>
     <title>{{ title }}</title>
 </head>
 <body>
@@ -11,7 +11,7 @@
 <h1>{{ title }}</h1>
 
 <div id="main">
-    <form action="{{ SCRIPT_NAME }}" method="post">
+    <form action="{{ url_for('evaluate', method='POST') }}" method="post">
 
     {% if result is undefined %}
         <fieldset>
@@ -52,7 +52,7 @@
             <p style="font-weight: bold;">Your score, {{ result.username or 'stranger' }}:</p>
             <p class="result">{{ result.score }}%</p>
             <p>{{ result.rating }}</p>
-            <p style="font-weight: bold;">[ <a href="{{ SCRIPT_NAME }}">Start again</a> ]</p>
+            <p style="font-weight: bold;">[ <a href="{{ url_for('view') }}">Start again</a> ]</p>
         </fieldset>
     {% endif %}
 

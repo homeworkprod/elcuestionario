@@ -1,10 +1,10 @@
 # Enable Python everywhere.
 Options +ExecCGI
-AddHandler cgi-script .py
+AddHandler cgi-script .cgi
 
 # Enable mod_rewrite.
 RewriteEngine On
 Options +FollowSymLinks
 
 # Redirect to main script.
-RewriteRule ^$                  index.py        [PT,L]
+RewriteRule ^$      survey.cgi      [PT,L]

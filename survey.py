@@ -9,10 +9,6 @@
 # |_|_|___|_|_|_|___|_____|___|_| |_|_\
 #   http://homework.nwsnet.de/
 
-import cgi
-import cgitb
-cgitb.enable(display=0)  # Set display=1 for debugging.
-import os
 import random
 import sha
 import sys
@@ -21,7 +17,7 @@ import xml.etree.ElementTree as ET
 # If it isn't already in your path, add Jinja with this line.
 #sys.path.append('/path/to/your/site-packages')
 
-from jinja2 import Environment, FileSystemLoader, Template
+from flask import Flask, render_template, request
 
 
 # configuration
@@ -29,9 +25,7 @@ FILE_SURVEY = 'data/example.xml'
 FILE_TEMPLATE = 'survey.html'
 
 
-# template loading
-TEMPLATE_ENVIRONMENT = Environment(loader=FileSystemLoader('.'))
-TEMPLATE = TEMPLATE_ENVIRONMENT.get_template(FILE_TEMPLATE)
+app = Flask(__name__)
 
 # ---------------------------------------------------------------- #
 
@@ -47,7 +41,7 @@ class ObjectWithHash(object):
     def _set_caption(self, value):
         self.__caption = unicode(value)
         self.hash = sha.new(
-            self.__caption.encode('iso-8859-1')).hexdigest()[:8]
+            self.__caption.encode('latin-1')).hexdigest()[:8]
 
     caption = property(_get_caption, _set_caption)
 
@@ -147,7 +141,7 @@ class Question(dict, ObjectWithHash):
     def __str__(self):
         return '<%s, hash=%s, caption="%s", %d answers, answered=%s>' \
             % (self.__class__.__name__, self.hash,
-                self.caption.encode('iso-8859-1'),
+                self.caption.encode('latin-1'),
                 len(self), self.answered)
 
     def answer(self, answerHash):
@@ -176,7 +170,7 @@ class Answer(ObjectWithHash):
     def __str__(self):
         return '<%s, hash=%s, caption="%s", weighting=%f, selected=%s>' \
             % (self.__class__.__name__, self.hash,
-                self.caption.encode('iso-8859-1'),
+                self.caption.encode('latin-1'),
                 self.weighting, self.selected)
 
 # ---------------------------------------------------------------- #
@@ -190,39 +184,44 @@ class Result(object):
 
 # ---------------------------------------------------------------- #
 
-def main():
-    """The main application."""
+@app.route('/')
+def view():
     survey = Survey(FILE_SURVEY)
-    form = cgi.FieldStorage()
-    username = form.getfirst('username', '').decode('iso-8859-1')
-    output = dict(
-        SCRIPT_NAME=os.environ['SCRIPT_NAME'],
-        submitted=bool(form),
-        username=username,
-        title=survey.title,
-        questions=survey.questions)
 
-    # Process user input.
-    if form:
-        # Examine which questions were answered and which answer was selected.
-        for name in form:
-            value = form.getfirst(name)
-            if name.startswith('q_') and value.startswith('a_'):
-                survey.questions[name[2:]].answer(value[2:])
+    output = {
+        'submitted': False,
+        'title': survey.title,
+        'questions': survey.questions,
+    }
 
-        # Compile result.
-        if survey.questions.allAnswered():
-            score = survey.calculateScore()
-            output['result'] = Result(
-                username=username,
-                score=score,
-                rating=survey.getRating(score))
+    return render_template(FILE_TEMPLATE, **output)
 
-    # Render HTML page and send it to the client.
-    html = TEMPLATE.render(**output)
-    sys.stdout.write('Content-Type: text/html\n\n')
-    sys.stdout.write(html)
+@app.route('/evaluate', methods=['POST'])
+def evaluate():
+    survey = Survey(FILE_SURVEY)
 
+    username = request.form['username']
+    output = {
+        'submitted': True,
+        'username': username,
+        'title': survey.title,
+        'questions': survey.questions,
+    }
+
+    # Examine which questions were answered and which answer was selected.
+    for name, value in request.form.items():
+        if name.startswith('q_') and value.startswith('a_'):
+            survey.questions[name[2:]].answer(value[2:])
+
+    # Compile result.
+    if survey.questions.allAnswered():
+        score = survey.calculateScore()
+        output['result'] = Result(
+            username=username,
+            score=score,
+            rating=survey.getRating(score))
+
+    return render_template(FILE_TEMPLATE, **output)
 
 if __name__ == '__main__':
-    main()
+    app.run(port=8080, debug=False)
