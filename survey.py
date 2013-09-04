@@ -10,7 +10,7 @@
 #   http://homework.nwsnet.de/
 
 from collections import namedtuple
-import random
+from random import shuffle
 import sha
 import sys
 import xml.etree.ElementTree as ET
@@ -48,9 +48,9 @@ class ObjectWithHash(object):
 
 def randomized_values(self):
     """Return a randomized list of values."""
-    l = self.values()
-    random.shuffle(l)
-    return l
+    values = self.values()
+    shuffle(values)
+    return values
 
 # ---------------------------------------------------------------- #
 
@@ -70,16 +70,19 @@ class Survey(object):
             self.title = etree.find('title').text
 
             # questions and their answers
-            for qe in etree.getiterator('question'):
-                q = Question(qe.get('caption'))
-                for ae in qe.getiterator('answer'):
-                    a = Answer(ae.get('caption'), float(ae.get('weighting')))
-                    q[a.hash] = a
-                self.questions[q.hash] = q
+            for question_element in etree.getiterator('question'):
+                question = Question(question_element.get('caption'))
+                for answer_element in question_element.getiterator('answer'):
+                    answer_caption = answer_element.get('caption')
+                    answer_weighting = float(answer_element.get('weighting'))
+                    answer = Answer(answer_caption, answer_weighting)
+                    question[answer.hash] = answer
+                self.questions[question.hash] = question
 
             # ratings
-            for re in etree.getiterator('rating'):
-                self.rating_levels[int(re.get('minscore'))] = re.text
+            for rating_element in etree.getiterator('rating'):
+                min_score = int(rating_element.get('minscore'))
+                self.rating_levels[min_score] = rating_element.text
 
     def __str__(self):
         return '<%s, %d questions, %d rating levels>' \
@@ -90,18 +93,18 @@ class Survey(object):
         """Calculate the score depending on the given answers."""
         assert self.questions.all_answered()
         score = 0
-        for q in self.questions.values():
-            score += q.selected_answer().weighting
+        for question in self.questions.values():
+            score += question.selected_answer().weighting
         return int(float(score) / len(self.questions) * 100)
 
     def get_rating(self, score):
         """Return the rating text for the given score."""
-        minscores = self.rating_levels.keys()
-        minscores.sort()
-        minscores.reverse()
-        for minscore in minscores:
-            if score >= minscore:
-                return self.rating_levels[minscore]
+        min_scores = self.rating_levels.keys()
+        min_scores.sort()
+        min_scores.reverse()
+        for min_score in min_scores:
+            if score >= min_score:
+                return self.rating_levels[min_score]
 
     def get_result(self):
         """Return the evaluation result."""
@@ -119,22 +122,22 @@ class QuestionPool(dict):
 
     get_questions = randomized_values
 
-    def number_answered(self):
+    def total_answered(self):
         """Return the number of questions that have already been answered."""
         n = 0
-        for q in self.values():
-            if q.answered:
+        for question in self.values():
+            if question.answered:
                 n += 1
         return n
 
-    def number_unanswered(self):
+    def total_unanswered(self):
         """Return the number of questions that have not been answered yet."""
-        return len(self) - self.number_answered()
+        return len(self) - self.total_answered()
 
     def all_answered(self):
         """Tell if all questions in the pool were answered."""
-        for q in self.values():
-            if not q.answered:
+        for question in self.values():
+            if not question.answered:
                 return False
         return True
 
@@ -160,9 +163,9 @@ class Question(dict, ObjectWithHash):
 
     def selected_answer(self):
         """Return the chosen answer."""
-        for a in self.values():
-            if a.selected:
-                return a
+        for answer in self.values():
+            if answer.selected:
+                return answer
 
     get_answers = randomized_values
 
