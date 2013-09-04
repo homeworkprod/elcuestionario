@@ -26,9 +26,11 @@
           <p class="warning">This question has not been answered yet.</p>
           {% endif %}
 
+          <ul>
           {% for a in q.get_answers() %}
-          <input type="radio" id="q_{{ q.hash }}__a_{{ a.hash }}" name="q_{{ q.hash }}" value="a_{{ a.hash }}"{% if a.selected %} checked="checked"{% endif %}/><label for="q_{{ q.hash }}__a_{{ a.hash }}">{{ a.caption }}</label><br/>
+            <li><label><input type="radio" name="q_{{ q.hash }}" value="a_{{ a.hash }}"{% if a.selected %} checked="checked"{% endif %}/>{{ a.caption }}</label></li>
           {% endfor %}
+          </ul>
         </fieldset>
         {% endfor %}
 
