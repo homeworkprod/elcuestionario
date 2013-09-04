@@ -2,7 +2,7 @@
 {% set page_title = 'Questionnaire' %}
 {% block body %}
 
-      <form action="{{ url_for('evaluate', method='POST') }}" method="post">
+      <form action="{{ url_for('evaluate', _method='POST') }}" method="post">
 
         <fieldset>
           <legend>About you</legend>
