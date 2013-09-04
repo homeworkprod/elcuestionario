@@ -18,7 +18,7 @@ Requirements
 ------------
 
 - Python_ 2.5+ (tested with 2.7.3)
-- Kid_ (tested with 0.9.1)
+- `Jinja 2`_ (tested with 2.7.1)
 
 
 Installation
@@ -26,7 +26,7 @@ Installation
 
 - Make sure the required software is installed.
 
-- *Note:* Kid_ is a pure-Python package and can be installed
+- *Note:* `Jinja 2`_ is a pure-Python package and thus can be installed
   (especially on webspace-only hostings) by simply uploading it.
 
 - Make the package available to your script. If it is not already in
@@ -45,7 +45,7 @@ Installation
 
 
 .. _Python: http://www.python.org/
-.. _Kid: http://kid.lesscode.org/
+.. _Jinja 2: http://jinja.pocoo.org/
 
 
 :Copyright: 2005-2013 `Jochen Kupperschmidt <http://homework.nwsnet.de/>`_

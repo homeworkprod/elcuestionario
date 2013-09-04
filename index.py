@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # Copyright (c) 2005-2013 Jochen Kupperschmidt
 # Released under the terms of the GNU General Public License
@@ -17,15 +18,20 @@ import sha
 import sys
 import xml.etree.ElementTree as ET
 
-# If it isn't already in your path, add Kid with this line.
+# If it isn't already in your path, add Jinja with this line.
 #sys.path.append('/path/to/your/site-packages')
 
-import kid
+from jinja2 import Environment, FileSystemLoader, Template
 
 
-# Configuration
+# configuration
 FILE_SURVEY = 'data/example.xml'
-FILE_TEMPLATE = 'survey.kid'
+FILE_TEMPLATE = 'survey.html'
+
+
+# template loading
+TEMPLATE_ENVIRONMENT = Environment(loader=FileSystemLoader('.'))
+TEMPLATE = TEMPLATE_ENVIRONMENT.get_template(FILE_TEMPLATE)
 
 # ---------------------------------------------------------------- #
 
@@ -212,10 +218,10 @@ def main():
                 score=score,
                 rating=survey.getRating(score))
 
-    # Assemble page and send to browser.
-    tpl = kid.Template(file=FILE_TEMPLATE, **output)
+    # Render HTML page and send it to the client.
+    html = TEMPLATE.render(**output)
     sys.stdout.write('Content-Type: text/html\n\n')
-    tpl.write(sys.stdout, output='xhtml-strict', encoding='iso-8859-1')
+    sys.stdout.write(html)
 
 
 if __name__ == '__main__':
