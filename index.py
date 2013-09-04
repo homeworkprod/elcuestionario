@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Copyright (c) 2005, 2006 Jochen Kupperschmidt <webmaster@nwsnet.de>
+# Copyright (c) 2005-2013 Jochen Kupperschmidt
 # Released under the terms of the GNU General Public License
 #  _                               _
 # | |_ ___ _____ ___ _ _ _ ___ ___| |_
@@ -8,10 +8,6 @@
 # |_|_|___|_|_|_|___|_____|___|_| |_|_\
 #   http://homework.nwsnet.de/
 
-__version__ = '08-May-2006'
-
-
-from __future__ import generators
 import cgi
 import cgitb
 cgitb.enable(display=0)  # Set display=1 for debugging.
@@ -19,11 +15,11 @@ import os
 import random
 import sha
 import sys
+import xml.etree.ElementTree as ET
 
-# If they aren't already in your path, add ElementTree and Kid with this line.
+# If it isn't already in your path, add Kid with this line.
 #sys.path.append('/path/to/your/site-packages')
 
-import elementtree.ElementTree as ET
 import kid
 
 
