@@ -92,9 +92,8 @@ class Survey(object):
     def calculate_score(self):
         """Calculate the score depending on the given answers."""
         assert self.questions.all_answered()
-        score = 0
-        for question in self.questions.values():
-            score += question.selected_answer().weighting
+        score = sum(question.selected_answer().weighting
+            for question in self.questions.values())
         return float(score) / len(self.questions) * 100
 
     def get_rating(self, score):
@@ -124,11 +123,7 @@ class QuestionPool(dict):
 
     def total_answered(self):
         """Return the number of questions that have already been answered."""
-        n = 0
-        for question in self.values():
-            if question.answered:
-                n += 1
-        return n
+        return sum(1 for question in self.values() if question.answered)
 
     def total_unanswered(self):
         """Return the number of questions that have not been answered yet."""
@@ -136,10 +131,7 @@ class QuestionPool(dict):
 
     def all_answered(self):
         """Tell if all questions in the pool were answered."""
-        for question in self.values():
-            if not question.answered:
-                return False
-        return True
+        return all(question.answered for question in self.values())
 
 # ---------------------------------------------------------------- #
 
@@ -163,9 +155,7 @@ class Question(dict, ObjectWithHash):
 
     def selected_answer(self):
         """Return the chosen answer."""
-        for answer in self.values():
-            if answer.selected:
-                return answer
+        return next(answer for answer in self.values() if answer.selected)
 
     get_answers = randomized_values
 
