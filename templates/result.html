@@ -6,7 +6,7 @@
         <fieldset style="text-align: center;">
           <legend>Summary</legend>
           <p style="font-weight: bold;">Your score, {{ username or 'stranger' }}:</p>
-          <p class="result">{{ result.score }}%</p>
+          <p class="result">{{ '%.1f'|format(result.score) }}&thinsp;%</p>
           <p>{{ result.rating }}</p>
           <p style="font-weight: bold;">[ <a href="{{ url_for('view') }}">Start again</a> ]</p>
         </fieldset>

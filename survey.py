@@ -95,7 +95,7 @@ class Survey(object):
         score = 0
         for question in self.questions.values():
             score += question.selected_answer().weighting
-        return int(float(score) / len(self.questions) * 100)
+        return float(score) / len(self.questions) * 100
 
     def get_rating(self, score):
         """Return the rating text for the given score."""
