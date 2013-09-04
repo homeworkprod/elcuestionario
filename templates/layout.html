@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {% block head -%}
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
+    <title>{{ title }} &ndash; {{ page_title }}</title>
+    {%- endblock head %}
+  </head>
+  <body>
+
+    <h1>{{ title }}</h1>
+
+    <div id="main">
+{% block body %}{% endblock %}
+    </div>
+
+    <p><small>Copyright &copy; 2005, 2006 Jochen Kupperschmidt</small></p>
+
+  </body>
+</html>

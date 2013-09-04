@@ -22,7 +22,6 @@ from flask import Flask, render_template, request
 
 # configuration
 FILE_SURVEY = 'data/example.xml'
-FILE_TEMPLATE = 'survey.html'
 
 
 app = Flask(__name__)
@@ -194,7 +193,7 @@ def view():
         'questions': survey.questions,
     }
 
-    return render_template(FILE_TEMPLATE, **output)
+    return render_template('questionnaire.html', **output)
 
 @app.route('/evaluate', methods=['POST'])
 def evaluate():
@@ -220,8 +219,9 @@ def evaluate():
             username=username,
             score=score,
             rating=survey.getRating(score))
-
-    return render_template(FILE_TEMPLATE, **output)
+        return render_template('result.html', **output)
+    else:
+        return render_template('questionnaire.html', **output)
 
 if __name__ == '__main__':
     app.run(port=8080, debug=False)

@@ -1,18 +1,9 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta charset="utf-8"/>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
-    <title>{{ title }}</title>
-  </head>
-  <body>
+{% extends "layout.html" %}
+{% set page_title = 'Questionnaire' %}
+{% block body %}
 
-    <h1>{{ title }}</h1>
-
-    <div id="main">
       <form action="{{ url_for('evaluate', method='POST') }}" method="post">
 
-      {% if result is undefined %}
         <fieldset>
           <legend>About you</legend>
           <strong>Your name:</strong> <input type="text" name="username" value="{{ username }}" size="32" maxlength="40"/>
@@ -45,20 +36,7 @@
           <legend>Summary</legend>
           <input type="submit" value="Evaluate"/>
         </fieldset>
-      {% else %}
-        <fieldset style="text-align: center;">
-          <legend>Summary</legend>
-          <p style="font-weight: bold;">Your score, {{ result.username or 'stranger' }}:</p>
-          <p class="result">{{ result.score }}%</p>
-          <p>{{ result.rating }}</p>
-          <p style="font-weight: bold;">[ <a href="{{ url_for('view') }}">Start again</a> ]</p>
-        </fieldset>
-      {% endif %}
 
       </form>
-    </div>
 
-    <p><small>Copyright &copy; 2005, 2006 Jochen Kupperschmidt</small></p>
-
-  </body>
-</html>
+{%- endblock body %}
