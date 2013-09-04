@@ -1,66 +1,64 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}"/>
+  <head>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
     <title>{{ title }}</title>
-</head>
-<body>
+  </head>
+  <body>
 
+    <h1>{{ title }}</h1>
 
-<h1>{{ title }}</h1>
+    <div id="main">
+      <form action="{{ url_for('evaluate', method='POST') }}" method="post">
 
-<div id="main">
-    <form action="{{ url_for('evaluate', method='POST') }}" method="post">
-
-    {% if result is undefined %}
+      {% if result is undefined %}
         <fieldset>
-            <legend>About you</legend>
-            <b>Your name:</b> <input type="text" name="username" value="{{ username }}" size="32" maxlength="40"/>
+          <legend>About you</legend>
+          <strong>Your name:</strong> <input type="text" name="username" value="{{ username }}" size="32" maxlength="40"/>
         </fieldset>
 
         {% if submitted %}
         <fieldset>
-            <legend>Errors</legend>
-            <span class="warning">
-                Only {{ questions.numberAnswered() }} of {{ questions|length }} questions were answered so far.<br/>
-                The remaining {{ questions.numberUnanswered() }} questions must be answered for final evaluation.
-            </span>
+          <legend>Errors</legend>
+          <p class="warning">
+            Only {{ questions.numberAnswered() }} of {{ questions|length }} questions were answered so far.<br/>
+            The remaining {{ questions.numberUnanswered() }} questions must be answered for final evaluation.
+          </p>
         </fieldset>
         {% endif %}
 
         {% for q in questions.getQuestions() %}
         <fieldset>
-            <legend>{{ loop.index }}. {{ q.caption }}</legend>
-            {% if submitted and not q.answered %}
-            <p class="warning">This question has not been answered yet.</p>
-            {% endif %}
+          <legend>{{ loop.index }}. {{ q.caption }}</legend>
+          {% if submitted and not q.answered %}
+          <p class="warning">This question has not been answered yet.</p>
+          {% endif %}
 
-            {% for a in q.getAnswers() %}
-            <input type="radio" id="q_{{ q.hash }}__a_{{ a.hash }}" name="q_{{ q.hash }}" value="a_{{ a.hash }}"{% if a.selected %} checked="checked"{% endif %}/><label for="q_{{ q.hash }}__a_{{ a.hash }}">{{ a.caption }}</label><br/>
-            {% endfor %}
+          {% for a in q.getAnswers() %}
+          <input type="radio" id="q_{{ q.hash }}__a_{{ a.hash }}" name="q_{{ q.hash }}" value="a_{{ a.hash }}"{% if a.selected %} checked="checked"{% endif %}/><label for="q_{{ q.hash }}__a_{{ a.hash }}">{{ a.caption }}</label><br/>
+          {% endfor %}
         </fieldset>
         {% endfor %}
 
         <fieldset style="text-align: center;">
-            <legend>Summary</legend>
-            <input type="submit" value="Evaluate"/>
+          <legend>Summary</legend>
+          <input type="submit" value="Evaluate"/>
         </fieldset>
-    {% else %}
+      {% else %}
         <fieldset style="text-align: center;">
-            <legend>Summary</legend>
-            <p style="font-weight: bold;">Your score, {{ result.username or 'stranger' }}:</p>
-            <p class="result">{{ result.score }}%</p>
-            <p>{{ result.rating }}</p>
-            <p style="font-weight: bold;">[ <a href="{{ url_for('view') }}">Start again</a> ]</p>
+          <legend>Summary</legend>
+          <p style="font-weight: bold;">Your score, {{ result.username or 'stranger' }}:</p>
+          <p class="result">{{ result.score }}%</p>
+          <p>{{ result.rating }}</p>
+          <p style="font-weight: bold;">[ <a href="{{ url_for('view') }}">Start again</a> ]</p>
         </fieldset>
-    {% endif %}
+      {% endif %}
 
-    </form>
-</div>
+      </form>
+    </div>
 
-<p><small>Copyright &copy; 2005, 2006 Jochen Kupperschmidt</small></p>
+    <p><small>Copyright &copy; 2005, 2006 Jochen Kupperschmidt</small></p>
 
-
-</body>
+  </body>
 </html>
