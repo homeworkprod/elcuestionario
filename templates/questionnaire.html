@@ -9,7 +9,7 @@
           <strong>Your name:</strong> <input type="text" name="username" value="{{ username }}" size="32" maxlength="40"/>
         </fieldset>
 
-        {% if submitted %}
+        {% if submitted -%}
         <fieldset>
           <legend>Errors</legend>
           <p class="warning">
@@ -17,19 +17,18 @@
             The remaining {{ questions.total_unanswered() }} questions must be answered for final evaluation.
           </p>
         </fieldset>
-        {% endif %}
+        {% endif -%}
 
         {% for question in questions.get_questions() %}
         <fieldset>
           <legend>{{ loop.index }}. {{ question.caption }}</legend>
-          {% if submitted and not question.answered %}
+          {%- if submitted and not question.answered %}
           <p class="warning">This question has not been answered yet.</p>
-          {% endif %}
-
+          {%- endif %}
           <ul>
-          {% for answer in question.get_answers() %}
+          {%- for answer in question.get_answers() %}
             <li><label><input type="radio" name="q_{{ question.hash }}" value="a_{{ answer.hash }}"{% if answer.selected %} checked="checked"{% endif %}/>{{ answer.caption }}</label></li>
-          {% endfor %}
+          {%- endfor %}
           </ul>
         </fieldset>
         {% endfor %}
