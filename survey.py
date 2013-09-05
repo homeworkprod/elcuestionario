@@ -208,7 +208,7 @@ class Answer(ObjectWithHash):
 
 # ---------------------------------------------------------------- #
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def view():
     survey = Survey.from_file(FILE_SURVEY)
 
@@ -220,7 +220,7 @@ def view():
 
     return render_template('questionnaire.html', **output)
 
-@app.route('/evaluate', methods=['POST'])
+@app.route('/', methods=['POST'])
 def evaluate():
     survey = Survey.from_file(FILE_SURVEY)
     username = request.form['username']
