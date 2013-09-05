@@ -54,40 +54,65 @@ def randomized_values(self):
 
 # ---------------------------------------------------------------- #
 
+class ParsedSurveyData(object):
+
+    def __init__(self, filename):
+        self.tree = ET.parse(filename)
+
+    def get_survey(self):
+        survey = Survey(self.get_title())
+        questions = map(self.get_question, self.tree.getiterator('question'))
+        for question in questions:
+            survey.add_question(question)
+        for min_score, text in self.get_rating_levels():
+            survey.add_rating_level(min_score, text)
+        return survey
+
+    def get_title(self):
+        return self.tree.find('title').text
+
+    def get_question(self, element):
+        caption = element.get('caption')
+        question = Question(caption)
+        answers = map(self.get_answer, element.getiterator('answer'))
+        for answer in answers:
+            question.add_answer(answer)
+        return question
+
+    def get_answer(self, element):
+        caption = element.get('caption')
+        weighting = float(element.get('weighting'))
+        return Answer(caption, weighting)
+
+    def get_rating_levels(self):
+        for element in self.tree.getiterator('rating'):
+            min_score = int(element.get('minscore'))
+            yield min_score, element.text
+
+
 class Survey(object):
     """A set of questions, answers, selection states and rating levels."""
 
-    def __init__(self, file=None):
-        self.title = u'Untitled'
+    def __init__(self, title):
+        self.title = title
         self.questions = QuestionPool()
         self.rating_levels = {}
 
-        # Read XML data from file.
-        if file is not None:
-            etree = ET.parse(file)
-
-            # title
-            self.title = etree.find('title').text
-
-            # questions and their answers
-            for question_element in etree.getiterator('question'):
-                question = Question(question_element.get('caption'))
-                for answer_element in question_element.getiterator('answer'):
-                    answer_caption = answer_element.get('caption')
-                    answer_weighting = float(answer_element.get('weighting'))
-                    answer = Answer(answer_caption, answer_weighting)
-                    question[answer.hash] = answer
-                self.questions[question.hash] = question
-
-            # ratings
-            for rating_element in etree.getiterator('rating'):
-                min_score = int(rating_element.get('minscore'))
-                self.rating_levels[min_score] = rating_element.text
+    @classmethod
+    def from_file(cls, filename):
+        """Create a survey from XML data read from a file."""
+        return ParsedSurveyData(filename).get_survey()
 
     def __str__(self):
         return '<%s, %d questions, %d rating levels>' \
             % (self.__class__.__name__, len(self.questions),
                 len(self.rating_levels))
+
+    def add_question(self, question):
+        self.questions[question.hash] = question
+
+    def add_rating_level(self, min_score, text):
+        self.rating_levels[min_score] = text
 
     def calculate_score(self):
         """Calculate the score depending on the given answers."""
@@ -148,6 +173,9 @@ class Question(dict, ObjectWithHash):
                 self.caption.encode('latin-1'),
                 len(self), self.answered)
 
+    def add_answer(self, answer):
+        self[answer.hash] = answer
+
     def answer(self, answer_hash):
         """Answer the question by choosing an answer."""
         self[answer_hash].selected = True
@@ -179,7 +207,7 @@ class Answer(ObjectWithHash):
 
 @app.route('/')
 def view():
-    survey = Survey(FILE_SURVEY)
+    survey = Survey.from_file(FILE_SURVEY)
 
     output = {
         'title': survey.title,
@@ -191,7 +219,7 @@ def view():
 
 @app.route('/evaluate', methods=['POST'])
 def evaluate():
-    survey = Survey(FILE_SURVEY)
+    survey = Survey.from_file(FILE_SURVEY)
     username = request.form['username']
 
     output = {
