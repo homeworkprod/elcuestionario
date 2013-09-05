@@ -9,6 +9,7 @@
 # |_|_|___|_|_|_|___|_____|___|_| |_|_\
 #   http://homework.nwsnet.de/
 
+from bisect import bisect_right
 from collections import namedtuple
 from random import shuffle
 import sha
@@ -123,12 +124,14 @@ class Survey(object):
 
     def get_rating(self, score):
         """Return the rating text for the given score."""
-        min_scores = self.rating_levels.keys()
-        min_scores.sort()
-        min_scores.reverse()
-        for min_score in min_scores:
-            if score >= min_score:
-                return self.rating_levels[min_score]
+        min_scores = sorted(self.rating_levels.keys())
+
+        # Don't include the lowest value in the thresholds.
+        thresholds = min_scores[1:]
+        index = bisect_right(thresholds, score)
+
+        ratings = list(map(self.rating_levels.get, min_scores))
+        return ratings[index]
 
     def get_result(self):
         """Return the evaluation result."""

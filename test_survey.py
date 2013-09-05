@@ -10,6 +10,7 @@ from survey import FILE_SURVEY, Survey
 class SurveyTestCase(TestCase):
 
     @params(
+        ( -2.3, 'worst'),
         (  0.0, 'worst'),
         (  4.2, 'worst'),
         ( 29.3, 'worst'),
