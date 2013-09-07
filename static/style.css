@@ -18,6 +18,10 @@ body {
   width: 620px;
 }
 
+a {
+  color: #aa0000;
+}
+
 fieldset,
 legend {
   border: #333333 solid 1px;
@@ -51,17 +55,27 @@ label:hover {
   cursor: pointer;
 }
 
-a {
-  color: #aa0000;
-}
-
 .warning {
   color: #ff0000;
   font-weight: bold;
 }
-.result {
+
+fieldset.action {
+  text-align: center;
+}
+
+fieldset.result {
+  text-align: center;
+}
+fieldset.result .preface {
+  font-weight: bold;
+}
+fieldset.result .score {
   font-size: 4em;
   font-style: italic;
   font-weight: bold;
   margin: 0;
+}
+fieldset.result .action {
+  font-weight: bold;
 }
