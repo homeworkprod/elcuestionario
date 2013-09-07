@@ -70,10 +70,10 @@ class ParsedSurveyData(object):
         return survey
 
     def get_title(self):
-        return self.tree.find('title').text
+        return unicode(self.tree.find('title').text)
 
     def get_question(self, element):
-        caption = element.get('caption')
+        caption = unicode(element.get('caption'))
         question = Question(caption)
         answers = map(self.get_answer, element.getiterator('answer'))
         for answer in answers:
@@ -81,7 +81,7 @@ class ParsedSurveyData(object):
         return question
 
     def get_answer(self, element):
-        caption = element.get('caption')
+        caption = unicode(element.get('caption'))
         weighting = float(element.get('weighting'))
         return Answer(caption, weighting)
 
