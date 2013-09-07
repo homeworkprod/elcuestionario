@@ -26,7 +26,7 @@
           <p class="warning">This question has not been answered yet.</p>
           {%- endif %}
           <ul>
-          {%- for answer in question.get_answers() %}
+          {%- for answer in question.get_answers()|shuffled %}
             <li><label><input type="radio" name="q_{{ question.hash }}" value="a_{{ answer.hash }}"{% if answer.selected %} checked="checked"{% endif %}/>{{ answer.caption }}</label></li>
           {%- endfor %}
           </ul>

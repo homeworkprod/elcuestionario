@@ -46,13 +46,6 @@ class ObjectWithHash(object):
 
     caption = property(_get_caption, _set_caption)
 
-
-def randomized_values(self):
-    """Return a randomized list of values."""
-    values = self.values()
-    shuffle(values)
-    return values
-
 # ---------------------------------------------------------------- #
 
 class ParsedSurveyData(object):
@@ -147,7 +140,8 @@ Result = namedtuple('Result', 'score rating')
 class QuestionPool(dict):
     """A pool of questions."""
 
-    get_questions = randomized_values
+    def get_questions(self):
+        return self.values()
 
     def total_answered(self):
         """Return the number of questions that have already been answered."""
@@ -176,6 +170,9 @@ class Question(dict, ObjectWithHash):
                 self.caption.encode('latin-1'),
                 len(self), self.answered)
 
+    def get_answers(self):
+        return self.values()
+
     def add_answer(self, answer):
         self[answer.hash] = answer
 
@@ -187,8 +184,6 @@ class Question(dict, ObjectWithHash):
     def selected_answer(self):
         """Return the chosen answer."""
         return next(answer for answer in self.values() if answer.selected)
-
-    get_answers = randomized_values
 
 # ---------------------------------------------------------------- #
 
@@ -207,6 +202,13 @@ class Answer(ObjectWithHash):
                 self.weighting, self.selected)
 
 # ---------------------------------------------------------------- #
+
+@app.template_filter()
+def shuffled(iterable):
+    """Return a shuffled copy of the given iterable."""
+    l = list(iterable)
+    shuffle(l)
+    return l
 
 @app.route('/', methods=['GET'])
 def view():
