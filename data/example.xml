@@ -35,8 +35,8 @@ This is an example survey data file. It has to be valid XML.
             <answer caption="Linux" weighting="0.4"/>
             <answer caption="*BSD" weighting="0.6"/>
             <answer caption="Unix" weighting="0.8"/>
-            <answer caption="Another exotic one" weighting="1.0"/>
-            <answer caption="Another super-exotic one" weighting="1.1"/>
+            <answer caption="another, exotic one" weighting="1.0"/>
+            <answer caption="another, super-exotic one" weighting="1.1"/>
         </question>
         <question caption="What's the name of your pet?">
             <answer caption="I don't have a pet." weighting="0.0"/>
@@ -46,7 +46,7 @@ This is an example survey data file. It has to be valid XML.
             <answer caption="Dumbo" weighting="0.6"/>
             <answer caption="My computer/car/model railway/... is my pet, but I won't tell it's name!" weighting="1.0"/>
             <answer caption="MACHINE" weighting="1.0"/>
-            <answer caption="It has no name, so I can't call it. But I'm always happy, when it passes by." weighting="1.1"/>
+            <answer caption="It has no name, thus I can't call it. But I'm always happy when it passes by." weighting="1.1"/>
         </question>
     </questions>
 
