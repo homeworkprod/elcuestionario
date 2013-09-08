@@ -99,7 +99,7 @@ class Survey(object):
 
     def __str__(self):
         return '<%s, %d questions, %d rating levels>' \
-            % (self.__class__.__name__, len(self._questions),
+            % (self.__class__.__name__, len(self.get_questions()),
                 len(self.rating_levels))
 
     def add_question(self, question):
@@ -114,17 +114,17 @@ class Survey(object):
 
     @property
     def all_questions_answered(self):
-        return all(question.answered for question in self._questions.values())
+        return all(question.answered for question in self.get_questions())
 
     @property
     def total_questions_answered(self):
         """Return the number of questions that have been answered."""
-        return sum(1 for question in self._questions.values() if question.answered)
+        return sum(1 for question in self.get_questions() if question.answered)
 
     @property
     def total_questions_unanswered(self):
         """Return the number of questions that have not been answered."""
-        return len(self._questions) - self.total_questions_answered
+        return len(self.get_questions()) - self.total_questions_answered
 
     def add_rating_level(self, min_score, text):
         self.rating_levels[min_score] = text
@@ -133,8 +133,8 @@ class Survey(object):
         """Calculate the score depending on the given answers."""
         assert self.all_questions_answered
         score = sum(question.selected_answer().weighting
-            for question in self._questions.values())
-        return float(score) / len(self._questions) * 100
+            for question in self.get_questions())
+        return float(score) / len(self.get_questions()) * 100
 
     def get_rating(self, score):
         """Return the rating text for the given score."""
