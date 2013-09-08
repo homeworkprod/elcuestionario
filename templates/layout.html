@@ -5,12 +5,12 @@
     <meta charset="utf-8"/>
     <meta name="generator" content="Rate Yourself (http://homework.nwsnet.de/releases/8909/#rate-yourself) by Jochen Kupperschmidt"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
-    <title>{{ title }} &ndash; {{ page_title }}</title>
+    <title>{{ survey.title }} &ndash; {{ page_title }}</title>
     {%- endblock head %}
   </head>
   <body>
 
-    <h1>{{ title }}</h1>
+    <h1>{{ survey.title }}</h1>
 
     <div id="main">
 {%- block body %}{% endblock %}

@@ -77,13 +77,13 @@ u'''<?xml version="1.0" encoding="UTF-8"?>
 ''')
 
     def test_questions(self):
-        questions = self.survey.questions.get_questions()
+        questions = self.survey.get_questions()
         self.assertEqual(len(questions), 2)
         self.assertEqual(questions[0].caption, 'question 1')
         self.assertEqual(questions[1].caption, 'question 2')
 
     def test_answers(self):
-        questions = self.survey.questions.get_questions()
+        questions = self.survey.get_questions()
 
         question1_answers = questions[0].get_answers()
         self.assertEqual(len(question1_answers), 3)

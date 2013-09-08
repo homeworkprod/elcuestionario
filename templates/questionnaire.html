@@ -7,8 +7,8 @@
         {% if submitted -%}
         <section class="notifications">
           <fieldset>
-            <p>You have answered only <strong>{{ questions.total_answered() }} of {{ questions|length }}</strong> questions so far.</p>
-            <p>Please answer the remaining <strong>{{ questions.total_unanswered() }}</strong> question(s) for final evaluation.</p>
+            <p>You have answered only <strong>{{ survey.total_questions_answered() }} of {{ survey.get_questions()|length }}</strong> questions so far.</p>
+            <p>Please answer the remaining <strong>{{ survey.total_questions_unanswered() }}</strong> question(s) for final evaluation.</p>
           </fieldset>
         </section>
         {% endif -%}
@@ -20,7 +20,7 @@
           </fieldset>
         </section>
 
-        {% for question in questions.get_questions() %}
+        {% for question in survey.get_questions() %}
         <section class="question">
           <fieldset>
             <h2>{{ loop.index }}. {{ question.caption }}</h2>

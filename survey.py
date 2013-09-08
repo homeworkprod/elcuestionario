@@ -89,7 +89,7 @@ class Survey(object):
 
     def __init__(self, title):
         self.title = title
-        self.questions = QuestionPool()
+        self._questions = QuestionPool()
         self.rating_levels = {}
 
     @classmethod
@@ -99,21 +99,39 @@ class Survey(object):
 
     def __str__(self):
         return '<%s, %d questions, %d rating levels>' \
-            % (self.__class__.__name__, len(self.questions),
+            % (self.__class__.__name__, len(self._questions),
                 len(self.rating_levels))
 
     def add_question(self, question):
-        self.questions[question.hash] = question
+        self._questions[question.hash] = question
+
+    def get_question(self, hash):
+        """Return the question for the given hash."""
+        return self._questions[hash]
+
+    def get_questions(self):
+        return self._questions.get_questions()
+
+    def all_questions_answered(self):
+        return self._questions.all_answered()
+
+    def total_questions_answered(self):
+        """Return the number of questions that have already been answered."""
+        return self._questions.total_answered()
+
+    def total_questions_unanswered(self):
+        """Return the number of questions that have not been answered yet."""
+        return self._questions.total_unanswered()
 
     def add_rating_level(self, min_score, text):
         self.rating_levels[min_score] = text
 
     def calculate_score(self):
         """Calculate the score depending on the given answers."""
-        assert self.questions.all_answered()
+        assert self.all_questions_answered()
         score = sum(question.selected_answer().weighting
-            for question in self.questions.values())
-        return float(score) / len(self.questions) * 100
+            for question in self._questions.values())
+        return float(score) / len(self._questions) * 100
 
     def get_rating(self, score):
         """Return the rating text for the given score."""
@@ -176,9 +194,9 @@ class Question(dict, ObjectWithHash):
     def add_answer(self, answer):
         self[answer.hash] = answer
 
-    def answer(self, answer_hash):
-        """Answer the question by choosing an answer."""
-        self[answer_hash].selected = True
+    def select_answer(self, hash):
+        """Answer the question with the answer identified by the given hash."""
+        self[hash].selected = True
         self.answered = True
 
     def selected_answer(self):
@@ -215,8 +233,7 @@ def view():
     survey = Survey.from_file(FILE_SURVEY)
 
     output = {
-        'title': survey.title,
-        'questions': survey.questions,
+        'survey': survey,
         'submitted': False,
     }
 
@@ -228,20 +245,22 @@ def evaluate():
     username = request.form['username']
 
     output = {
-        'title': survey.title,
+        'survey': survey,
         'username': username,
     }
 
     # Examine which questions were answered and which answer was selected.
     for name, value in request.form.items():
         if name.startswith('q_') and value.startswith('a_'):
-            survey.questions[name[2:]].answer(value[2:])
+            question_hash = name[2:]
+            answer_hash = value[2:]
+            question = survey.get_question(question_hash)
+            question.select_answer(answer_hash)
 
-    if survey.questions.all_answered():
+    if survey.all_questions_answered():
         output['result'] = survey.get_result()
         return render_template('result.html', **output)
     else:
-        output['questions'] = survey.questions
         output['submitted'] = True
         return render_template('questionnaire.html', **output)
 
