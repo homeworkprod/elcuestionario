@@ -35,6 +35,7 @@ module name!):
 .. _nose2: https://github.com/nose-devs/nose2
 """
 
+from io import StringIO
 from unittest import TestCase
 
 from nose2.tools import params
@@ -42,7 +43,79 @@ from nose2.tools import params
 from survey import FILE_SURVEY, Survey
 
 
-class SurveyTestCase(TestCase):
+class XmlLoaderTestCase(TestCase):
+
+    def setUp(self):
+        f = self._create_file()
+        self.survey = Survey.from_file(f)
+
+    def _create_file(self):
+        return StringIO(
+u'''<?xml version="1.0" encoding="UTF-8"?>
+<survey>
+    <title>How strange are you?</title>
+    <questions>
+        <question caption="question 1">
+            <answer caption="answer 1.1" weighting="0.0"/>
+            <answer caption="answer 1.2" weighting="0.5"/>
+            <answer caption="answer 1.3" weighting="1.0"/>
+        </question>
+        <question caption="question 2">
+            <answer caption="answer 2.1" weighting="0.0"/>
+            <answer caption="answer 2.2" weighting="0.25"/>
+            <answer caption="answer 2.3" weighting="0.5"/>
+            <answer caption="answer 2.4" weighting="0.75"/>
+            <answer caption="answer 2.5" weighting="1.0"/>
+        </question>
+    </questions>
+    <ratings>
+        <rating minscore="0">bad</rating>
+        <rating minscore="50">okay</rating>
+        <rating minscore="80">good</rating>
+    </ratings>
+</survey>
+''')
+
+    def test_questions(self):
+        questions = self.survey.questions.get_questions()
+        self.assertEqual(len(questions), 2)
+        self.assertEqual(questions[0].caption, 'question 1')
+        self.assertEqual(questions[1].caption, 'question 2')
+
+    def test_answers(self):
+        questions = self.survey.questions.get_questions()
+
+        question1_answers = questions[0].get_answers()
+        self.assertEqual(len(question1_answers), 3)
+        question1_answer_captions = set(
+            answer.caption for answer in question1_answers)
+        self.assertEqual(question1_answer_captions, set([
+            'answer 1.1',
+            'answer 1.2',
+            'answer 1.3',
+        ]))
+
+        question2_answers = questions[1].get_answers()
+        self.assertEqual(len(question2_answers), 5)
+        question2_answer_captions = set(
+            answer.caption for answer in question2_answers)
+        self.assertEqual(question2_answer_captions, set([
+            'answer 2.1',
+            'answer 2.2',
+            'answer 2.3',
+            'answer 2.4',
+            'answer 2.5',
+        ]))
+
+    def test_ratings(self):
+        self.assertEqual(self.survey.rating_levels, {
+             0: 'bad',
+            50: 'okay',
+            80: 'good',
+        })
+
+
+class RatingTestCase(TestCase):
 
     @params(
         ( -2.3, 'worst'),
