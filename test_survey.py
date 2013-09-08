@@ -40,7 +40,7 @@ from unittest import TestCase
 
 from nose2.tools import params
 
-from survey import FILE_SURVEY, Survey
+from survey import Answer, Question, Survey
 
 
 class XmlLoaderTestCase(TestCase):
@@ -113,6 +113,25 @@ u'''<?xml version="1.0" encoding="UTF-8"?>
             50: 'okay',
             80: 'good',
         })
+
+
+class QuestionTestCase(TestCase):
+
+    def setUp(self):
+        self.question = Question('some question')
+
+        self.answer1 = Answer('yes', 1.0)
+        self.answer2 = Answer('maybe', 0.5)
+        self.answer3 = Answer('no', 0.0)
+
+        self.question.add_answer(self.answer1)
+        self.question.add_answer(self.answer2)
+        self.question.add_answer(self.answer3)
+
+    def test_answered(self):
+        self.assertEquals(self.question.answered, False)
+        self.question.select_answer(self.answer3.hash)
+        self.assertEquals(self.question.answered, True)
 
 
 class RatingTestCase(TestCase):
