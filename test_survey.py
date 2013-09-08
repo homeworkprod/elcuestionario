@@ -130,7 +130,7 @@ class QuestionTestCase(TestCase):
 
     def test_answered(self):
         self.assertEquals(self.question.answered, False)
-        self.question.select_answer(self.answer3.hash)
+        self.question.select_answer(self.answer3)
         self.assertEquals(self.question.answered, True)
 
 

@@ -188,15 +188,18 @@ class Question(dict, ObjectWithHash):
                 self.caption.encode('latin-1'),
                 len(self), self.answered)
 
-    def get_answers(self):
-        return self.values()
-
     def add_answer(self, answer):
         self[answer.hash] = answer
 
-    def select_answer(self, hash):
-        """Answer the question with the answer identified by the given hash."""
-        self[hash].selected = True
+    def get_answer(self, hash):
+        return self[hash]
+
+    def get_answers(self):
+        return self.values()
+
+    def select_answer(self, answer):
+        """Answer the question with the given answer."""
+        self[answer.hash].selected = True
         self.answered = True
 
     def selected_answer(self):
@@ -255,7 +258,8 @@ def evaluate():
             question_hash = name[2:]
             answer_hash = value[2:]
             question = survey.get_question(question_hash)
-            question.select_answer(answer_hash)
+            answer = question.get_answer(answer_hash)
+            question.select_answer(answer)
 
     if survey.all_questions_answered():
         output['result'] = survey.get_result()
