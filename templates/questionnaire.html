@@ -4,39 +4,39 @@
 
       <form action="{{ url_for('evaluate', _method='POST') }}" method="post">
 
-        <fieldset>
-          <legend>About you</legend>
-          <strong>Your name:</strong> <input type="text" name="username" value="{{ username }}" size="32" maxlength="40"/>
-        </fieldset>
-
         {% if submitted -%}
-        <fieldset>
-          <legend>Errors</legend>
-          <p class="warning">
-            Only {{ questions.total_answered() }} of {{ questions|length }} questions were answered so far.<br/>
-            The remaining {{ questions.total_unanswered() }} questions must be answered for final evaluation.
-          </p>
-        </fieldset>
+        <section class="notifications">
+          <fieldset>
+            <p>You have answered only <strong>{{ questions.total_answered() }} of {{ questions|length }}</strong> questions so far.</p>
+            <p>Please answer the remaining <strong>{{ questions.total_unanswered() }}</strong> question(s) for final evaluation.</p>
+          </fieldset>
+        </section>
         {% endif -%}
 
+        <section class="name">
+          <fieldset>
+            <h2>What's your name? <small>(optional)</small></h2>
+            <p><input type="text" name="username" value="{{ username }}" maxlength="40"/></p>
+          </fieldset>
+        </section>
+
         {% for question in questions.get_questions() %}
-        <fieldset>
-          <legend>{{ loop.index }}. {{ question.caption }}</legend>
-          {%- if submitted and not question.answered %}
-          <p class="warning">This question has not been answered yet.</p>
-          {%- endif %}
-          <ul>
-          {%- for answer in question.get_answers()|shuffled %}
-            <li><label><input type="radio" name="q_{{ question.hash }}" value="a_{{ answer.hash }}"{% if answer.selected %} checked="checked"{% endif %}/>{{ answer.caption }}</label></li>
-          {%- endfor %}
-          </ul>
-        </fieldset>
+        <section class="question">
+          <fieldset>
+            <h2>{{ loop.index }}. {{ question.caption }}</h2>
+            {%- if submitted and not question.answered %}
+            <p class="notification">Please answer this question.</p>
+            {%- endif %}
+            <ul>
+            {%- for answer in question.get_answers()|shuffled %}
+              <li><label><input type="radio" name="q_{{ question.hash }}" value="a_{{ answer.hash }}"{% if answer.selected %} checked="checked"{% endif %}/>{{ answer.caption }}</label></li>
+            {%- endfor %}
+            </ul>
+          </fieldset>
+        </section>
         {% endfor %}
 
-        <fieldset class="action">
-          <legend>Summary</legend>
-          <button>Evaluate</button>
-        </fieldset>
+        <button>Evaluate</button>
 
       </form>
 
