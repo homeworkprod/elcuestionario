@@ -89,7 +89,7 @@ class Survey(object):
 
     def __init__(self, title):
         self.title = title
-        self._questions = QuestionPool()
+        self._questions = {}
         self.rating_levels = {}
 
     @classmethod
@@ -110,25 +110,28 @@ class Survey(object):
         return self._questions[hash]
 
     def get_questions(self):
-        return self._questions.get_questions()
+        return self._questions.values()
 
+    @property
     def all_questions_answered(self):
-        return self._questions.all_answered()
+        return all(question.answered for question in self._questions.values())
 
+    @property
     def total_questions_answered(self):
-        """Return the number of questions that have already been answered."""
-        return self._questions.total_answered()
+        """Return the number of questions that have been answered."""
+        return sum(1 for question in self._questions.values() if question.answered)
 
+    @property
     def total_questions_unanswered(self):
-        """Return the number of questions that have not been answered yet."""
-        return self._questions.total_unanswered()
+        """Return the number of questions that have not been answered."""
+        return len(self._questions) - self.total_questions_answered
 
     def add_rating_level(self, min_score, text):
         self.rating_levels[min_score] = text
 
     def calculate_score(self):
         """Calculate the score depending on the given answers."""
-        assert self.all_questions_answered()
+        assert self.all_questions_answered
         score = sum(question.selected_answer().weighting
             for question in self._questions.values())
         return float(score) / len(self._questions) * 100
@@ -152,26 +155,6 @@ class Survey(object):
 
 
 Result = namedtuple('Result', 'score rating')
-
-# ---------------------------------------------------------------- #
-
-class QuestionPool(dict):
-    """A pool of questions."""
-
-    def get_questions(self):
-        return self.values()
-
-    def total_answered(self):
-        """Return the number of questions that have already been answered."""
-        return sum(1 for question in self.values() if question.answered)
-
-    def total_unanswered(self):
-        """Return the number of questions that have not been answered yet."""
-        return len(self) - self.total_answered()
-
-    def all_answered(self):
-        """Tell if all questions in the pool were answered."""
-        return all(question.answered for question in self.values())
 
 # ---------------------------------------------------------------- #
 
@@ -263,7 +246,7 @@ def evaluate():
             answer = question.get_answer(answer_hash)
             question.select_answer(answer)
 
-    if survey.all_questions_answered():
+    if survey.all_questions_answered:
         output['result'] = survey.get_result()
         return render_template('result.html', **output)
     else:
