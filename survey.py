@@ -180,7 +180,6 @@ class Question(dict, ObjectWithHash):
 
     def __init__(self, caption):
         ObjectWithHash.__init__(self, caption)
-        self.answered = False
 
     def __str__(self):
         return '<%s, hash=%s, caption="%s", %d answers, answered=%s>' \
@@ -200,11 +199,14 @@ class Question(dict, ObjectWithHash):
     def select_answer(self, answer):
         """Answer the question with the given answer."""
         self[answer.hash].selected = True
-        self.answered = True
 
     def selected_answer(self):
         """Return the chosen answer."""
         return next(answer for answer in self.values() if answer.selected)
+
+    @property
+    def answered(self):
+        return any(answer.selected for answer in self.values())
 
 # ---------------------------------------------------------------- #
 
