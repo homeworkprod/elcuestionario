@@ -11,7 +11,7 @@
 
 from bisect import bisect_right
 from collections import namedtuple
-import sha
+import hashlib
 import xml.etree.ElementTree as ET
 
 
@@ -26,10 +26,13 @@ class ObjectWithHash(object):
 
     def _set_caption(self, value):
         self.__caption = unicode(value)
-        self.hash = sha.new(
-            self.__caption.encode('latin-1')).hexdigest()[:8]
+        self.hash = _create_hash(self.__caption.encode('latin-1'))
 
     caption = property(_get_caption, _set_caption)
+
+
+def _create_hash(value, length=8):
+    return hashlib.sha1(value).hexdigest()[:length]
 
 
 class ParsedSurveyData(object):
