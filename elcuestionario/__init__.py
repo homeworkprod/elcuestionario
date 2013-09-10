@@ -23,7 +23,7 @@ from flask import Flask, render_template, request
 
 
 # configuration
-FILE_SURVEY = 'data/example.xml'
+FILE_SURVEY = 'elcuestionario/data/example.xml'
 
 
 app = Flask(__name__)
@@ -252,8 +252,3 @@ def evaluate():
     else:
         output['submitted'] = True
         return render_template('questionnaire.html', **output)
-
-# ---------------------------------------------------------------- #
-
-if __name__ == '__main__':
-    app.run(port=5000, debug=True)
