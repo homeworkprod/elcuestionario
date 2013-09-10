@@ -25,7 +25,7 @@ Requirements
 Installation
 ------------
 
-Install Flask:
+Install Flask_:
 
 .. code:: sh
 
@@ -36,6 +36,11 @@ Make the script to run the application executable:
 .. code:: sh
 
    $ chmod +x runserver.py
+
+This script (which uses the built-in web server) is fine to get up and
+running quickly. However, to actually serve the application on the
+Internet, please consider the other `deployment options`_ described in
+Flask's excellent documentation.
 
 
 Configuration
@@ -58,11 +63,39 @@ Start the application:
 It will spawn a web server on port 5000.
 
 To access the questionnaire, point a web browser to
-``http://localhost:5000``.
+http://localhost:5000.
 
 
-.. _Python:   http://www.python.org/
-.. _Flask:    http://flask.pocoo.org/
+Changes
+-------
+
+Notable changes since the first release:
+
+- WSGI_ (via Werkzeug_) has replaced CGI as the interface to the web
+  server to support more `deployment options`_.
+
+- Jinja_ has replaced Kid_ as the template engine.
+
+- The original script evolved into a Flask application with separate
+  modules and templates.
+
+- Tests have been added.
+
+- ElementTree is imported from the standard library (which includes it
+  as of Python 2.5).
+
+- Naming has been adjusted to follow `PEP 8`_ more closely.
+
+
+.. _Python:             http://www.python.org/
+.. _Flask:              http://flask.pocoo.org/
+.. _deployment options: http://flask.pocoo.org/docs/deploying/#deployment
+.. _WSGI:               http://www.wsgi.org/
+.. _Werkzeug:           http://werkzeug.pocoo.org/
+.. _Jinja:              http://jinja.pocoo.org/
+.. _Kid:                http://www.kid-templating.org/
+.. _ElementTree:        http://effbot.org/zone/element-index.htm
+.. _PEP 8:              http://www.python.org/dev/peps/pep-0008/
 
 
 :Copyright: 2005-2013 `Jochen Kupperschmidt <http://homework.nwsnet.de/>`_
