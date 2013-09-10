@@ -27,10 +27,6 @@ Installation
 
 - Make sure the required software is installed.
 
-- Make additionally installed packages available to your script. If
-  they are not already in your ``PYTHONPATH``, set the path in the
-  imports section of the main script.
-
 - The main script has to be executable:
 
   .. code:: sh

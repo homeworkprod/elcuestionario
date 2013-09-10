@@ -13,11 +13,7 @@ from bisect import bisect_right
 from collections import namedtuple
 from random import shuffle
 import sha
-import sys
 import xml.etree.ElementTree as ET
-
-# If it isn't already in your path, add Jinja with this line.
-#sys.path.append('/path/to/your/site-packages')
 
 from flask import Flask, render_template, request
 
