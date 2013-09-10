@@ -18,20 +18,24 @@ comment.
 Requirements
 ------------
 
-- Python_ 2.5+ (tested with 2.7.3)
+- Python_ 2.6 or 2.7
 - Flask_ (tested with 0.10.1)
 
 
 Installation
 ------------
 
-- Make sure the required software is installed.
+Install Flask:
 
-- The main script has to be executable:
+.. code:: sh
 
-  .. code:: sh
+   $ pip install Flask
 
-     $ chmod +x elcuestionario.py
+Make the script to run the application executable:
+
+.. code:: sh
+
+   $ chmod +x runserver.py
 
 
 Configuration
@@ -45,15 +49,15 @@ the ``FILE_SURVEY`` variable in the main script accordingly.
 Usage
 -----
 
-Start the application on the command line:
+Start the application:
 
 .. code:: sh
 
-   $ ./elcuestionario.py
+   $ ./runserver.py
 
 It will spawn a web server on port 5000.
 
-Access the questionnaire by pointing your web browser to
+To access the questionnaire, point a web browser to
 ``http://localhost:5000``.
 
 
@@ -62,5 +66,5 @@ Access the questionnaire by pointing your web browser to
 
 
 :Copyright: 2005-2013 `Jochen Kupperschmidt <http://homework.nwsnet.de/>`_
-:Date: 10-Sep-2013 (original release: 26-Apr-2006)
+:Date: 11-Sep-2013 (original release: 26-Apr-2006)
 :License: GNU General Public License version 2, see LICENSE for details.
