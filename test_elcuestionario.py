@@ -40,7 +40,7 @@ from unittest import TestCase
 
 from nose2.tools import params
 
-from elcuestionario import Answer, Question, Survey
+from elcuestionario.models import Answer, Question, Survey
 
 
 class XmlLoaderTestCase(TestCase):
