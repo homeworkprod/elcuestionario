@@ -40,6 +40,7 @@ from unittest import TestCase
 
 from nose2.tools import params
 
+from elcuestionario.loader import load_survey
 from elcuestionario.models import Answer, Question, Survey
 
 
@@ -47,7 +48,7 @@ class XmlLoaderTestCase(TestCase):
 
     def setUp(self):
         f = self._create_file()
-        self.survey = Survey.from_file(f)
+        self.survey = load_survey(f)
 
     def _create_file(self):
         return StringIO(

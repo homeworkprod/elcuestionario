@@ -48,7 +48,7 @@ Configuration
 
 Take a look at ``data/example.xml`` regarding how a questionnaire is
 defined. Just copy the file, adjust its content and update the value of
-the ``FILE_SURVEY`` variable in the main script accordingly.
+the ``SURVEY_FILENAME`` variable in the main script accordingly.
 
 
 Usage

@@ -12,11 +12,11 @@ from random import shuffle
 
 from flask import Flask, render_template, request
 
-from .models import Survey
+from .loader import load_survey
 
 
 # configuration
-FILE_SURVEY = 'elcuestionario/data/example.xml'
+SURVEY_FILENAME = 'elcuestionario/data/example.xml'
 
 
 app = Flask(__name__)
@@ -29,9 +29,10 @@ def shuffled(iterable):
     shuffle(l)
     return l
 
+
 @app.route('/', methods=['GET'])
 def view():
-    survey = Survey.from_file(FILE_SURVEY)
+    survey = _load_survey()
 
     output = {
         'survey': survey,
@@ -42,7 +43,7 @@ def view():
 
 @app.route('/', methods=['POST'])
 def evaluate():
-    survey = Survey.from_file(FILE_SURVEY)
+    survey = _load_survey()
     username = request.form['username']
 
     output = {
@@ -65,3 +66,6 @@ def evaluate():
     else:
         output['submitted'] = True
         return render_template('questionnaire.html', **output)
+
+def _load_survey():
+    return load_survey(SURVEY_FILENAME)

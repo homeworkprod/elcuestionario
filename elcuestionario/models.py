@@ -11,7 +11,6 @@
 from bisect import bisect_right
 from collections import namedtuple
 import hashlib
-import xml.etree.ElementTree as ET
 
 
 class ObjectWithHash(object):
@@ -34,42 +33,6 @@ def _create_hash(value, length=8):
     return hashlib.sha1(value).hexdigest()[:length]
 
 
-class ParsedSurveyData(object):
-
-    def __init__(self, filename):
-        self.tree = ET.parse(filename)
-
-    def get_survey(self):
-        survey = Survey(self.get_title())
-        questions = map(self.get_question, self.tree.getiterator('question'))
-        for question in questions:
-            survey.add_question(question)
-        for min_score, text in self.get_rating_levels():
-            survey.add_rating_level(min_score, text)
-        return survey
-
-    def get_title(self):
-        return unicode(self.tree.find('title').text)
-
-    def get_question(self, element):
-        caption = unicode(element.get('caption'))
-        question = Question(caption)
-        answers = map(self.get_answer, element.getiterator('answer'))
-        for answer in answers:
-            question.add_answer(answer)
-        return question
-
-    def get_answer(self, element):
-        caption = unicode(element.get('caption'))
-        weighting = float(element.get('weighting'))
-        return Answer(caption, weighting)
-
-    def get_rating_levels(self):
-        for element in self.tree.getiterator('rating'):
-            min_score = int(element.get('minscore'))
-            yield min_score, element.text
-
-
 class Survey(object):
     """A set of questions, answers, selection states and rating levels."""
 
@@ -77,11 +40,6 @@ class Survey(object):
         self.title = title
         self._questions = {}
         self.rating_levels = {}
-
-    @classmethod
-    def from_file(cls, filename):
-        """Create a survey from XML data read from a file."""
-        return ParsedSurveyData(filename).get_survey()
 
     def __str__(self):
         return '<%s, %d questions, %d rating levels>' \
