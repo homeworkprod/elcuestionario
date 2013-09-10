@@ -1,17 +1,18 @@
-Rate Yourself
-=============
+El Cuestionario
+===============
 
-**Rate Yourself** is a web-based framework for building surveys like
-*How cool/geeky/whatever are you?*.
+**El Cuestionario** (formerly known as **Rate Yourself**) is a tiny web
+application to display and evaluate single-page questionnaires.
 
-All survey-specific data (questions, their answers and score ratings)
-is read from a single file containing XML data.
+A questionnaire (questions, their answers, and score ratings) is
+defined as XML in a single file.
 
-The questions and answers are presented to the user in random order.
+The questions are presented in the order they are defined in the
+definition while the answers are shown in random order.
 
-When all questions are answered, the user's score is calculated based
-on the answers' weight (as specified in the data file) and presented
-with a suitable comment.
+Once all questions are answered, the user's score is calculated based
+on the answers' weight (as defined) and is presented with a suitable
+comment.
 
 
 Requirements
@@ -34,11 +35,30 @@ Installation
 
   .. code:: sh
 
-     $ chmod +x index.py
+     $ chmod +x elcuestionario.py
 
-- Take a look at ``data/example.xml`` regarding how a survey is
-  defined. Just copy the file, adjust its content and update the
-  ``FILE_SURVEY`` variable in the main script accordingly.
+
+Configuration
+-------------
+
+Take a look at ``data/example.xml`` regarding how a questionnaire is
+defined. Just copy the file, adjust its content and update the value of
+the ``FILE_SURVEY`` variable in the main script accordingly.
+
+
+Usage
+-----
+
+Start the application on the command line:
+
+.. code:: sh
+
+   $ ./elcuestionario.py
+
+It will spawn a web server on port 5000.
+
+Access the questionnaire by pointing your web browser to
+``http://localhost:5000``.
 
 
 .. _Python:   http://www.python.org/
@@ -46,5 +66,5 @@ Installation
 
 
 :Copyright: 2005-2013 `Jochen Kupperschmidt <http://homework.nwsnet.de/>`_
-:Date: 04-Sep-2013 (original release: 26-Apr-2006)
+:Date: 10-Sep-2013 (original release: 26-Apr-2006)
 :License: GNU General Public License version 2, see LICENSE for details.

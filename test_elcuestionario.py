@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-Tests for Rate Yourself
-=======================
+Tests for El Cuestionario
+=========================
 
 
 Requirements
@@ -29,7 +29,7 @@ module name!):
 
 .. code:: sh
 
-    $ nose2 test_survey
+    $ nose2 test_elcuestionario
 
 
 .. _nose2: https://github.com/nose-devs/nose2
@@ -40,7 +40,7 @@ from unittest import TestCase
 
 from nose2.tools import params
 
-from survey import Answer, Question, Survey
+from elcuestionario import Answer, Question, Survey
 
 
 class XmlLoaderTestCase(TestCase):
