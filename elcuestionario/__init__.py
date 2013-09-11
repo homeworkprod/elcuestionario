@@ -51,14 +51,7 @@ def evaluate():
         'username': username,
     }
 
-    # Examine which questions were answered and which answer was selected.
-    for name, value in request.form.items():
-        if name.startswith('q_') and value.startswith('a_'):
-            question_hash = name[2:]
-            answer_hash = value[2:]
-            question = survey.get_question(question_hash)
-            answer = question.get_answer(answer_hash)
-            question.select_answer(answer)
+    _select_answer_for_questions(survey, request)
 
     if survey.all_questions_answered:
         output['result'] = survey.get_result()
@@ -69,3 +62,19 @@ def evaluate():
 
 def _load_survey():
     return load_survey(SURVEY_FILENAME)
+
+def _select_answer_for_questions(survey, request):
+    """Examine which questions were answered and which answer was selected."""
+    for name, value in request.form.items():
+        if name.startswith('q_') and value.startswith('a_'):
+            question_hash = name[2:]
+            answer_hash = value[2:]
+            _select_answer_for_question(survey, question_hash, answer_hash)
+
+def _select_answer_for_question(survey, question_hash, answer_hash):
+    """Lookup the question and answer for the given hashes,
+    respectively, and select the answer for the question.
+    """
+    question = survey.get_question(question_hash)
+    answer = question.get_answer(answer_hash)
+    question.select_answer(answer)
