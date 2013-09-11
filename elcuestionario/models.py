@@ -13,26 +13,6 @@ from collections import namedtuple
 import hashlib
 
 
-class ObjectWithHash(object):
-    """A hash value will be stored when the caption is set."""
-
-    def __init__(self, caption):
-        self.caption = caption
-
-    def _get_caption(self):
-        return self.__caption
-
-    def _set_caption(self, value):
-        self.__caption = unicode(value)
-        self.hash = _create_hash(self.__caption.encode('latin-1'))
-
-    caption = property(_get_caption, _set_caption)
-
-
-def _create_hash(value, length=8):
-    return hashlib.sha1(value).hexdigest()[:length]
-
-
 class Survey(object):
     """A set of questions, answers, selection states and rating levels."""
 
@@ -101,11 +81,12 @@ class Survey(object):
 Result = namedtuple('Result', 'score rating')
 
 
-class Question(dict, ObjectWithHash):
+class Question(dict):
     """A question with multiple answers."""
 
     def __init__(self, caption):
-        ObjectWithHash.__init__(self, caption)
+        self.caption = caption
+        self.hash = _create_hash(self.caption.encode('latin-1'))
 
     def __str__(self):
         return '<%s, hash=%s, caption="%s", %d answers, answered=%s>' \
@@ -135,11 +116,12 @@ class Question(dict, ObjectWithHash):
         return any(answer.selected for answer in self.values())
 
 
-class Answer(ObjectWithHash):
+class Answer(object):
     """An answer to a question."""
 
     def __init__(self, caption, weighting):
-        ObjectWithHash.__init__(self, caption)
+        self.caption = caption
+        self.hash = _create_hash(self.caption.encode('latin-1'))
         self.weighting = weighting
         self.selected = False
 
@@ -148,3 +130,7 @@ class Answer(ObjectWithHash):
             % (self.__class__.__name__, self.hash,
                 self.caption.encode('latin-1'),
                 self.weighting, self.selected)
+
+
+def _create_hash(value, length=8):
+    return hashlib.sha1(value).hexdigest()[:length]
