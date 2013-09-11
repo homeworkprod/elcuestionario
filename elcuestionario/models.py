@@ -81,39 +81,40 @@ class Survey(object):
 Result = namedtuple('Result', 'score rating')
 
 
-class Question(dict):
+class Question(object):
     """A question with multiple answers."""
 
     def __init__(self, caption):
         self.caption = caption
         self.hash = _create_hash(self.caption.encode('latin-1'))
+        self.answers = {}
 
     def __str__(self):
         return '<%s, hash=%s, caption="%s", %d answers, answered=%s>' \
             % (self.__class__.__name__, self.hash,
                 self.caption.encode('latin-1'),
-                len(self), self.answered)
+                len(self.answers), self.answered)
 
     def add_answer(self, answer):
-        self[answer.hash] = answer
+        self.answers[answer.hash] = answer
 
     def get_answer(self, hash):
-        return self[hash]
+        return self.answers[hash]
 
     def get_answers(self):
-        return self.values()
+        return self.answers.values()
 
     def select_answer(self, answer):
         """Answer the question with the given answer."""
-        self[answer.hash].selected = True
+        self.answers[answer.hash].selected = True
 
     def selected_answer(self):
         """Return the chosen answer."""
-        return next(answer for answer in self.values() if answer.selected)
+        return next(answer for answer in self.answers.values() if answer.selected)
 
     @property
     def answered(self):
-        return any(answer.selected for answer in self.values())
+        return any(answer.selected for answer in self.answers.values())
 
 
 class Answer(object):
