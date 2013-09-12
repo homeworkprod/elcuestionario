@@ -8,22 +8,34 @@ body {
   color: #333333;
   font-family: "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", "Dejavu Sans", Verdana, sans-serif;
   font-size: 90%;
-  text-align: center;
 }
 
-#main {
+header,
+main,
+section,
+footer {
+  display: block;
+}
+
+header,
+main,
+footer {
   margin: 0 auto;
-  padding: 0;
   width: 620px;
-}
-
-h1 {
-  text-shadow: 0 2px 1px #ffffff;
-  margin: 0 0 40px 0;
 }
 
 a {
   color: #333333;
+}
+
+h1 {
+  font-size: 240%;
+  margin: 0 0 40px 0;
+  text-shadow: 0 2px 1px #ffffff;
+}
+
+main {
+  text-align: center;
 }
 
 fieldset {
@@ -92,7 +104,7 @@ label {
   padding: 0.25em 0.5em 0.25em 0;
 }
 label:hover {
-  background-color: #666666;
+  background-color: rgba(0, 0, 0, 0.5);
   border-radius: 4px;
   color: #ffffff;
   cursor: pointer;
@@ -113,34 +125,54 @@ section.result .rating {
   margin: 10px 0 20px 0;
 }
 
+.button-wrapper {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  display: inline-block;
+  margin: 20px auto 0 auto;
+  padding: 4px;
+}
+.button-wrapper:hover {
+  padding: 5px;
+}
 a.button,
 button {
   background-color: #83A94C;
-  background-image: linear-gradient(to bottom, #95BF52, #678943);
-  border: #999999 solid 1px;
+  background-image: linear-gradient(to bottom, rgba(128, 192, 64, 0.9), rgba(96, 128, 64, 0.9));
+  border: #aaaaaa solid 1px;
   border-radius: 8px;
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.25) inset, 1px 1px 3px rgba(0, 0, 0, 0.05);
-  color: #ffffff;
+  color: #f8f8f8;
   cursor: pointer;
   display: inline-block;
   font-size: 150%;
   font-weight: normal;
-  margin: 20px auto 0 auto;
+  margin: 0;
   padding: 10px 20px;
   text-align: center;
   text-decoration: none;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 }
+.button-wrapper:hover a.button,
+.button-wrapper:hover button {
+  background-image: linear-gradient(to bottom, rgba(128, 192, 64, 0.75), rgba(96, 128, 64, 0.75));
+  color: #eeeeee;
+  padding: 9px 19px;
+}
 
-#footer {
+footer {
+  text-align: center;
+}
+footer p {
   border-top: #cccccc solid 1px;
   display: inline-block;
-  margin: 40px 0 20px 0;
+  margin: 40px auto 20px auto;
   padding: 20px 0 0 0;
+  text-shadow: 0 1px 1px #ffffff;
 }
-#footer small {
+footer small {
   opacity: 0.25;
 }
-#footer:hover small {
+footer:hover small {
   opacity: 1.0;
 }
