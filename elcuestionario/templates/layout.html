@@ -5,6 +5,9 @@
     <meta charset="utf-8"/>
     <meta name="generator" content="El Cuestionario (http://homework.nwsnet.de/releases/8909/#el-questionario) by Jochen Kupperschmidt"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
+    <!--[if lt IE 9]>
+    <script src="{{ url_for('static', filename='html5shiv.js') }}"></script>
+    <![endif]-->
     <title>{{ survey.title }} &ndash; {{ page_title }}</title>
     {%- endblock head %}
   </head>
