@@ -41,7 +41,7 @@ from unittest import TestCase
 from nose2.tools import params
 
 from elcuestionario.loader import load_survey
-from elcuestionario.models import Answer, Question, Survey
+from elcuestionario.models import Answer, Question, RatingLevel, Survey
 
 
 class XmlLoaderTestCase(TestCase):
@@ -108,12 +108,12 @@ u'''<?xml version="1.0" encoding="UTF-8"?>
             'answer 2.5',
         ]))
 
-    def test_ratings(self):
-        self.assertEqual(self.survey.rating_levels, {
-             0: 'bad',
-            50: 'okay',
-            80: 'good',
-        })
+    def test_rating_levels(self):
+        self.assertEqual(self.survey.rating_levels, [
+            RatingLevel( 0, 'bad'),
+            RatingLevel(50, 'okay'),
+            RatingLevel(80, 'good'),
+        ])
 
 
 class QuestionTestCase(TestCase):
@@ -137,6 +137,17 @@ class QuestionTestCase(TestCase):
 
 class RatingTestCase(TestCase):
 
+    def setUp(self):
+        self.survey = Survey('Test')
+        for minimum_score, text in [
+            (0, 'worst'),
+            (30, 'oh-oh'),
+            (60, 'OK-ish'),
+            (90, 'great'),
+            (100, 'over the top'),
+        ]:
+            self.survey.add_rating_level(RatingLevel(minimum_score, text))
+
     @params(
         ( -2.3, 'worst'),
         (  0.0, 'worst'),
@@ -152,17 +163,5 @@ class RatingTestCase(TestCase):
         (111.1, 'over the top'),
     )
     def test_get_rating(self, score, expected):
-        survey = self._create_survey()
-        actual = survey.get_rating_text(score)
+        actual = self.survey.get_rating_text(score)
         self.assertEqual(actual, expected)
-
-    def _create_survey(self):
-        survey = Survey('Test')
-
-        survey.add_rating_level(0, 'worst')
-        survey.add_rating_level(30, 'oh-oh')
-        survey.add_rating_level(60, 'OK-ish')
-        survey.add_rating_level(90, 'great')
-        survey.add_rating_level(100, 'over the top')
-
-        return survey

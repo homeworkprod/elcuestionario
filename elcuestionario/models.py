@@ -19,7 +19,7 @@ class Survey(object):
     def __init__(self, title):
         self.title = title
         self._questions = {}
-        self.rating_levels = {}
+        self.rating_levels = []
 
     def __str__(self):
         return '<%s, %d questions, %d rating levels>' \
@@ -50,8 +50,8 @@ class Survey(object):
         """Return the number of questions that have not been answered."""
         return len(self.get_questions()) - self.total_questions_answered
 
-    def add_rating_level(self, min_score, text):
-        self.rating_levels[min_score] = text
+    def add_rating_level(self, rating_level):
+        self.rating_levels.append(rating_level)
 
     def calculate_score(self):
         """Calculate the score depending on the given answers."""
@@ -62,13 +62,16 @@ class Survey(object):
 
     def get_rating_text(self, score):
         """Return the rating text for the given score."""
-        min_scores = sorted(self.rating_levels.keys())
+        minimum_scores_to_texts = dict((rl.minimum_score, rl.text)
+            for rl in self.rating_levels)
+
+        minimum_scores = sorted(minimum_scores_to_texts.keys())
 
         # Don't include the lowest value in the thresholds.
-        thresholds = min_scores[1:]
+        thresholds = minimum_scores[1:]
         index = bisect_right(thresholds, score)
 
-        ratings = list(map(self.rating_levels.get, min_scores))
+        ratings = list(map(minimum_scores_to_texts.get, minimum_scores))
         return ratings[index]
 
     def get_result(self):
@@ -77,6 +80,8 @@ class Survey(object):
         text = self.get_rating_text(score)
         return Result(score, text)
 
+
+RatingLevel = namedtuple('RatingLevel', 'minimum_score text')
 
 Result = namedtuple('Result', 'score text')
 

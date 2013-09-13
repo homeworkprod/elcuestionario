@@ -10,7 +10,7 @@
 
 import xml.etree.ElementTree as ET
 
-from .models import Answer, Question, Survey
+from .models import Answer, Question, RatingLevel, Survey
 
 
 def load_survey(filename):
@@ -24,8 +24,8 @@ def load_survey(filename):
     for question in _get_questions(tree):
         survey.add_question(question)
 
-    for min_score, text in _get_rating_levels(tree):
-        survey.add_rating_level(min_score, text)
+    for rating_level in _get_rating_levels(tree):
+        survey.add_rating_level(rating_level)
 
     return survey
 
@@ -52,5 +52,6 @@ def _get_answer(element):
 
 def _get_rating_levels(tree):
     for element in tree.getiterator('rating'):
-        min_score = int(element.get('minscore'))
-        yield min_score, element.text
+        minimum_score = int(element.get('minscore'))
+        text = element.text
+        yield RatingLevel(minimum_score, text)
