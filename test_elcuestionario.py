@@ -153,7 +153,7 @@ class RatingTestCase(TestCase):
     )
     def test_get_rating(self, score, expected):
         survey = self._create_survey()
-        actual = survey.get_rating(score)
+        actual = survey.get_rating_text(score)
         self.assertEqual(actual, expected)
 
     def _create_survey(self):

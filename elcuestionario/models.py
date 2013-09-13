@@ -60,7 +60,7 @@ class Survey(object):
             for question in self.get_questions())
         return float(score) / len(self.get_questions()) * 100
 
-    def get_rating(self, score):
+    def get_rating_text(self, score):
         """Return the rating text for the given score."""
         min_scores = sorted(self.rating_levels.keys())
 
@@ -74,11 +74,11 @@ class Survey(object):
     def get_result(self):
         """Return the evaluation result."""
         score = self.calculate_score()
-        rating = self.get_rating(score)
-        return Result(score, rating)
+        text = self.get_rating_text(score)
+        return Result(score, text)
 
 
-Result = namedtuple('Result', 'score rating')
+Result = namedtuple('Result', 'score text')
 
 
 class Question(object):

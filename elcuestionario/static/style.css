@@ -111,7 +111,7 @@ label:hover {
 }
 
 section.result .score,
-section.result .rating {
+section.result .text {
   padding: 0;
   text-align: center;
 }
@@ -120,7 +120,7 @@ section.result .score {
   font-weight: bold;
   margin: 20px 0 10px 0;
 }
-section.result .rating {
+section.result .text {
   font-style: italic;
   margin: 10px 0 20px 0;
 }
