@@ -53,12 +53,23 @@ class Survey(object):
     def add_rating_level(self, rating_level):
         self.rating_levels.append(rating_level)
 
-    def calculate_score(self):
+    def get_result(self):
+        evaluator = Evaluator(self.rating_levels)
+        return evaluator.get_result(self)
+
+
+class Evaluator(object):
+
+    def __init__(self, rating_levels):
+        self.rating_levels = rating_levels
+
+    def calculate_score(self, survey):
         """Calculate the score depending on the given answers."""
-        assert self.all_questions_answered
+        assert survey.all_questions_answered
+        questions = survey.get_questions()
         score = sum(question.selected_answer().weighting
-            for question in self.get_questions())
-        return float(score) / len(self.get_questions()) * 100
+            for question in questions)
+        return float(score) / len(questions) * 100
 
     def get_rating_text(self, score):
         """Return the rating text for the given score."""
@@ -74,9 +85,9 @@ class Survey(object):
         ratings = list(map(minimum_scores_to_texts.get, minimum_scores))
         return ratings[index]
 
-    def get_result(self):
+    def get_result(self, survey):
         """Return the evaluation result."""
-        score = self.calculate_score()
+        score = self.calculate_score(survey)
         text = self.get_rating_text(score)
         return Result(score, text)
 

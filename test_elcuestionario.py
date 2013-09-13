@@ -41,7 +41,7 @@ from unittest import TestCase
 from nose2.tools import params
 
 from elcuestionario.loader import load_survey
-from elcuestionario.models import Answer, Question, RatingLevel, Survey
+from elcuestionario.models import Answer, Evaluator, Question, RatingLevel, Survey
 
 
 class XmlLoaderTestCase(TestCase):
@@ -138,15 +138,16 @@ class QuestionTestCase(TestCase):
 class RatingTestCase(TestCase):
 
     def setUp(self):
-        self.survey = Survey('Test')
-        for minimum_score, text in [
-            (0, 'worst'),
-            (30, 'oh-oh'),
-            (60, 'OK-ish'),
-            (90, 'great'),
-            (100, 'over the top'),
-        ]:
-            self.survey.add_rating_level(RatingLevel(minimum_score, text))
+        rating_levels = [RatingLevel(minimum_score, text)
+            for minimum_score, text in [
+                (0, 'worst'),
+                (30, 'oh-oh'),
+                (60, 'OK-ish'),
+                (90, 'great'),
+                (100, 'over the top'),
+            ]]
+
+        self.evaluator = Evaluator(rating_levels)
 
     @params(
         ( -2.3, 'worst'),
@@ -163,5 +164,5 @@ class RatingTestCase(TestCase):
         (111.1, 'over the top'),
     )
     def test_get_rating(self, score, expected):
-        actual = self.survey.get_rating_text(score)
+        actual = self.evaluator.get_rating_text(score)
         self.assertEqual(actual, expected)
