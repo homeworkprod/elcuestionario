@@ -37,13 +37,13 @@ def _load_survey(data):
     return survey
 
 def _get_title(tree):
-    return unicode(tree.find('title').text)
+    return tree.find('title').text
 
 def _get_questions(tree):
     return map(_get_question, tree.getiterator('question'))
 
 def _get_question(element):
-    caption = unicode(element.get('caption'))
+    caption = element.get('caption')
     question = Question(caption)
     for answer in _get_answers(element):
         question.add_answer(answer)
@@ -53,7 +53,7 @@ def _get_answers(element):
     return map(_get_answer, element.getiterator('answer'))
 
 def _get_answer(element):
-    caption = unicode(element.get('caption'))
+    caption = element.get('caption')
     weighting = float(element.get('weighting'))
     return Answer(caption, weighting)
 
