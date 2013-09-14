@@ -35,24 +35,39 @@ module name!):
 .. _nose2: https://github.com/nose-devs/nose2
 """
 
-from io import StringIO
 from unittest import TestCase
 
 from nose2.tools import params
 
-from elcuestionario.loader import load_survey
+from elcuestionario.loader import _load_survey
 from elcuestionario.models import Answer, Evaluator, Question, RatingLevel, Survey
 
 
-class XmlLoaderTestCase(TestCase):
+class AbstractLoaderTestCase(TestCase):
 
     def setUp(self):
-        f = self._create_file()
-        self.survey = load_survey(f)
+        data = self._get_data_string()
+        survey = _load_survey(data)
 
-    def _create_file(self):
-        return StringIO(
-u'''<?xml version="1.0" encoding="UTF-8"?>
+        self.questions = survey.get_questions()
+        self.rating_levels = survey.rating_levels
+
+    def assertAnswersEqual(self, question_index, expected):
+        answers = self._get_answers(question_index)
+        captions = self._get_answer_captions(answers)
+        self.assertEqual(captions, expected)
+
+    def _get_answers(self, question_index):
+        return self.questions[question_index].get_answers()
+
+    def _get_answer_captions(self, answers):
+        return set(answer.caption for answer in answers)
+
+
+class LoaderTestCase(AbstractLoaderTestCase):
+
+    def _get_data_string(self):
+        return u'''<?xml version="1.0" encoding="UTF-8"?>
 <survey>
     <title>How strange are you?</title>
     <questions>
@@ -75,32 +90,21 @@ u'''<?xml version="1.0" encoding="UTF-8"?>
         <rating minscore="80">good</rating>
     </ratings>
 </survey>
-''')
+'''
 
     def test_questions(self):
-        questions = self.survey.get_questions()
-        self.assertEqual(len(questions), 2)
-        self.assertEqual(questions[0].caption, 'question 1')
-        self.assertEqual(questions[1].caption, 'question 2')
+        self.assertEqual(len(self.questions), 2)
+        self.assertEqual(self.questions[0].caption, 'question 1')
+        self.assertEqual(self.questions[1].caption, 'question 2')
 
     def test_answers(self):
-        questions = self.survey.get_questions()
-
-        question1_answers = questions[0].get_answers()
-        self.assertEqual(len(question1_answers), 3)
-        question1_answer_captions = set(
-            answer.caption for answer in question1_answers)
-        self.assertEqual(question1_answer_captions, set([
+        self.assertAnswersEqual(0, set([
             'answer 1.1',
             'answer 1.2',
             'answer 1.3',
         ]))
 
-        question2_answers = questions[1].get_answers()
-        self.assertEqual(len(question2_answers), 5)
-        question2_answer_captions = set(
-            answer.caption for answer in question2_answers)
-        self.assertEqual(question2_answer_captions, set([
+        self.assertAnswersEqual(1, set([
             'answer 2.1',
             'answer 2.2',
             'answer 2.3',
@@ -109,10 +113,45 @@ u'''<?xml version="1.0" encoding="UTF-8"?>
         ]))
 
     def test_rating_levels(self):
-        self.assertEqual(self.survey.rating_levels, [
+        self.assertEqual(self.rating_levels, [
             RatingLevel( 0, 'bad'),
             RatingLevel(50, 'okay'),
             RatingLevel(80, 'good'),
+        ])
+
+
+class UnicodeLoaderTestCase(AbstractLoaderTestCase):
+
+    def _get_data_string(self):
+        return u'''<?xml version="1.0" encoding="UTF-8"?>
+<survey>
+    <title>Frägebögen</title>
+    <questions>
+        <question caption="Farbtöne">
+            <answer caption="weiß" weighting="0.0"/>
+            <answer caption="grün" weighting="0.0"/>
+            <answer caption="rötlich" weighting="0.0"/>
+        </question>
+    </questions>
+    <ratings>
+        <rating minscore="0">großartig</rating>
+    </ratings>
+</survey>
+'''
+
+    def test_questions(self):
+        self.assertEqual(self.questions[0].caption, u'Farbtöne')
+
+    def test_answers(self):
+        self.assertAnswersEqual(0, set([
+            u'weiß',
+            u'grün',
+            u'rötlich',
+        ]))
+
+    def test_rating_levels(self):
+        self.assertEqual(self.rating_levels, [
+            RatingLevel( 0, u'großartig'),
         ])
 
 
