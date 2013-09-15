@@ -51,6 +51,76 @@ defined. Just copy the file, adjust its content and update the value of
 the ``SURVEY_FILENAME`` variable in the main script accordingly.
 
 
+Title
++++++
+
+A questionnaire has a title. Set it as text value of the ``title`` element:
+
+.. code:: xml
+
+    <title>A Bunch of Questions</title>
+
+
+Questions and Answers
++++++++++++++++++++++
+
+Each question should have multiple answers.
+
+Each answer must have weighting, defined as a float number between
+``0.0`` and ``1.0``.
+
+Exception: I sometimes use a value of ``1.1`` for "bonus answers" which
+allows for an overall score of more than 100%).
+
+To calculate the overall score, the weighting of each question's answer
+will be used.
+
+Example:
+
+.. code:: xml
+
+    <questions>
+        <question caption="What's your favorite color?">
+            <answer caption="blue" weighting="0.7"/>
+            <answer caption="green" weighting="0.5"/>
+            <answer caption="yellow" weighting="0.1"/>
+            <answer caption="red" weighting="0.25"/>
+            <answer caption="none" weighting="1.0"/>
+            <answer caption="checkered" weighting="1.1"/>
+        </question>
+    </questions>
+
+
+Ratings
++++++++
+
+Ratings can be defined to add a text to the result based on the
+achieved overall score. Each is bound to a score range.
+
+The `minscore` value sets the threshold for each rating. The adequate
+rating will be chosen by finding the one with the highest `minscore`
+value that is lower than the score. For example, with a score of 53 %
+and ratings with `minscore` values of `[10, 20, ..., 90, 100]`, the
+selected rating will be the one with a `minscore` value of ``50`` since
+it is lower than ``53`` and the next higher `minscore` value, ``60``,
+is not lower than the score of ``53``.
+
+Therefore, a rating's `minscore` value defines the minimum score one
+has to gain to be given that rating, as long as no other rating is more
+suitable considering its `minscore` minimum.
+
+Example:
+
+.. code:: xml
+
+    <ratings>
+        <rating minscore="0">OMG, please waste time with something else!</rating>
+        <rating minscore="40">Not bad.</rating>
+        <rating minscore="70">Looking good.</rating>
+        <rating minscore="90">Yeah, great result!</rating>
+    </ratings>
+
+
 Usage
 -----
 
