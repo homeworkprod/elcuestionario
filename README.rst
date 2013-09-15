@@ -18,7 +18,7 @@ comment.
 Requirements
 ------------
 
-- Python_ 2.6 or 2.7
+- Python_ 2.6+ or 3.3+
 - Flask_ (tested with 0.10.1)
 
 

@@ -18,7 +18,7 @@ class Survey(object):
 
     def __init__(self, title):
         self.title = title
-        self._questions = {}
+        self._questions = []
         self.rating_levels = []
 
     def __str__(self):
@@ -27,14 +27,16 @@ class Survey(object):
                 len(self.rating_levels))
 
     def add_question(self, question):
-        self._questions[question.hash] = question
+        self._questions.append(question)
 
     def get_question(self, hash):
         """Return the question for the given hash."""
-        return self._questions[hash]
+        for question in self._questions:
+            if question.hash == hash:
+                return question
 
     def get_questions(self):
-        return self._questions.values()
+        return self._questions
 
     @property
     def all_questions_answered(self):
