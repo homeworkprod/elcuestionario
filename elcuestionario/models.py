@@ -140,19 +140,11 @@ class Question(object):
         return answer.hash == self._selected_answer_hash
 
 
-class Answer(object):
-    """An answer to a question."""
+class Answer(namedtuple('Answer', 'text weighting hash')):
 
-    def __init__(self, text, weighting):
-        self.text = text
-        self.hash = _create_hash(self.text.encode('latin-1'))
-        self.weighting = weighting
-
-    def __str__(self):
-        return '<%s, hash=%s, text="%s", weighting=%f>' \
-            % (self.__class__.__name__, self.hash,
-                self.text.encode('latin-1'),
-                self.weighting)
+    def __new__(cls, text, weighting):
+        hash = _create_hash(text.encode('latin-1'))
+        return super(Answer, cls).__new__(cls, text, weighting, hash)
 
 
 def _create_hash(value, length=8):
