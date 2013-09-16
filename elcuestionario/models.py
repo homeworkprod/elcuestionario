@@ -102,15 +102,15 @@ Result = namedtuple('Result', 'score text')
 class Question(object):
     """A question with multiple answers."""
 
-    def __init__(self, caption):
-        self.caption = caption
-        self.hash = _create_hash(self.caption.encode('latin-1'))
+    def __init__(self, text):
+        self.text = text
+        self.hash = _create_hash(self.text.encode('latin-1'))
         self.answers = {}
 
     def __str__(self):
-        return '<%s, hash=%s, caption="%s", %d answers, answered=%s>' \
+        return '<%s, hash=%s, text="%s", %d answers, answered=%s>' \
             % (self.__class__.__name__, self.hash,
-                self.caption.encode('latin-1'),
+                self.text.encode('latin-1'),
                 len(self.answers), self.answered)
 
     def add_answer(self, answer):
@@ -138,16 +138,16 @@ class Question(object):
 class Answer(object):
     """An answer to a question."""
 
-    def __init__(self, caption, weighting):
-        self.caption = caption
-        self.hash = _create_hash(self.caption.encode('latin-1'))
+    def __init__(self, text, weighting):
+        self.text = text
+        self.hash = _create_hash(self.text.encode('latin-1'))
         self.weighting = weighting
         self.selected = False
 
     def __str__(self):
-        return '<%s, hash=%s, caption="%s", weighting=%f, selected=%s>' \
+        return '<%s, hash=%s, text="%s", weighting=%f, selected=%s>' \
             % (self.__class__.__name__, self.hash,
-                self.caption.encode('latin-1'),
+                self.text.encode('latin-1'),
                 self.weighting, self.selected)
 
 

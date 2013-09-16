@@ -23,13 +23,13 @@
         {% for question in survey.get_questions() %}
         <section class="question">
           <fieldset>
-            <h2>{{ loop.index }}. {{ question.caption }}</h2>
+            <h2>{{ loop.index }}. {{ question.text }}</h2>
             {%- if submitted and not question.answered %}
             <p class="notification">Please answer this question.</p>
             {%- endif %}
             <ul>
             {%- for answer in question.get_answers()|shuffled %}
-              <li><label><input type="radio" name="q_{{ question.hash }}" value="a_{{ answer.hash }}"{% if answer.selected %} checked="checked"{% endif %}/>{{ answer.caption }}</label></li>
+              <li><label><input type="radio" name="q_{{ question.hash }}" value="a_{{ answer.hash }}"{% if answer.selected %} checked="checked"{% endif %}/>{{ answer.text }}</label></li>
             {%- endfor %}
             </ul>
           </fieldset>

@@ -54,14 +54,14 @@ class AbstractLoaderTestCase(TestCase):
 
     def assertAnswersEqual(self, question_index, expected):
         answers = self._get_answers(question_index)
-        captions = self._get_answer_captions(answers)
-        self.assertEqual(captions, expected)
+        texts = self._get_answer_texts(answers)
+        self.assertEqual(texts, expected)
 
     def _get_answers(self, question_index):
         return self.questions[question_index].get_answers()
 
-    def _get_answer_captions(self, answers):
-        return set(answer.caption for answer in answers)
+    def _get_answer_texts(self, answers):
+        return set(answer.text for answer in answers)
 
 
 class LoaderTestCase(AbstractLoaderTestCase):
@@ -71,17 +71,17 @@ class LoaderTestCase(AbstractLoaderTestCase):
 <survey>
     <title>How strange are you?</title>
     <questions>
-        <question caption="question 1">
-            <answer caption="answer 1.1" weighting="0.0"/>
-            <answer caption="answer 1.2" weighting="0.5"/>
-            <answer caption="answer 1.3" weighting="1.0"/>
+        <question text="question 1">
+            <answer text="answer 1.1" weighting="0.0"/>
+            <answer text="answer 1.2" weighting="0.5"/>
+            <answer text="answer 1.3" weighting="1.0"/>
         </question>
-        <question caption="question 2">
-            <answer caption="answer 2.1" weighting="0.0"/>
-            <answer caption="answer 2.2" weighting="0.25"/>
-            <answer caption="answer 2.3" weighting="0.5"/>
-            <answer caption="answer 2.4" weighting="0.75"/>
-            <answer caption="answer 2.5" weighting="1.0"/>
+        <question text="question 2">
+            <answer text="answer 2.1" weighting="0.0"/>
+            <answer text="answer 2.2" weighting="0.25"/>
+            <answer text="answer 2.3" weighting="0.5"/>
+            <answer text="answer 2.4" weighting="0.75"/>
+            <answer text="answer 2.5" weighting="1.0"/>
         </question>
     </questions>
     <ratings>
@@ -94,8 +94,8 @@ class LoaderTestCase(AbstractLoaderTestCase):
 
     def test_questions(self):
         self.assertEqual(len(self.questions), 2)
-        self.assertEqual(self.questions[0].caption, 'question 1')
-        self.assertEqual(self.questions[1].caption, 'question 2')
+        self.assertEqual(self.questions[0].text, 'question 1')
+        self.assertEqual(self.questions[1].text, 'question 2')
 
     def test_answers(self):
         self.assertAnswersEqual(0, set([
@@ -127,10 +127,10 @@ class UnicodeLoaderTestCase(AbstractLoaderTestCase):
 <survey>
     <title>Frägebögen</title>
     <questions>
-        <question caption="Farbtöne">
-            <answer caption="weiß" weighting="0.0"/>
-            <answer caption="grün" weighting="0.0"/>
-            <answer caption="rötlich" weighting="0.0"/>
+        <question text="Farbtöne">
+            <answer text="weiß" weighting="0.0"/>
+            <answer text="grün" weighting="0.0"/>
+            <answer text="rötlich" weighting="0.0"/>
         </question>
     </questions>
     <ratings>
@@ -140,7 +140,7 @@ class UnicodeLoaderTestCase(AbstractLoaderTestCase):
 '''
 
     def test_questions(self):
-        self.assertEqual(self.questions[0].caption, u'Farbtöne')
+        self.assertEqual(self.questions[0].text, u'Farbtöne')
 
     def test_answers(self):
         self.assertAnswersEqual(0, set([

@@ -19,34 +19,34 @@ This is an example survey data file. It has to be valid XML.
     answer will be used.
     -->
     <questions>
-        <question caption="What's your favorite color?">
-            <answer caption="blue" weighting="0.0"/>
-            <answer caption="green" weighting="0.0"/>
-            <answer caption="yellow" weighting="0.0"/>
-            <answer caption="red" weighting="0.25"/>
-            <answer caption="white" weighting="0.5"/>
-            <answer caption="black" weighting="0.75"/>
-            <answer caption="none" weighting="1.0"/>
-            <answer caption="checkered" weighting="1.1"/>
+        <question text="What's your favorite color?">
+            <answer text="blue" weighting="0.0"/>
+            <answer text="green" weighting="0.0"/>
+            <answer text="yellow" weighting="0.0"/>
+            <answer text="red" weighting="0.25"/>
+            <answer text="white" weighting="0.5"/>
+            <answer text="black" weighting="0.75"/>
+            <answer text="none" weighting="1.0"/>
+            <answer text="checkered" weighting="1.1"/>
         </question>
-        <question caption="What is your favorite OS (operating system)?">
-            <answer caption="Windows" weighting="0.0"/>
-            <answer caption="Mac OS" weighting="0.2"/>
-            <answer caption="Linux" weighting="0.4"/>
-            <answer caption="*BSD" weighting="0.6"/>
-            <answer caption="Unix" weighting="0.8"/>
-            <answer caption="another, exotic one" weighting="1.0"/>
-            <answer caption="another, super-exotic one" weighting="1.1"/>
+        <question text="What is your favorite OS (operating system)?">
+            <answer text="Windows" weighting="0.0"/>
+            <answer text="Mac OS" weighting="0.2"/>
+            <answer text="Linux" weighting="0.4"/>
+            <answer text="*BSD" weighting="0.6"/>
+            <answer text="Unix" weighting="0.8"/>
+            <answer text="another, exotic one" weighting="1.0"/>
+            <answer text="another, super-exotic one" weighting="1.1"/>
         </question>
-        <question caption="What's the name of your pet?">
-            <answer caption="I don't have a pet." weighting="0.0"/>
-            <answer caption="Lassie" weighting="0.0"/>
-            <answer caption="Fury" weighting="0.0"/>
-            <answer caption="Flipper" weighting="0.3"/>
-            <answer caption="Dumbo" weighting="0.6"/>
-            <answer caption="My computer/car/model railway/... is my pet, but I won't tell it's name!" weighting="1.0"/>
-            <answer caption="MACHINE" weighting="1.0"/>
-            <answer caption="It has no name, thus I can't call it. But I'm always happy when it passes by." weighting="1.1"/>
+        <question text="What's the name of your pet?">
+            <answer text="I don't have a pet." weighting="0.0"/>
+            <answer text="Lassie" weighting="0.0"/>
+            <answer text="Fury" weighting="0.0"/>
+            <answer text="Flipper" weighting="0.3"/>
+            <answer text="Dumbo" weighting="0.6"/>
+            <answer text="My computer/car/model railway/... is my pet, but I won't tell it's name!" weighting="1.0"/>
+            <answer text="MACHINE" weighting="1.0"/>
+            <answer text="It has no name, thus I can't call it. But I'm always happy when it passes by." weighting="1.1"/>
         </question>
     </questions>
 

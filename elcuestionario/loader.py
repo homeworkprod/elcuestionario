@@ -43,8 +43,8 @@ def _get_questions(tree):
     return map(_get_question, tree.getiterator('question'))
 
 def _get_question(element):
-    caption = element.get('caption')
-    question = Question(caption)
+    text = element.get('text')
+    question = Question(text)
     for answer in _get_answers(element):
         question.add_answer(answer)
     return question
@@ -53,9 +53,9 @@ def _get_answers(element):
     return map(_get_answer, element.getiterator('answer'))
 
 def _get_answer(element):
-    caption = element.get('caption')
+    text = element.get('text')
     weighting = float(element.get('weighting'))
-    return Answer(caption, weighting)
+    return Answer(text, weighting)
 
 def _get_rating_levels(tree):
     for element in tree.getiterator('rating'):

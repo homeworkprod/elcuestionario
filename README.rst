@@ -80,13 +80,13 @@ Example:
 .. code:: xml
 
     <questions>
-        <question caption="What's your favorite color?">
-            <answer caption="blue" weighting="0.7"/>
-            <answer caption="green" weighting="0.5"/>
-            <answer caption="yellow" weighting="0.1"/>
-            <answer caption="red" weighting="0.25"/>
-            <answer caption="none" weighting="1.0"/>
-            <answer caption="checkered" weighting="1.1"/>
+        <question title="What's your favorite color?">
+            <answer title="blue" weighting="0.7"/>
+            <answer title="green" weighting="0.5"/>
+            <answer title="yellow" weighting="0.1"/>
+            <answer title="red" weighting="0.25"/>
+            <answer title="none" weighting="1.0"/>
+            <answer title="checkered" weighting="1.1"/>
         </question>
     </questions>
 
