@@ -71,33 +71,38 @@ class AbstractLoaderTestCase(TestCase):
 class LoaderTestCase(AbstractLoaderTestCase):
 
     def _get_data_string(self):
-        return u'''<?xml version="1.0" encoding="UTF-8"?>
-<survey>
-    <title>How strange are you?</title>
-    <questions>
-        <question text="question 1">
-            <answer text="answer 1.1" weighting="0.0"/>
-            <answer text="answer 1.2" weighting="0.5"/>
-            <answer text="answer 1.3" weighting="1.0"/>
-        </question>
-        <question text="question 2">
-            <answer text="answer 2.1" weighting="0.0"/>
-            <answer text="answer 2.2" weighting="0.25"/>
-            <answer text="answer 2.3" weighting="0.5"/>
-            <answer text="answer 2.4" weighting="0.75"/>
-            <answer text="answer 2.5" weighting="1.0"/>
-        </question>
-    </questions>
-    <ratings>
-        <rating minscore="0">bad</rating>
-        <rating minscore="50">okay</rating>
-        <rating minscore="80">good</rating>
-    </ratings>
-</survey>
+        return u'''{
+    "title": "The Title",
+    "questions": [
+        {
+            "text": "question 1",
+            "answers": [
+                { "text": "answer 1.1", "weighting": 0.0 },
+                { "text": "answer 1.2", "weighting": 0.5 },
+                { "text": "answer 1.3", "weighting": 1.0 }
+            ]
+        },
+        {
+            "text": "question 2",
+            "answers": [
+                { "text": "answer 2.1", "weighting": 0.0  },
+                { "text": "answer 2.2", "weighting": 0.25 },
+                { "text": "answer 2.3", "weighting": 0.5  },
+                { "text": "answer 2.4", "weighting": 0.75 },
+                { "text": "answer 2.5", "weighting": 1.0  }
+            ]
+        }
+    ],
+    "rating_levels": [
+        { "minimum_score":  0, "text": "bad"  },
+        { "minimum_score": 50, "text": "okay" },
+        { "minimum_score": 80, "text": "good" }
+    ]
+}
 '''
 
     def test_title(self):
-        self.assertTitleEqual('How strange are you?')
+        self.assertTitleEqual('The Title')
 
     def test_questions(self):
         self.assertEqual(len(self.questions), 2)
@@ -130,20 +135,22 @@ class LoaderTestCase(AbstractLoaderTestCase):
 class UnicodeLoaderTestCase(AbstractLoaderTestCase):
 
     def _get_data_string(self):
-        return u'''<?xml version="1.0" encoding="UTF-8"?>
-<survey>
-    <title>Frägebögen</title>
-    <questions>
-        <question text="Farbtöne">
-            <answer text="weiß" weighting="0.0"/>
-            <answer text="grün" weighting="0.0"/>
-            <answer text="rötlich" weighting="0.0"/>
-        </question>
-    </questions>
-    <ratings>
-        <rating minscore="0">großartig</rating>
-    </ratings>
-</survey>
+        return u'''{
+    "title": "Frägebögen",
+    "questions": [
+        {
+            "text": "Farbtöne",
+            "answers": [
+                { "text": "weiß",    "weighting": 1.0 },
+                { "text": "grün",    "weighting": 1.0 },
+                { "text": "rötlich", "weighting": 1.0 }
+            ]
+        }
+    ],
+    "rating_levels": [
+        { "minimum_score": 0, "text": "großartig" }
+    ]
+}
 '''
 
     def test_title(self):

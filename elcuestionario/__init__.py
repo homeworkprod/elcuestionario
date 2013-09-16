@@ -16,7 +16,7 @@ from .loader import load_survey
 
 
 # configuration
-SURVEY_FILENAME = 'elcuestionario/data/example.xml'
+SURVEY_FILENAME = 'elcuestionario/data/example.json'
 
 
 app = Flask(__name__)

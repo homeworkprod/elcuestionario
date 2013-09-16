@@ -1,0 +1,52 @@
+{
+    "title": "How strange are you?",
+    "questions": [
+        {
+            "text": "What's your favorite color?",
+            "answers": [
+                { "text": "blue",      "weighting": 0.0  },
+                { "text": "green",     "weighting": 0.0  },
+                { "text": "yellow",    "weighting": 0.0  },
+                { "text": "red",       "weighting": 0.25 },
+                { "text": "white",     "weighting": 0.5  },
+                { "text": "black",     "weighting": 0.75 },
+                { "text": "none",      "weighting": 1.0  },
+                { "text": "checkered", "weighting": 1.1  }
+            ]
+        },
+        {
+            "text": "What is your favorite OS (operating system)?",
+            "answers": [
+                { "text": "Windows",                   "weighting": 0.0 },
+                { "text": "Mac OS",                    "weighting": 0.2 },
+                { "text": "Linux",                     "weighting": 0.4 },
+                { "text": "*BSD",                      "weighting": 0.6 },
+                { "text": "Unix",                      "weighting": 0.8 },
+                { "text": "another, exotic one",       "weighting": 1.0 },
+                { "text": "another, super-exotic one", "weighting": 1.1 }
+            ]
+        },
+        {
+            "text": "What's the name of your pet?",
+            "answers": [
+                { "text": "I don't have a pet.",                                                           "weighting": 0.0 },
+                { "text": "Lassie",                                                                        "weighting": 0.0 },
+                { "text": "Fury",                                                                          "weighting": 0.0 },
+                { "text": "Flipper",                                                                       "weighting": 0.3 },
+                { "text": "Dumbo",                                                                         "weighting": 0.6 },
+                { "text": "My computer/car/model railway/... is my pet, but I won't tell it's name!",      "weighting": 1.0 },
+                { "text": "MACHINE",                                                                       "weighting": 1.0 },
+                { "text": "It has no name, thus I can't call it. But I'm always happy when it passes by.", "weighting": 1.1 }
+            ]
+        }
+
+    ],
+    "rating_levels": [
+        { "minimum_score":   0, "text": "OMG, please waste time with something else!" },
+        { "minimum_score":  10, "text": "Well, you've got potential. Somewhere. I think. Maybe. Or not." },
+        { "minimum_score":  40, "text": "Not bad." },
+        { "minimum_score":  70, "text": "Looking good." },
+        { "minimum_score":  90, "text": "Yeah, great result." },
+        { "minimum_score": 100, "text": "You better go see a doctor! ;-)" }
+    ]
+}
