@@ -49,8 +49,12 @@ class AbstractLoaderTestCase(TestCase):
         data = self._get_data_string()
         survey = _load_survey(data)
 
+        self.title = survey.title
         self.questions = survey.get_questions()
         self.rating_levels = survey.rating_levels
+
+    def assertTitleEqual(self, expected):
+        self.assertEqual(self.title, expected)
 
     def assertAnswersEqual(self, question_index, expected):
         answers = self._get_answers(question_index)
@@ -91,6 +95,9 @@ class LoaderTestCase(AbstractLoaderTestCase):
     </ratings>
 </survey>
 '''
+
+    def test_title(self):
+        self.assertTitleEqual('How strange are you?')
 
     def test_questions(self):
         self.assertEqual(len(self.questions), 2)
@@ -138,6 +145,9 @@ class UnicodeLoaderTestCase(AbstractLoaderTestCase):
     </ratings>
 </survey>
 '''
+
+    def test_title(self):
+        self.assertTitleEqual(u'Frägebögen')
 
     def test_questions(self):
         self.assertEqual(self.questions[0].text, u'Farbtöne')
