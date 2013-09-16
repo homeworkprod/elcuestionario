@@ -106,6 +106,7 @@ class Question(object):
         self.text = text
         self.hash = _create_hash(self.text.encode('latin-1'))
         self.answers = {}
+        self._selected_answer_hash = None
 
     def __str__(self):
         return '<%s, hash=%s, text="%s", %d answers, answered=%s>' \
@@ -124,15 +125,19 @@ class Question(object):
 
     def select_answer(self, answer):
         """Answer the question with the given answer."""
-        self.answers[answer.hash].selected = True
+        self._selected_answer_hash = answer.hash
 
     def selected_answer(self):
         """Return the chosen answer."""
-        return next(answer for answer in self.answers.values() if answer.selected)
+        return next(answer for answer in self.answers.values()
+            if answer.hash == self._selected_answer_hash)
 
     @property
     def answered(self):
-        return any(answer.selected for answer in self.answers.values())
+        return self._selected_answer_hash is not None
+
+    def is_answer_selected(self, answer):
+        return answer.hash == self._selected_answer_hash
 
 
 class Answer(object):
@@ -142,13 +147,12 @@ class Answer(object):
         self.text = text
         self.hash = _create_hash(self.text.encode('latin-1'))
         self.weighting = weighting
-        self.selected = False
 
     def __str__(self):
-        return '<%s, hash=%s, text="%s", weighting=%f, selected=%s>' \
+        return '<%s, hash=%s, text="%s", weighting=%f>' \
             % (self.__class__.__name__, self.hash,
                 self.text.encode('latin-1'),
-                self.weighting, self.selected)
+                self.weighting)
 
 
 def _create_hash(value, length=8):
