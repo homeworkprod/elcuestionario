@@ -16,7 +16,7 @@ from .loader import load_survey
 
 
 # configuration
-SURVEY_FILENAME = 'elcuestionario/data/example.json'
+SURVEY_FILENAME = 'data/example.json'
 
 
 app = Flask(__name__)
@@ -61,7 +61,8 @@ def evaluate():
         return render_template('questionnaire.html', **output)
 
 def _load_survey():
-    return load_survey(SURVEY_FILENAME)
+    with app.open_resource(SURVEY_FILENAME) as f:
+        return load_survey(f)
 
 def _select_answer_for_questions(survey, request):
     """Examine which questions were answered and which answer was selected."""

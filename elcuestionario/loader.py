@@ -8,21 +8,14 @@
 # |_|_|___|_|_|_|___|_____|___|_| |_|_\
 #   http://homework.nwsnet.de/
 
-import codecs
 import json
 
 from .models import Answer, Question, RatingLevel, Survey
 
 
-def load_survey(filename):
-    """Load a survey from the specified file."""
-    with codecs.open(filename, encoding='utf-8') as f:
-        data = f.read()
-    return _load_survey(data)
-
-def _load_survey(data):
-    """Load a survey from the data string."""
-    data = json.loads(data)
+def load_survey(f):
+    """Load a survey from the given file-like object."""
+    data = json.load(f)
 
     title = _get_title(data)
 

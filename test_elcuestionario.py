@@ -35,11 +35,12 @@ module name!):
 .. _nose2: https://github.com/nose-devs/nose2
 """
 
+from io import StringIO
 from unittest import TestCase
 
 from nose2.tools import params
 
-from elcuestionario.loader import _load_survey
+from elcuestionario.loader import load_survey
 from elcuestionario.models import Answer, Evaluator, Question, RatingLevel, Survey
 
 
@@ -47,7 +48,8 @@ class AbstractLoaderTestCase(TestCase):
 
     def setUp(self):
         data = self._get_data_string()
-        survey = _load_survey(data)
+        f = StringIO(data)
+        survey = load_survey(f)
 
         self.title = survey.title
         self.questions = survey.get_questions()
