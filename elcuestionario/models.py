@@ -47,10 +47,13 @@ class Questionnaire(object):
     def get_answers_for_question(self, question):
         return question.answers.values()
 
+    def get_answer_by_hash(self, question, answer_hash):
+        return question.answers[answer_hash]
+
     def select_answer_to_question(self, question_hash, answer_hash):
         """Answer the referenced question with the referenced answer."""
         question = self.get_question(question_hash)
-        answer = question.get_answer(answer_hash)
+        answer = self.get_answer_by_hash(question, answer_hash)
         question.select_answer(answer)
 
     def add_rating_level(self, rating_level):
@@ -71,14 +74,16 @@ class Evaluator(object):
         assert user_input.all_questions_answered
 
         questions = questionnaire.get_questions()
-        weightings = self._collect_selected_answers_weightings(questions, user_input)
+        weightings = self._collect_selected_answers_weightings(questionnaire,
+            questions, user_input)
         score = sum(weightings)
         return float(score) / len(questions) * 100
 
-    def _collect_selected_answers_weightings(self, questions, user_input):
+    def _collect_selected_answers_weightings(self, questionnaire, questions,
+            user_input):
         for question in questions:
             answer_hash = user_input.get_answer_hash(question.hash)
-            answer = question.get_answer(answer_hash)
+            answer = questionnaire.get_answer_by_hash(question, answer_hash)
             yield answer.weighting
 
     def get_rating_text(self, score):
@@ -120,9 +125,6 @@ class Question(object):
             % (self.__class__.__name__, self.hash,
                 self.text.encode('latin-1'),
                 len(self.answers))
-
-    def get_answer(self, hash):
-        return self.answers[hash]
 
 
 class Answer(namedtuple('Answer', 'text weighting hash')):
