@@ -9,7 +9,7 @@
 #   http://homework.nwsnet.de/
 
 from bisect import bisect_right
-from collections import namedtuple
+from collections import defaultdict, namedtuple
 import hashlib
 
 
@@ -19,6 +19,7 @@ class Questionnaire(object):
     def __init__(self, title):
         self.title = title
         self._questions = []
+        self._question_answers = defaultdict(dict)
         self.rating_levels = []
 
     def __str__(self):
@@ -42,13 +43,13 @@ class Questionnaire(object):
         return (question.hash for question in self.get_questions())
 
     def add_answer_for_question(self, question, answer):
-        question.answers[answer.hash] = answer
+        self._question_answers[question.hash][answer.hash] = answer
 
     def get_answers_for_question(self, question):
-        return question.answers.values()
+        return self._question_answers[question.hash].values()
 
     def get_answer_by_hash(self, question, answer_hash):
-        return question.answers[answer_hash]
+        return self._question_answers[question.hash][answer_hash]
 
     def select_answer_to_question(self, question_hash, answer_hash):
         """Answer the referenced question with the referenced answer."""
@@ -118,13 +119,11 @@ class Question(object):
     def __init__(self, text):
         self.text = text
         self.hash = _create_hash(self.text.encode('latin-1'))
-        self.answers = {}
 
     def __str__(self):
-        return '<%s, hash=%s, text="%s", %d answers>' \
+        return '<%s, hash=%s, text="%s">' \
             % (self.__class__.__name__, self.hash,
-                self.text.encode('latin-1'),
-                len(self.answers))
+                self.text.encode('latin-1'))
 
 
 class Answer(namedtuple('Answer', 'text weighting hash')):
