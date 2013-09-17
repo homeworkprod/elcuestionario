@@ -10,7 +10,8 @@
 
 import json
 
-from .models import Answer, Question, Questionnaire, RatingLevel
+from .evaluation import RatingLevel
+from .models import Answer, Question, Questionnaire
 
 
 def load_questionnaire(f):

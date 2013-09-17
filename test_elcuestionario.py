@@ -40,8 +40,9 @@ from unittest import TestCase
 
 from nose2.tools import params
 
+from elcuestionario.evaluation import Evaluator, RatingLevel
 from elcuestionario.loader import load_questionnaire
-from elcuestionario.models import Evaluator, RatingLevel, UserInput
+from elcuestionario.models import UserInput
 
 
 class AbstractTestCase(TestCase):
