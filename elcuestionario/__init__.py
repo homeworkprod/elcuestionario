@@ -31,12 +31,9 @@ def shuffled(iterable):
 def view():
     questionnaire = _load_questionnaire()
 
-    user_input = UserInput(questionnaire.get_question_hashes())
-
     output = {
         'questionnaire': questionnaire,
         'submitted': False,
-        'user_input': user_input,
     }
 
     return render_template('questionnaire.html', **output)
