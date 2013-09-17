@@ -22,11 +22,6 @@ class Questionnaire(object):
         self._question_answers = defaultdict(dict)
         self.rating_levels = []
 
-    def __str__(self):
-        return '<%s, %d questions, %d rating levels>' \
-            % (self.__class__.__name__, len(self.get_questions()),
-                len(self.rating_levels))
-
     def add_question(self, question):
         self._questions.append(question)
 
