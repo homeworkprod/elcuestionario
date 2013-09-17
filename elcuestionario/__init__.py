@@ -12,11 +12,11 @@ from random import shuffle
 
 from flask import Flask, render_template, request
 
-from .loader import load_survey
+from .loader import load_questionnaire
 
 
 # configuration
-SURVEY_FILENAME = 'data/example.json'
+QUESTIONNAIRE_FILENAME = 'data/example.json'
 
 
 app = Flask(__name__)
@@ -32,10 +32,10 @@ def shuffled(iterable):
 
 @app.route('/', methods=['GET'])
 def view():
-    survey = _load_survey()
+    questionnaire = _load_questionnaire()
 
     output = {
-        'survey': survey,
+        'questionnaire': questionnaire,
         'submitted': False,
     }
 
@@ -43,39 +43,39 @@ def view():
 
 @app.route('/', methods=['POST'])
 def evaluate():
-    survey = _load_survey()
+    questionnaire = _load_questionnaire()
     username = request.form['username']
 
     output = {
-        'survey': survey,
+        'questionnaire': questionnaire,
         'username': username,
     }
 
-    _select_answer_for_questions(survey, request)
+    _select_answer_for_questions(questionnaire, request)
 
-    if survey.all_questions_answered:
-        output['result'] = survey.get_result()
+    if questionnaire.all_questions_answered:
+        output['result'] = questionnaire.get_result()
         return render_template('result.html', **output)
     else:
         output['submitted'] = True
         return render_template('questionnaire.html', **output)
 
-def _load_survey():
-    with app.open_resource(SURVEY_FILENAME) as f:
-        return load_survey(f)
+def _load_questionnaire():
+    with app.open_resource(QUESTIONNAIRE_FILENAME) as f:
+        return load_questionnaire(f)
 
-def _select_answer_for_questions(survey, request):
+def _select_answer_for_questions(questionnaire, request):
     """Examine which questions were answered and which answer was selected."""
     for name, value in request.form.items():
         if name.startswith('q_') and value.startswith('a_'):
             question_hash = name[2:]
             answer_hash = value[2:]
-            _select_answer_for_question(survey, question_hash, answer_hash)
+            _select_answer_for_question(questionnaire, question_hash, answer_hash)
 
-def _select_answer_for_question(survey, question_hash, answer_hash):
+def _select_answer_for_question(questionnaire, question_hash, answer_hash):
     """Lookup the question and answer for the given hashes,
     respectively, and select the answer for the question.
     """
-    question = survey.get_question(question_hash)
+    question = questionnaire.get_question(question_hash)
     answer = question.get_answer(answer_hash)
     question.select_answer(answer)

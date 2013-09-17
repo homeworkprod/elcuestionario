@@ -10,24 +10,24 @@
 
 import json
 
-from .models import Answer, Question, RatingLevel, Survey
+from .models import Answer, Question, Questionnaire, RatingLevel
 
 
-def load_survey(f):
-    """Load a survey from the given file-like object."""
+def load_questionnaire(f):
+    """Load a questionnaire from the given file-like object."""
     data = json.load(f)
 
     title = _get_title(data)
 
-    survey = Survey(title)
+    questionnaire = Questionnaire(title)
 
     for question in _get_questions(data):
-        survey.add_question(question)
+        questionnaire.add_question(question)
 
     for rating_level in _get_rating_levels(data):
-        survey.add_rating_level(rating_level)
+        questionnaire.add_rating_level(rating_level)
 
-    return survey
+    return questionnaire
 
 def _get_title(data):
     return data['title']

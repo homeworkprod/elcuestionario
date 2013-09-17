@@ -40,8 +40,8 @@ from unittest import TestCase
 
 from nose2.tools import params
 
-from elcuestionario.loader import load_survey
-from elcuestionario.models import Answer, Evaluator, Question, RatingLevel, Survey
+from elcuestionario.loader import load_questionnaire
+from elcuestionario.models import Answer, Evaluator, Question, RatingLevel
 
 
 class AbstractLoaderTestCase(TestCase):
@@ -49,11 +49,11 @@ class AbstractLoaderTestCase(TestCase):
     def setUp(self):
         data = self._get_data_string()
         f = StringIO(data)
-        survey = load_survey(f)
+        questionnaire = load_questionnaire(f)
 
-        self.title = survey.title
-        self.questions = survey.get_questions()
-        self.rating_levels = survey.rating_levels
+        self.title = questionnaire.title
+        self.questions = questionnaire.get_questions()
+        self.rating_levels = questionnaire.rating_levels
 
     def assertTitleEqual(self, expected):
         self.assertEqual(self.title, expected)

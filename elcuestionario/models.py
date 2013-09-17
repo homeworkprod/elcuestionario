@@ -13,7 +13,7 @@ from collections import namedtuple
 import hashlib
 
 
-class Survey(object):
+class Questionnaire(object):
     """A set of questions, answers, selection states and rating levels."""
 
     def __init__(self, title):
@@ -65,10 +65,10 @@ class Evaluator(object):
     def __init__(self, rating_levels):
         self.rating_levels = rating_levels
 
-    def calculate_score(self, survey):
+    def calculate_score(self, questionnaire):
         """Calculate the score depending on the given answers."""
-        assert survey.all_questions_answered
-        questions = survey.get_questions()
+        assert questionnaire.all_questions_answered
+        questions = questionnaire.get_questions()
         score = sum(question.selected_answer().weighting
             for question in questions)
         return float(score) / len(questions) * 100
@@ -87,9 +87,9 @@ class Evaluator(object):
         ratings = list(map(minimum_scores_to_texts.get, minimum_scores))
         return ratings[index]
 
-    def get_result(self, survey):
+    def get_result(self, questionnaire):
         """Return the evaluation result."""
-        score = self.calculate_score(survey)
+        score = self.calculate_score(questionnaire)
         text = self.get_rating_text(score)
         return Result(score, text)
 
