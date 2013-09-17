@@ -16,10 +16,6 @@ from .loader import load_questionnaire
 from .models import UserInput
 
 
-# configuration
-QUESTIONNAIRE_FILENAME = 'data/example.json'
-
-
 app = Flask(__name__)
 
 
@@ -68,8 +64,15 @@ def evaluate():
         return render_template('questionnaire.html', **output)
 
 def _load_questionnaire():
-    with app.open_resource(QUESTIONNAIRE_FILENAME) as f:
+    with app.open_resource(_get_questionnaire_filename()) as f:
         return load_questionnaire(f)
+
+def _get_questionnaire_filename():
+    filename = app.config.get('QUESTIONNAIRE_FILENAME', None)
+    if filename is None:
+        raise Exception('Please provide the questionnaire filename as value '
+            'for the key \'QUESTIONNAIRE_FILENAME\'.')
+    return filename
 
 def _select_answers_for_questions(user_input, questionnaire, request):
     """Examine which questions were answered and which answer was selected."""
