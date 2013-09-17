@@ -42,7 +42,7 @@ from nose2.tools import params
 
 from elcuestionario.evaluation import Evaluator, RatingLevel
 from elcuestionario.loader import load_questionnaire
-from elcuestionario.models import UserInput
+from elcuestionario.userinput import UserInput
 
 
 class AbstractTestCase(TestCase):

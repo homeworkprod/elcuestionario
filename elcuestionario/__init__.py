@@ -13,7 +13,7 @@ from random import shuffle
 from flask import Flask, render_template
 
 from .loader import load_questionnaire
-from .models import UserInput
+from .userinput import UserInput
 
 
 app = Flask(__name__)
