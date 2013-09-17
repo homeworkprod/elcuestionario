@@ -7,8 +7,8 @@
         {% if submitted -%}
         <section class="notifications">
           <fieldset>
-            <p>You have answered only <strong>{{ questionnaire.total_questions_answered }} of {{ questionnaire.get_questions()|length }}</strong> questions so far.</p>
-            <p>Please answer the remaining <strong>{{ questionnaire.total_questions_unanswered }}</strong> question(s) for final evaluation.</p>
+            <p>You have answered only <strong>{{ user_input.total_questions_answered }} of {{ user_input.questions_total }}</strong> questions so far.</p>
+            <p>Please answer the remaining <strong>{{ user_input.total_questions_unanswered }}</strong> question(s) for final evaluation.</p>
           </fieldset>
         </section>
         {% endif -%}
@@ -29,7 +29,7 @@
             {%- endif %}
             <ul>
             {%- for answer in question.get_answers()|shuffled %}
-              <li><label><input type="radio" name="q_{{ question.hash }}" value="a_{{ answer.hash }}"{% if question.is_answer_selected(answer) %} checked="checked"{% endif %}/>{{ answer.text }}</label></li>
+              <li><label><input type="radio" name="q_{{ question.hash }}" value="a_{{ answer.hash }}"{% if user_input.is_answer_selected(question, answer) %} checked="checked"{% endif %}/>{{ answer.text }}</label></li>
             {%- endfor %}
             </ul>
           </fieldset>

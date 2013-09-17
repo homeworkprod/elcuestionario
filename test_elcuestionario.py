@@ -41,7 +41,8 @@ from unittest import TestCase
 from nose2.tools import params
 
 from elcuestionario.loader import load_questionnaire
-from elcuestionario.models import Answer, Evaluator, Question, RatingLevel
+from elcuestionario.models import Answer, Evaluator, Question, RatingLevel, \
+    UserInput
 
 
 class AbstractLoaderTestCase(TestCase):
@@ -187,10 +188,22 @@ class QuestionTestCase(TestCase):
         self.question.add_answer(self.answer2)
         self.question.add_answer(self.answer3)
 
+        self.user_input = UserInput([self.question.hash])
+
+    def assertAnswerIsSelected(self, answer, expected):
+        actual = self.user_input.is_answer_selected(self.question, answer)
+        self.assertEquals(actual, expected)
+
     def test_answered(self):
-        self.assertEquals(self.question.answered, False)
-        self.question.select_answer(self.answer3)
-        self.assertEquals(self.question.answered, True)
+        self.assertAnswerIsSelected(self.answer1, False)
+        self.assertAnswerIsSelected(self.answer2, False)
+        self.assertAnswerIsSelected(self.answer3, False)
+
+        self.user_input.answer_question(self.question.hash, self.answer2.hash)
+
+        self.assertAnswerIsSelected(self.answer1, False)
+        self.assertAnswerIsSelected(self.answer2, True)
+        self.assertAnswerIsSelected(self.answer3, False)
 
 
 class RatingTestCase(TestCase):

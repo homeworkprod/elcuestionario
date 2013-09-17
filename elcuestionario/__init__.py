@@ -13,6 +13,7 @@ from random import shuffle
 from flask import Flask, render_template, request
 
 from .loader import load_questionnaire
+from .models import UserInput
 
 
 # configuration
@@ -34,9 +35,12 @@ def shuffled(iterable):
 def view():
     questionnaire = _load_questionnaire()
 
+    user_input = UserInput(questionnaire.get_question_hashes())
+
     output = {
         'questionnaire': questionnaire,
         'submitted': False,
+        'user_input': user_input,
     }
 
     return render_template('questionnaire.html', **output)
@@ -46,28 +50,31 @@ def evaluate():
     questionnaire = _load_questionnaire()
     username = request.form['username']
 
+    user_input = UserInput(questionnaire.get_question_hashes())
+    user_input.name = username
+    _select_answers_for_questions(user_input, questionnaire, request)
+
     output = {
         'questionnaire': questionnaire,
         'username': username,
     }
 
-    _select_answer_for_questions(questionnaire, request)
-
-    if questionnaire.all_questions_answered:
-        output['result'] = questionnaire.get_result()
+    if user_input.all_questions_answered:
+        output['result'] = questionnaire.get_result(user_input)
         return render_template('result.html', **output)
     else:
         output['submitted'] = True
+        output['user_input'] = user_input
         return render_template('questionnaire.html', **output)
 
 def _load_questionnaire():
     with app.open_resource(QUESTIONNAIRE_FILENAME) as f:
         return load_questionnaire(f)
 
-def _select_answer_for_questions(name, questionnaire, request):
+def _select_answers_for_questions(user_input, questionnaire, request):
     """Examine which questions were answered and which answer was selected."""
     for name, value in request.form.items():
         if name.startswith('q_') and value.startswith('a_'):
             question_hash = name[2:]
             answer_hash = value[2:]
-            questionnaire.select_answer_to_question(question_hash, answer_hash)
+            user_input.answer_question(question_hash, answer_hash)

@@ -38,32 +38,21 @@ class Questionnaire(object):
     def get_questions(self):
         return self._questions
 
+    def get_question_hashes(self):
+        return (question.hash for question in self.get_questions())
+
     def select_answer_to_question(self, question_hash, answer_hash):
         """Answer the referenced question with the referenced answer."""
         question = self.get_question(question_hash)
         answer = question.get_answer(answer_hash)
         question.select_answer(answer)
 
-    @property
-    def all_questions_answered(self):
-        return all(question.answered for question in self.get_questions())
-
-    @property
-    def total_questions_answered(self):
-        """Return the number of questions that have been answered."""
-        return sum(1 for question in self.get_questions() if question.answered)
-
-    @property
-    def total_questions_unanswered(self):
-        """Return the number of questions that have not been answered."""
-        return len(self.get_questions()) - self.total_questions_answered
-
     def add_rating_level(self, rating_level):
         self.rating_levels.append(rating_level)
 
-    def get_result(self):
+    def get_result(self, user_input):
         evaluator = Evaluator(self.rating_levels)
-        return evaluator.get_result(self)
+        return evaluator.get_result(self, user_input)
 
 
 class Evaluator(object):
@@ -71,13 +60,20 @@ class Evaluator(object):
     def __init__(self, rating_levels):
         self.rating_levels = rating_levels
 
-    def calculate_score(self, questionnaire):
+    def calculate_score(self, questionnaire, user_input):
         """Calculate the score depending on the given answers."""
-        assert questionnaire.all_questions_answered
+        assert user_input.all_questions_answered
+
         questions = questionnaire.get_questions()
-        score = sum(question.selected_answer().weighting
-            for question in questions)
+        weightings = self._collect_selected_answers_weightings(questions, user_input)
+        score = sum(weightings)
         return float(score) / len(questions) * 100
+
+    def _collect_selected_answers_weightings(self, questions, user_input):
+        for question in questions:
+            answer_hash = user_input.get_answer_hash(question.hash)
+            answer = question.get_answer(answer_hash)
+            yield answer.weighting
 
     def get_rating_text(self, score):
         """Return the rating text for the given score."""
@@ -93,9 +89,9 @@ class Evaluator(object):
         ratings = list(map(minimum_scores_to_texts.get, minimum_scores))
         return ratings[index]
 
-    def get_result(self, questionnaire):
+    def get_result(self, questionnaire, user_input):
         """Return the evaluation result."""
-        score = self.calculate_score(questionnaire)
+        score = self.calculate_score(questionnaire, user_input)
         text = self.get_rating_text(score)
         return Result(score, text)
 
@@ -112,13 +108,12 @@ class Question(object):
         self.text = text
         self.hash = _create_hash(self.text.encode('latin-1'))
         self.answers = {}
-        self._selected_answer_hash = None
 
     def __str__(self):
-        return '<%s, hash=%s, text="%s", %d answers, answered=%s>' \
+        return '<%s, hash=%s, text="%s", %d answers>' \
             % (self.__class__.__name__, self.hash,
                 self.text.encode('latin-1'),
-                len(self.answers), self.answered)
+                len(self.answers))
 
     def add_answer(self, answer):
         self.answers[answer.hash] = answer
@@ -128,22 +123,6 @@ class Question(object):
 
     def get_answers(self):
         return self.answers.values()
-
-    def select_answer(self, answer):
-        """Answer the question with the given answer."""
-        self._selected_answer_hash = answer.hash
-
-    def selected_answer(self):
-        """Return the chosen answer."""
-        return next(answer for answer in self.answers.values()
-            if answer.hash == self._selected_answer_hash)
-
-    @property
-    def answered(self):
-        return self._selected_answer_hash is not None
-
-    def is_answer_selected(self, answer):
-        return answer.hash == self._selected_answer_hash
 
 
 class Answer(namedtuple('Answer', 'text weighting hash')):
@@ -155,3 +134,43 @@ class Answer(namedtuple('Answer', 'text weighting hash')):
 
 def _create_hash(value, length=8):
     return hashlib.sha1(value).hexdigest()[:length]
+
+
+class UserInput(object):
+
+    def __init__(self, all_question_hashes):
+        self.name = None
+        self.all_question_hashes = frozenset(all_question_hashes)
+        self.answers_by_question = {}
+
+    def answer_question(self, question_hash, answer_hash):
+        if question_hash not in self.all_question_hashes:
+            raise KeyError('Unknown question with hash "%s".' % question_hash)
+        self.answers_by_question[question_hash] = answer_hash
+
+    def get_answer_hash(self, question_hash):
+        return self.answers_by_question.get(question_hash, None)
+
+    def is_answer_selected(self, question, answer):
+        found_answer_hash = self.get_answer_hash(question.hash)
+        return (found_answer_hash is not None) and \
+            (found_answer_hash == answer.hash)
+
+    @property
+    def questions_total(self):
+        return len(self.all_question_hashes)
+
+    @property
+    def all_questions_answered(self):
+        answered_questions_hashes = frozenset(self.answers_by_question.keys())
+        return answered_questions_hashes.issuperset(self.all_question_hashes)
+
+    @property
+    def total_questions_answered(self):
+        """Return the number of questions that have been answered."""
+        return len(self.answers_by_question.keys())
+
+    @property
+    def total_questions_unanswered(self):
+        """Return the number of questions that have not been answered."""
+        return self.questions_total - self.total_questions_answered
