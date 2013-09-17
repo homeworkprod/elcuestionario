@@ -41,20 +41,28 @@ from unittest import TestCase
 from nose2.tools import params
 
 from elcuestionario.loader import load_questionnaire
-from elcuestionario.models import Answer, Evaluator, Question, RatingLevel, \
-    UserInput
+from elcuestionario.models import Evaluator, RatingLevel, UserInput
 
 
-class AbstractLoaderTestCase(TestCase):
+class AbstractTestCase(TestCase):
 
     def setUp(self):
+        self.questionnaire = self._load_questionnaire()
+
+    def _load_questionnaire(self):
         data = self._get_data_string()
         f = StringIO(data)
-        questionnaire = load_questionnaire(f)
+        return load_questionnaire(f)
 
-        self.title = questionnaire.title
-        self.questions = questionnaire.get_questions()
-        self.rating_levels = questionnaire.rating_levels
+
+class AbstractLoaderTestCase(AbstractTestCase):
+
+    def setUp(self):
+        super(AbstractLoaderTestCase, self).setUp()
+
+        self.title = self.questionnaire.title
+        self.questions = self.questionnaire.get_questions()
+        self.rating_levels = self.questionnaire.rating_levels
 
     def assertTitleEqual(self, expected):
         self.assertEqual(self.title, expected)
@@ -65,7 +73,8 @@ class AbstractLoaderTestCase(TestCase):
         self.assertEqual(texts, expected)
 
     def _get_answers(self, question_index):
-        return self.questions[question_index].get_answers()
+        question = self.questions[question_index]
+        return self.questionnaire.get_answers_for_question(question)
 
     def _get_answer_texts(self, answers):
         return set(answer.text for answer in answers)
@@ -175,18 +184,34 @@ class UnicodeLoaderTestCase(AbstractLoaderTestCase):
         ])
 
 
-class QuestionTestCase(TestCase):
+class QuestionTestCase(AbstractTestCase):
+
+    def _get_data_string(self):
+        return u'''{
+    "title": "some title",
+    "questions": [
+        {
+            "text": "some question",
+            "answers": [
+                { "text": "yes",   "weighting": 1.0 },
+                { "text": "maybe", "weighting": 0.5 },
+                { "text": "no",    "weighting": 0.0 }
+            ]
+        }
+    ],
+    "rating_levels": []
+}
+'''
 
     def setUp(self):
-        self.question = Question('some question')
+        super(QuestionTestCase, self).setUp()
 
-        self.answer1 = Answer('yes', 1.0)
-        self.answer2 = Answer('maybe', 0.5)
-        self.answer3 = Answer('no', 0.0)
+        self.question = self.questionnaire.get_questions()[0]
 
-        self.question.add_answer(self.answer1)
-        self.question.add_answer(self.answer2)
-        self.question.add_answer(self.answer3)
+        answers = list(self.questionnaire.get_answers_for_question(self.question))
+        self.answer1 = answers[0]
+        self.answer2 = answers[1]
+        self.answer3 = answers[2]
 
         self.user_input = UserInput([self.question.hash])
 
@@ -211,10 +236,10 @@ class RatingTestCase(TestCase):
     def setUp(self):
         rating_levels = [RatingLevel(minimum_score, text)
             for minimum_score, text in [
-                (0, 'worst'),
-                (30, 'oh-oh'),
-                (60, 'OK-ish'),
-                (90, 'great'),
+                (  0, 'worst'),
+                ( 30, 'oh-oh'),
+                ( 60, 'OK-ish'),
+                ( 90, 'great'),
                 (100, 'over the top'),
             ]]
 

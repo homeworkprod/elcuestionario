@@ -28,7 +28,7 @@
             <p class="notification">Please answer this question.</p>
             {%- endif %}
             <ul>
-            {%- for answer in question.get_answers()|shuffled %}
+            {%- for answer in questionnaire.get_answers_for_question(question)|shuffled %}
               <li><label><input type="radio" name="q_{{ question.hash }}" value="a_{{ answer.hash }}"{% if user_input.is_answer_selected(question, answer) %} checked="checked"{% endif %}/>{{ answer.text }}</label></li>
             {%- endfor %}
             </ul>

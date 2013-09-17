@@ -41,6 +41,12 @@ class Questionnaire(object):
     def get_question_hashes(self):
         return (question.hash for question in self.get_questions())
 
+    def add_answer_for_question(self, question, answer):
+        question.answers[answer.hash] = answer
+
+    def get_answers_for_question(self, question):
+        return question.answers.values()
+
     def select_answer_to_question(self, question_hash, answer_hash):
         """Answer the referenced question with the referenced answer."""
         question = self.get_question(question_hash)
@@ -115,14 +121,8 @@ class Question(object):
                 self.text.encode('latin-1'),
                 len(self.answers))
 
-    def add_answer(self, answer):
-        self.answers[answer.hash] = answer
-
     def get_answer(self, hash):
         return self.answers[hash]
-
-    def get_answers(self):
-        return self.answers.values()
 
 
 class Answer(namedtuple('Answer', 'text weighting hash')):

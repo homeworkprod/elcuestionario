@@ -21,7 +21,7 @@ def load_questionnaire(f):
 
     questionnaire = Questionnaire(title)
 
-    for question in _load_questions(data):
+    for question in _load_questions(data, questionnaire):
         questionnaire.add_question(question)
 
     for rating_level in _load_rating_levels(data):
@@ -32,14 +32,16 @@ def load_questionnaire(f):
 def _load_title(data):
     return data['title']
 
-def _load_questions(data):
-    return map(_load_question, data['questions'])
+def _load_questions(data, questionnaire):
+    return map(
+        lambda question_data: _load_question(question_data, questionnaire),
+        data['questions'])
 
-def _load_question(data):
+def _load_question(data, questionnaire):
     text = data['text']
     question = Question(text)
     for answer in _load_answers(data):
-        question.add_answer(answer)
+        questionnaire.add_answer_for_question(question, answer)
     return question
 
 def _load_answers(data):
