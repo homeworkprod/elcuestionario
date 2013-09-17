@@ -38,6 +38,12 @@ class Questionnaire(object):
     def get_questions(self):
         return self._questions
 
+    def select_answer_to_question(self, question_hash, answer_hash):
+        """Answer the referenced question with the referenced answer."""
+        question = self.get_question(question_hash)
+        answer = question.get_answer(answer_hash)
+        question.select_answer(answer)
+
     @property
     def all_questions_answered(self):
         return all(question.answered for question in self.get_questions())
