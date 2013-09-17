@@ -113,17 +113,11 @@ RatingLevel = namedtuple('RatingLevel', 'minimum_score text')
 Result = namedtuple('Result', 'score text')
 
 
-class Question(object):
-    """A question with multiple answers."""
+class Question(namedtuple('Question', 'text hash')):
 
-    def __init__(self, text):
-        self.text = text
-        self.hash = _create_hash(self.text.encode('latin-1'))
-
-    def __str__(self):
-        return '<%s, hash=%s, text="%s">' \
-            % (self.__class__.__name__, self.hash,
-                self.text.encode('latin-1'))
+    def __new__(cls, text):
+        hash = _create_hash(text.encode('latin-1'))
+        return super(Question, cls).__new__(cls, text, hash)
 
 
 class Answer(namedtuple('Answer', 'text weighting hash')):
