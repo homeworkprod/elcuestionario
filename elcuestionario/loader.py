@@ -17,40 +17,40 @@ def load_questionnaire(f):
     """Load a questionnaire from the given file-like object."""
     data = json.load(f)
 
-    title = _get_title(data)
+    title = _load_title(data)
 
     questionnaire = Questionnaire(title)
 
-    for question in _get_questions(data):
+    for question in _load_questions(data):
         questionnaire.add_question(question)
 
-    for rating_level in _get_rating_levels(data):
+    for rating_level in _load_rating_levels(data):
         questionnaire.add_rating_level(rating_level)
 
     return questionnaire
 
-def _get_title(data):
+def _load_title(data):
     return data['title']
 
-def _get_questions(data):
-    return map(_get_question, data['questions'])
+def _load_questions(data):
+    return map(_load_question, data['questions'])
 
-def _get_question(data):
+def _load_question(data):
     text = data['text']
     question = Question(text)
-    for answer in _get_answers(data):
+    for answer in _load_answers(data):
         question.add_answer(answer)
     return question
 
-def _get_answers(data):
-    return map(_get_answer, data['answers'])
+def _load_answers(data):
+    return map(_load_answer, data['answers'])
 
-def _get_answer(data):
+def _load_answer(data):
     text = data['text']
     weighting = float(data['weighting'])
     return Answer(text, weighting)
 
-def _get_rating_levels(data):
+def _load_rating_levels(data):
     for rating_level in data['rating_levels']:
         minimum_score = int(rating_level['minimum_score'])
         text = rating_level['text']
