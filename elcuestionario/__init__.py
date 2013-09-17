@@ -10,7 +10,7 @@
 
 from random import shuffle
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template
 
 from .loader import load_questionnaire
 from .models import UserInput
@@ -41,15 +41,12 @@ def view():
 @app.route('/', methods=['POST'])
 def evaluate():
     questionnaire = _load_questionnaire()
-    username = request.form['username']
 
-    user_input = UserInput(questionnaire.get_question_hashes())
-    user_input.name = username
-    _select_answers_for_questions(user_input, questionnaire, request)
+    user_input = UserInput.from_request(questionnaire)
 
     output = {
         'questionnaire': questionnaire,
-        'username': username,
+        'username': user_input.name,
     }
 
     if user_input.all_questions_answered:
@@ -70,11 +67,3 @@ def _get_questionnaire_filename():
         raise Exception('Please provide the questionnaire filename as value '
             'for the key \'QUESTIONNAIRE_FILENAME\'.')
     return filename
-
-def _select_answers_for_questions(user_input, questionnaire, request):
-    """Examine which questions were answered and which answer was selected."""
-    for name, value in request.form.items():
-        if name.startswith('q_') and value.startswith('a_'):
-            question_hash = name[2:]
-            answer_hash = value[2:]
-            user_input.answer_question(question_hash, answer_hash)

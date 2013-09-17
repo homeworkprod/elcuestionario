@@ -12,6 +12,8 @@ from bisect import bisect_right
 from collections import defaultdict, namedtuple
 import hashlib
 
+from flask import request
+
 
 class Questionnaire(object):
     """A set of questions, answers, selection states and rating levels."""
@@ -127,6 +129,23 @@ def _create_hash(value, length=8):
 
 
 class UserInput(object):
+
+    @classmethod
+    def from_request(cls, questionnaire):
+        user_input = cls(questionnaire.get_question_hashes())
+        user_input.name = request.form['username']
+        for question_hash, answer_hash in cls._collect_answers_for_questions():
+            user_input.answer_question(question_hash, answer_hash)
+        return user_input
+
+    @staticmethod
+    def _collect_answers_for_questions():
+        """Examine which questions were answered and which answer was selected."""
+        for name, value in request.form.items():
+            if name.startswith('q_') and value.startswith('a_'):
+                question_hash = name[2:]
+                answer_hash = value[2:]
+                yield question_hash, answer_hash
 
     def __init__(self, all_question_hashes):
         self.name = None
