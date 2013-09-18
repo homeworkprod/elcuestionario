@@ -12,7 +12,7 @@ from random import shuffle
 
 from flask import Flask, render_template
 
-from .loader import load_questionnaire
+from .loader import load
 from .userinput import UserInput
 
 
@@ -29,7 +29,7 @@ def shuffled(iterable):
 
 @app.route('/', methods=['GET'])
 def view():
-    questionnaire = _load_questionnaire()
+    questionnaire = _load()[0]
 
     output = {
         'questionnaire': questionnaire,
@@ -40,7 +40,7 @@ def view():
 
 @app.route('/', methods=['POST'])
 def evaluate():
-    questionnaire = _load_questionnaire()
+    questionnaire, evaluator = _load()
 
     user_input = UserInput.from_request(questionnaire)
 
@@ -50,16 +50,17 @@ def evaluate():
     }
 
     if user_input.all_questions_answered:
-        output['result'] = questionnaire.get_result(user_input)
+        result = evaluator.get_result(questionnaire, user_input)
+        output['result'] = result
         return render_template('result.html', **output)
     else:
         output['submitted'] = True
         output['user_input'] = user_input
         return render_template('questionnaire.html', **output)
 
-def _load_questionnaire():
+def _load():
     with app.open_resource(_get_questionnaire_filename()) as f:
-        return load_questionnaire(f)
+        return load(f)
 
 def _get_questionnaire_filename():
     filename = app.config.get('QUESTIONNAIRE_FILENAME', None)

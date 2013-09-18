@@ -11,8 +11,6 @@
 from collections import defaultdict, namedtuple
 import hashlib
 
-from .evaluation import Evaluator
-
 
 class Questionnaire(object):
     """A set of questions, answers, selection states and rating levels."""
@@ -21,7 +19,6 @@ class Questionnaire(object):
         self.title = title
         self._questions = []
         self._question_answers = defaultdict(dict)
-        self.rating_levels = []
 
     def add_question(self, question):
         self._questions.append(question)
@@ -52,13 +49,6 @@ class Questionnaire(object):
         question = self.get_question(question_hash)
         answer = self.get_answer_by_hash(question, answer_hash)
         question.select_answer(answer)
-
-    def add_rating_level(self, rating_level):
-        self.rating_levels.append(rating_level)
-
-    def get_result(self, user_input):
-        evaluator = Evaluator(self.rating_levels)
-        return evaluator.get_result(self, user_input)
 
 
 class Question(namedtuple('Question', 'text hash')):

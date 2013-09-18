@@ -10,23 +10,24 @@
 
 import json
 
-from .evaluation import RatingLevel
+from .evaluation import Evaluator, RatingLevel
 from .models import Answer, Question, Questionnaire
 
 
-def load_questionnaire(f):
-    """Load a questionnaire from the given file-like object."""
+def load(f):
+    """Load questionnaire and rating results from a file-like object."""
     data = json.load(f)
+    questionnaire = load_questionnaire(data)
+    evaluator = load_evaluator(data)
+    return questionnaire, evaluator
 
+def load_questionnaire(data):
     title = _load_title(data)
 
     questionnaire = Questionnaire(title)
 
     for question in _load_questions(data, questionnaire):
         questionnaire.add_question(question)
-
-    for rating_level in _load_rating_levels(data):
-        questionnaire.add_rating_level(rating_level)
 
     return questionnaire
 
@@ -52,6 +53,10 @@ def _load_answer(data):
     text = data['text']
     weighting = float(data['weighting'])
     return Answer(text, weighting)
+
+def load_evaluator(data):
+    rating_levels = list(_load_rating_levels(data))
+    return Evaluator(rating_levels)
 
 def _load_rating_levels(data):
     for rating_level in data['rating_levels']:
