@@ -10,16 +10,22 @@
 
 from random import shuffle
 
-from flask import Flask, render_template
+from flask import Blueprint, current_app, Flask, render_template
 
 from .loader import load
 from .userinput import UserInput
 
 
-app = Flask(__name__)
+blueprint = Blueprint('blueprint', __name__)
 
 
-@app.template_filter()
+def create_app():
+    app = Flask(__name__)
+    app.register_blueprint(blueprint)
+    return app
+
+
+@blueprint.app_template_filter()
 def shuffled(iterable):
     """Return a shuffled copy of the given iterable."""
     l = list(iterable)
@@ -27,7 +33,7 @@ def shuffled(iterable):
     return l
 
 
-@app.route('/', methods=['GET'])
+@blueprint.route('/', methods=['GET'])
 def view():
     questionnaire = _load()[0]
 
@@ -38,7 +44,7 @@ def view():
 
     return render_template('questionnaire.html', **output)
 
-@app.route('/', methods=['POST'])
+@blueprint.route('/', methods=['POST'])
 def evaluate():
     questionnaire, evaluator = _load()
 
@@ -59,11 +65,11 @@ def evaluate():
         return render_template('questionnaire.html', **output)
 
 def _load():
-    with app.open_resource(_get_questionnaire_filename()) as f:
+    with blueprint.open_resource(_get_questionnaire_filename()) as f:
         return load(f)
 
 def _get_questionnaire_filename():
-    filename = app.config.get('QUESTIONNAIRE_FILENAME', None)
+    filename = current_app.config.get('QUESTIONNAIRE_FILENAME', None)
     if filename is None:
         raise Exception('Please provide the questionnaire filename as value '
             'for the key \'QUESTIONNAIRE_FILENAME\'.')
