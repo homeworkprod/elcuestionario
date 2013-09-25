@@ -19,9 +19,10 @@ from .userinput import UserInput
 blueprint = Blueprint('blueprint', __name__)
 
 
-def create_app():
+def create_app(questionnaire_filename):
     app = Flask(__name__)
     app.register_blueprint(blueprint)
+    app.config['QUESTIONNAIRE_FILENAME'] = questionnaire_filename
     return app
 
 
@@ -65,12 +66,8 @@ def evaluate():
         return render_template('questionnaire.html', **output)
 
 def _load():
-    with blueprint.open_resource(_get_questionnaire_filename()) as f:
+    filename = current_app.config['QUESTIONNAIRE_FILENAME']
+    if not filename:
+        raise Exception('No questionnaire filename specified.')
+    with blueprint.open_resource(filename) as f:
         return load(f)
-
-def _get_questionnaire_filename():
-    filename = current_app.config.get('QUESTIONNAIRE_FILENAME', None)
-    if filename is None:
-        raise Exception('Please provide the questionnaire filename as value '
-            'for the key \'QUESTIONNAIRE_FILENAME\'.')
-    return filename
