@@ -11,7 +11,7 @@
 import json
 
 from .evaluation import Evaluator, RatingLevel
-from .models import Answer, Question, Questionnaire
+from .questionnaire import Answer, Question, Questionnaire
 
 
 def load(f):
