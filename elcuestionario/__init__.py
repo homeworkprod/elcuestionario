@@ -10,7 +10,7 @@
 
 from random import shuffle
 
-from flask import Blueprint, current_app, Flask, render_template
+from flask import Blueprint, Flask, render_template
 
 from .loader import load
 from .userinput import UserInput
@@ -18,11 +18,13 @@ from .userinput import UserInput
 
 blueprint = Blueprint('blueprint', __name__)
 
+questionnaire = None
+evaluator = None
 
 def create_app(questionnaire_filename):
     app = Flask(__name__)
     app.register_blueprint(blueprint)
-    app.config['QUESTIONNAIRE_FILENAME'] = questionnaire_filename
+    _load_questionnaire_and_evaluator(questionnaire_filename)
     return app
 
 
@@ -36,8 +38,6 @@ def shuffled(iterable):
 
 @blueprint.route('/', methods=['GET'])
 def view():
-    questionnaire = _load()[0]
-
     output = {
         'questionnaire': questionnaire,
         'submitted': False,
@@ -47,8 +47,6 @@ def view():
 
 @blueprint.route('/', methods=['POST'])
 def evaluate():
-    questionnaire, evaluator = _load()
-
     user_input = UserInput.from_request(questionnaire)
 
     output = {
@@ -65,9 +63,10 @@ def evaluate():
         output['user_input'] = user_input
         return render_template('questionnaire.html', **output)
 
-def _load():
-    filename = current_app.config['QUESTIONNAIRE_FILENAME']
+def _load_questionnaire_and_evaluator(filename):
     if not filename:
         raise Exception('No questionnaire filename specified.')
+
+    global questionnaire, evaluator
     with blueprint.open_resource(filename) as f:
-        return load(f)
+        questionnaire, evaluator = load(f)
