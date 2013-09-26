@@ -43,12 +43,6 @@ class Questionnaire(object):
     def get_answer_by_hash(self, question, answer_hash):
         return self._question_answers[question.hash][answer_hash]
 
-    def select_answer_to_question(self, question_hash, answer_hash):
-        """Answer the referenced question with the referenced answer."""
-        question = self.get_question(question_hash)
-        answer = self.get_answer_by_hash(question, answer_hash)
-        question.select_answer(answer)
-
 
 class Question(namedtuple('Question', 'text hash')):
 
