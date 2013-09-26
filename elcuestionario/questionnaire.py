@@ -20,8 +20,10 @@ class Questionnaire(object):
         self._questions = []
         self._question_answers = defaultdict(dict)
 
-    def add_question(self, question):
+    def add_question_with_answers(self, question, answers):
         self._questions.append(question)
+        for answer in answers:
+            self._question_answers[question.hash][answer.hash] = answer
 
     def get_question(self, hash):
         """Return the question for the given hash."""
@@ -34,9 +36,6 @@ class Questionnaire(object):
 
     def get_question_hashes(self):
         return (question.hash for question in self.get_questions())
-
-    def add_answer_for_question(self, question, answer):
-        self._question_answers[question.hash][answer.hash] = answer
 
     def get_answers_for_question(self, question):
         return self._question_answers[question.hash].values()

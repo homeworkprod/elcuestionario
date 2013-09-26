@@ -26,8 +26,8 @@ def load_questionnaire(data):
 
     questionnaire = Questionnaire(title)
 
-    for question in _load_questions(data, questionnaire):
-        questionnaire.add_question(question)
+    for question, answers in _load_questions(data, questionnaire):
+        questionnaire.add_question_with_answers(question, answers)
 
     return questionnaire
 
@@ -42,12 +42,11 @@ def _load_questions(data, questionnaire):
 def _load_question(data, questionnaire):
     text = data['text']
     question = Question(text)
-    for answer in _load_answers(data):
-        questionnaire.add_answer_for_question(question, answer)
-    return question
+    answers = _load_answers(data)
+    return question, answers
 
 def _load_answers(data):
-    return map(_load_answer, data['answers'])
+    return frozenset(map(_load_answer, data['answers']))
 
 def _load_answer(data):
     text = data['text']
