@@ -43,6 +43,9 @@ class UserInput(object):
     def get_answer_hash(self, question_hash):
         return self.answers_by_question.get(question_hash, None)
 
+    def is_question_answered(self, question):
+        return question.hash in self.answers_by_question
+
     def is_answer_selected(self, question, answer):
         found_answer_hash = self.get_answer_hash(question.hash)
         return (found_answer_hash is not None) and \

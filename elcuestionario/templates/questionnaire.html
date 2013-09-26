@@ -24,7 +24,7 @@
         <section class="question">
           <fieldset>
             <h2>{{ loop.index }}. {{ question.text }}</h2>
-            {%- if submitted and not question.answered %}
+            {%- if submitted and not user_input.is_question_answered(question) %}
             <p class="notification">Please answer this question.</p>
             {%- endif %}
             <ul>
