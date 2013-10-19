@@ -58,7 +58,7 @@ def load_evaluator(data):
     return Evaluator(rating_levels)
 
 def _load_rating_levels(data):
-    for rating_level in data['rating_levels']:
+    for rating_level in data.get('rating_levels', []):
         minimum_score = int(rating_level['minimum_score'])
         text = rating_level['text']
         yield RatingLevel(minimum_score, text)

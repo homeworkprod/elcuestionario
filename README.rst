@@ -124,6 +124,9 @@ Example:
         { "minimum_score": 90, "text": "Yeah, great result!" }
     ]
 
+Rating levels are optional. If none are defined in the data file, to
+rating text is shown on the result page.
+
 
 Usage
 -----

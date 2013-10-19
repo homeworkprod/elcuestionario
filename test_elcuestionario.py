@@ -264,3 +264,25 @@ class RatingTestCase(TestCase):
     def test_get_rating(self, score, expected):
         actual = self.evaluator.get_rating_text(score)
         self.assertEqual(actual, expected)
+
+
+class WithoutRatingTextsTestCase(AbstractTestCase):
+
+    def _get_data_string(self):
+        return u'''{
+    "title": "some title",
+    "questions": [
+        {
+            "text": "some question",
+            "answers": [
+                { "text": "some answer", "weighting": 1.0 }
+            ]
+        }
+    ]
+}
+'''
+
+    def test_result_without_text(self):
+        score = 0.5
+        actual = self.evaluator.get_rating_text(score)
+        self.assertEqual(actual, None)

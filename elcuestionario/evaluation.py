@@ -36,6 +36,9 @@ class Evaluator(object):
 
     def get_rating_text(self, score):
         """Return the rating text for the given score."""
+        if not self.rating_levels:
+            return
+
         minimum_scores_to_texts = dict((rl.minimum_score, rl.text)
             for rl in self.rating_levels)
 

@@ -5,7 +5,9 @@
       <section class="result">
         <h2>Your score, <em>{{ username or 'stranger' }}</em></h2>
         <p class="score">{{ '%.1f'|format(result.score) }}&thinsp;%</p>
+        {%- if result.text %}
         <p class="text">{{ result.text }}</p>
+        {%- endif %}
       </section>
 
       <a class="button" href="{{ url_for('.view') }}">Start again</a>
