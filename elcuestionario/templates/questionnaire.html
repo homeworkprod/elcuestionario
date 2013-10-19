@@ -4,6 +4,7 @@
 
       <form action="{{ url_for('.evaluate', _method='POST') }}" method="post">
 
+        {% set submitted = user_input is defined %}
         {% if submitted -%}
         <section class="notifications">
           <fieldset>

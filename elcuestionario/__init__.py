@@ -45,9 +45,7 @@ def inject_title():
 def view():
     output = {
         'questionnaire': questionnaire,
-        'submitted': False,
     }
-
     return render_template('questionnaire.html', **output)
 
 @blueprint.route('/', methods=['POST'])
@@ -64,7 +62,6 @@ def evaluate():
         return render_template('result.html', **output)
     else:
         output['questionnaire'] = questionnaire
-        output['submitted'] = True
         output['user_input'] = user_input
         return render_template('questionnaire.html', **output)
 
