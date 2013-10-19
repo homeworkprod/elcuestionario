@@ -55,7 +55,6 @@ def evaluate():
     user_input = UserInput.from_request(questionnaire)
 
     output = {
-        'questionnaire': questionnaire,
         'username': user_input.name,
     }
 
@@ -64,6 +63,7 @@ def evaluate():
         output['result'] = result
         return render_template('result.html', **output)
     else:
+        output['questionnaire'] = questionnaire
         output['submitted'] = True
         output['user_input'] = user_input
         return render_template('questionnaire.html', **output)
