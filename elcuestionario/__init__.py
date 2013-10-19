@@ -35,6 +35,11 @@ def shuffled(iterable):
     shuffle(l)
     return l
 
+@blueprint.app_context_processor
+def inject_title():
+    return {
+        'title': questionnaire.title,
+    }
 
 @blueprint.route('/', methods=['GET'])
 def view():

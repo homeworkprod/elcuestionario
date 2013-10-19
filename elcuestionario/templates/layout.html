@@ -8,13 +8,13 @@
     <!--[if lt IE 9]>
     <script src="{{ url_for('static', filename='html5shiv.js') }}"></script>
     <![endif]-->
-    <title>{{ questionnaire.title }} &ndash; {{ page_title }}</title>
+    <title>{{ title }} &ndash; {{ page_title }}</title>
     {%- endblock head %}
   </head>
   <body>
 
     <header>
-      <h1>{{ questionnaire.title }}</h1>
+      <h1>{{ title }}</h1>
     </header>
 
     <main>
