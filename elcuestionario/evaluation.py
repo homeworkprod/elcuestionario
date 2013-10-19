@@ -16,6 +16,18 @@ class Evaluator(object):
 
     def __init__(self, rating_levels):
         self.rating_levels = rating_levels
+        self._prepare_thresholds_and_ratings()
+
+    def _prepare_thresholds_and_ratings(self):
+        minimum_scores_to_texts = dict((rl.minimum_score, rl.text)
+            for rl in self.rating_levels)
+
+        minimum_scores = sorted(minimum_scores_to_texts.keys())
+
+        # Don't include the lowest value in the thresholds.
+        self.thresholds = minimum_scores[1:]
+
+        self.ratings = list(map(minimum_scores_to_texts.get, minimum_scores))
 
     def calculate_score(self, questionnaire, user_input):
         """Calculate the score depending on the given answers."""
@@ -36,20 +48,11 @@ class Evaluator(object):
 
     def get_rating_text(self, score):
         """Return the rating text for the given score."""
-        if not self.rating_levels:
+        if not self.ratings:
             return
 
-        minimum_scores_to_texts = dict((rl.minimum_score, rl.text)
-            for rl in self.rating_levels)
-
-        minimum_scores = sorted(minimum_scores_to_texts.keys())
-
-        # Don't include the lowest value in the thresholds.
-        thresholds = minimum_scores[1:]
-        index = bisect_right(thresholds, score)
-
-        ratings = list(map(minimum_scores_to_texts.get, minimum_scores))
-        return ratings[index]
+        index = bisect_right(self.thresholds, score)
+        return self.ratings[index]
 
     def get_result(self, questionnaire, user_input):
         """Return the evaluation result."""
