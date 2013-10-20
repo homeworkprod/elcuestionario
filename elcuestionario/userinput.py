@@ -16,7 +16,7 @@ class UserInput(object):
     @classmethod
     def from_request(cls, questionnaire):
         user_input = cls(questionnaire.get_question_hashes())
-        user_input.name = request.form['username']
+        user_input.name = request.form.get('username')
         for question_hash, answer_hash in cls._collect_answers_for_questions():
             user_input.answer_question(question_hash, answer_hash)
         return user_input

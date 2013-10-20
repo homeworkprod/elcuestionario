@@ -17,7 +17,7 @@
         <section class="name">
           <fieldset>
             <h2>What's your name? <small>(optional)</small></h2>
-            <p><input type="text" name="username" value="{{ username }}" maxlength="40"/></p>
+            <p><input type="text" name="username"{% if username %} value="{{ username }}"{% endif %} maxlength="40"/></p>
           </fieldset>
         </section>
 
