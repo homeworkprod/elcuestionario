@@ -30,7 +30,7 @@
             {%- endif %}
             <ul>
             {%- for answer in questionnaire.get_answers_for_question(question)|shuffled %}
-              <li><label><input type="radio" name="q_{{ question.hash }}" value="a_{{ answer.hash }}"{% if submitted and user_input.is_answer_selected(question, answer) %} checked="checked"{% endif %}/>{{ answer.text }}</label></li>
+              <li><label><input type="radio" name="{{ question.hash }}" value="{{ answer.hash }}"{% if submitted and user_input.is_answer_selected(question, answer) %} checked="checked"{% endif %}/>{{ answer.text }}</label></li>
             {%- endfor %}
             </ul>
           </fieldset>

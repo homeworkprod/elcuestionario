@@ -26,8 +26,8 @@ class UserInput(object):
         """Examine which questions were answered and which answer was selected."""
         for name, value in request.form.items():
             if name.startswith('q_') and value.startswith('a_'):
-                question_hash = name[2:]
-                answer_hash = value[2:]
+                question_hash = name
+                answer_hash = value
                 yield question_hash, answer_hash
 
     def __init__(self, all_question_hashes):
