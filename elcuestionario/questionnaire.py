@@ -47,14 +47,14 @@ class Questionnaire(object):
 class Question(namedtuple('Question', 'text hash')):
 
     def __new__(cls, text):
-        hash = 'q_' + _create_hash(text.encode('latin-1'))
+        hash = 'q_' + _create_hash(text.encode('utf-8'))
         return super(Question, cls).__new__(cls, text, hash)
 
 
 class Answer(namedtuple('Answer', 'text weighting hash')):
 
     def __new__(cls, text, weighting):
-        hash = 'a_' + _create_hash(text.encode('latin-1'))
+        hash = 'a_' + _create_hash(text.encode('utf-8'))
         return super(Answer, cls).__new__(cls, text, weighting, hash)
 
 
