@@ -14,6 +14,11 @@ Once all questions are answered, the user's score is calculated based
 on the answers' weight (as defined) and is presented with a suitable
 comment.
 
+:Copyright: 2005-2013 `Jochen Kupperschmidt <http://homework.nwsnet.de/>`_
+:Date: 21-Oct-2013 (original release: 26-Apr-2006)
+:License: GNU General Public License version 2, see LICENSE for details.
+:Version: 0.3
+
 
 Requirements
 ------------
@@ -173,9 +178,3 @@ Notable changes since the first release:
 .. _Kid:                http://www.kid-templating.org/
 .. _ElementTree:        http://effbot.org/zone/element-index.htm
 .. _PEP 8:              http://www.python.org/dev/peps/pep-0008/
-
-
-:Copyright: 2005-2013 `Jochen Kupperschmidt <http://homework.nwsnet.de/>`_
-:Date: 21-Oct-2013 (original release: 26-Apr-2006)
-:License: GNU General Public License version 2, see LICENSE for details.
-:Version: 0.3
