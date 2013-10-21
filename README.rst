@@ -7,8 +7,8 @@ application to display and evaluate single-page questionnaires.
 A questionnaire (questions, their answers, and score ratings) is
 defined as JSON_ in a single file.
 
-The questions are presented in the order they are defined in the
-definition while the answers are shown in random order.
+The questions are presented in the order they are defined in the data
+file while the answers are shown in random order.
 
 Once all questions are answered, the user's score is calculated based
 on the answers' weight (as defined) and is presented with a suitable
