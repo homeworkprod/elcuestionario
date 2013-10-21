@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2005-2013 Jochen Kupperschmidt
-# Released under the terms of the GNU General Public License
-#  _                               _
-# | |_ ___ _____ ___ _ _ _ ___ ___| |_
-# |   | . |     | ._| | | | . |  _| . /
-# |_|_|___|_|_|_|___|_____|___|_| |_|_\
-#   http://homework.nwsnet.de/
+"""
+elcuestionario.loader
+~~~~~~~~~~~~~~~~~~~~~
+
+:Copyright: 2005-2013 Jochen Kupperschmidt
+:License: GNU General Public License version 2, see LICENSE for details.
+"""
 
 import json
 
