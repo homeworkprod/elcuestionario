@@ -5,7 +5,7 @@ from setuptools import setup
 
 setup(
     name='El Cuestionario',
-    version='0.0',
+    version='0.3',
     description='A tiny web application to display and evaluate single-page questionnaires',
     author='Jochen Kupperschmidt',
     author_email='homework@nwsnet.de',

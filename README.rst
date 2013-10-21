@@ -176,5 +176,6 @@ Notable changes since the first release:
 
 
 :Copyright: 2005-2013 `Jochen Kupperschmidt <http://homework.nwsnet.de/>`_
-:Date: 16-Sep-2013 (original release: 26-Apr-2006)
+:Date: 21-Oct-2013 (original release: 26-Apr-2006)
 :License: GNU General Public License version 2, see LICENSE for details.
+:Version: 0.3
