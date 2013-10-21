@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+try:
+    unicode
+except NameError:
+    unicode = str  # Python 3
+
 from nose2.tools import params
 
 from elcuestionario import _create_app
@@ -44,7 +49,7 @@ class AbstractFlaskTestCase(AbstractTestCase):
             self.answer_question_with_first_answer(question)
 
     def answer_question_with_first_answer(self, question):
-        answers = self.questionnaire.get_answers_for_question(question)
+        answers = list(self.questionnaire.get_answers_for_question(question))
         self._answer_question(question, answers[0])
 
     def _answer_question(self, question, answer):
@@ -83,7 +88,8 @@ class FlaskTestCase(AbstractFlaskTestCase):
         result = self.get()
 
         for index, question in enumerate(self.questions, start=1):
-            assert '%d. %s' % (index, question.text) in result.data
+            expected = '%d. %s' % (index, question.text)
+            assertResultBodyContains(result, expected)
 
     @params(
         (0, 2, 2),
@@ -97,11 +103,11 @@ class FlaskTestCase(AbstractFlaskTestCase):
 
         expected1 = 'You have answered only <strong>%d of %d</strong> questions so far.' \
             % (answered, total)
-        assert expected1 in result.data
+        assertResultBodyContains(result, expected1)
 
         expected2 = 'Please answer the remaining <strong>%d</strong> question(s)' \
             % remaining
-        assert expected2 in result.data
+        assertResultBodyContains(result, expected2)
 
     @params(
         ('', 'stranger'),
@@ -114,7 +120,7 @@ class FlaskTestCase(AbstractFlaskTestCase):
         result = self.post()
 
         expected = 'Your score, <em>%s</em>' % expected_username
-        assert expected in result.data
+        assertResultBodyContains(result, expected)
 
     @params(
         (
@@ -139,4 +145,8 @@ class FlaskTestCase(AbstractFlaskTestCase):
         result = self.post()
 
         expected = '<p class="score">%s&thinsp;%%</p>' % expected_score
-        assert expected in result.data
+        assertResultBodyContains(result, expected)
+
+
+def assertResultBodyContains(result, expected):
+    assert expected in unicode(result.data)
