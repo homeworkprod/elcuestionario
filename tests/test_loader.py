@@ -11,7 +11,6 @@ class AbstractLoaderTestCase(AbstractTestCase):
         super(AbstractLoaderTestCase, self).setUp()
 
         self.title = self.questionnaire.title
-        self.questions = self.questionnaire.get_questions()
 
         self.rating_levels = self.evaluator.rating_levels
 

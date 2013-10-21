@@ -10,6 +10,7 @@ class AbstractTestCase(TestCase):
 
     def setUp(self):
         self.questionnaire, self.evaluator = self._load_data()
+        self.questions = self.questionnaire.get_questions()
 
     def _load_data(self):
         data = self._get_data_string()
