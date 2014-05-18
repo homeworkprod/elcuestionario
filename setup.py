@@ -11,7 +11,4 @@ setup(
     author_email='homework@nwsnet.de',
     url='http://homework.nwsnet.de/releases/8909/#el-cuestionario',
     packages=['elcuestionario'],
-    install_requires=[
-        'Flask >= 0.10.1',
-    ],
 )
