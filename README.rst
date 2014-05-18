@@ -17,7 +17,7 @@ comment.
 :Copyright: 2005-2013 `Jochen Kupperschmidt <http://homework.nwsnet.de/>`_
 :Date: 21-Oct-2013 (original release: 26-Apr-2006)
 :License: GNU General Public License version 2, see LICENSE for details.
-:Version: 0.3
+:Version: 0.3.1
 
 
 Requirements
