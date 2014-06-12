@@ -88,7 +88,7 @@ class FlaskTestCase(AbstractFlaskTestCase):
         result = self.get()
 
         for index, question in enumerate(self.questions, start=1):
-            expected = '%d. %s' % (index, question.text)
+            expected = '{0}. {1}'.format(index, question.text)
             assertResultBodyContains(result, expected)
 
     @params(
@@ -101,12 +101,12 @@ class FlaskTestCase(AbstractFlaskTestCase):
 
         result = self.post()
 
-        expected1 = 'You have answered only <strong>%d of %d</strong> questions so far.' \
-            % (answered, total)
+        expected1 = 'You have answered only <strong>{0} of {1}</strong> questions so far.' \
+                .format(answered, total)
         assertResultBodyContains(result, expected1)
 
-        expected2 = 'Please answer the remaining <strong>%d</strong> question(s)' \
-            % remaining
+        expected2 = 'Please answer the remaining <strong>{0}</strong> question(s)' \
+                .format(remaining)
         assertResultBodyContains(result, expected2)
 
     @params(
@@ -119,7 +119,7 @@ class FlaskTestCase(AbstractFlaskTestCase):
 
         result = self.post()
 
-        expected = 'Your score, <em>%s</em>' % expected_username
+        expected = 'Your score, <em>{0}</em>'.format(expected_username)
         assertResultBodyContains(result, expected)
 
     @params(
@@ -144,7 +144,7 @@ class FlaskTestCase(AbstractFlaskTestCase):
 
         result = self.post()
 
-        expected = '<p class="score">%s&thinsp;%%</p>' % expected_score
+        expected = '<p class="score">{0}&thinsp;%</p>'.format(expected_score)
         assertResultBodyContains(result, expected)
 
 
