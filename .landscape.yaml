@@ -1,2 +1,3 @@
-strictness: veryhigh
+strictness: medium
+doc-warnings: true
 test-warnings: true
