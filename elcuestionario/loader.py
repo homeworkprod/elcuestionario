@@ -26,7 +26,7 @@ def load_questionnaire(data):
 
     questionnaire = Questionnaire(title)
 
-    for question, answers in _load_questions(data, questionnaire):
+    for question, answers in _load_questions(data):
         questionnaire.add_question_with_answers(question, answers)
 
     return questionnaire
@@ -34,12 +34,12 @@ def load_questionnaire(data):
 def _load_title(data):
     return data['title']
 
-def _load_questions(data, questionnaire):
+def _load_questions(data):
     return map(
-        lambda question_data: _load_question(question_data, questionnaire),
+        lambda question_data: _load_question(question_data),
         data['questions'])
 
-def _load_question(data, questionnaire):
+def _load_question(data):
     text = data['text']
     question = Question(text)
     answers = _load_answers(data)
