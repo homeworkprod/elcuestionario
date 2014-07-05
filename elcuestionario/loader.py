@@ -35,9 +35,7 @@ def _load_title(data):
     return data['title']
 
 def _load_questions(data):
-    return map(
-        lambda question_data: _load_question(question_data),
-        data['questions'])
+    return map(_load_question, data['questions'])
 
 def _load_question(data):
     text = data['text']
