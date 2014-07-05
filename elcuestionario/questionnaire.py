@@ -25,10 +25,10 @@ class Questionnaire(object):
         for answer in answers:
             self._question_answers[question.hash][answer.hash] = answer
 
-    def get_question(self, hash):
+    def get_question(self, question_hash):
         """Return the question for the given hash."""
         for question in self._questions:
-            if question.hash == hash:
+            if question.hash == question_hash:
                 return question
 
     def get_questions(self):
@@ -47,15 +47,15 @@ class Questionnaire(object):
 class Question(namedtuple('Question', 'text hash')):
 
     def __new__(cls, text):
-        hash = 'q_' + _create_hash(text.encode('utf-8'))
-        return super(Question, cls).__new__(cls, text, hash)
+        question_hash = 'q_' + _create_hash(text.encode('utf-8'))
+        return super(Question, cls).__new__(cls, text, question_hash)
 
 
 class Answer(namedtuple('Answer', 'text weighting hash')):
 
     def __new__(cls, text, weighting):
-        hash = 'a_' + _create_hash(text.encode('utf-8'))
-        return super(Answer, cls).__new__(cls, text, weighting, hash)
+        answer_hash = 'a_' + _create_hash(text.encode('utf-8'))
+        return super(Answer, cls).__new__(cls, text, weighting, answer_hash)
 
 
 def _create_hash(value, length=8):
