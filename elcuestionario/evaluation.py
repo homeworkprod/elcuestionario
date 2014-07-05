@@ -19,8 +19,8 @@ class Evaluator(object):
         self._prepare_thresholds_and_ratings()
 
     def _prepare_thresholds_and_ratings(self):
-        minimum_scores_to_texts = dict((rl.minimum_score, rl.text)
-                for rl in self.rating_levels)
+        minimum_scores_to_texts = dict(
+            (rl.minimum_score, rl.text) for rl in self.rating_levels)
 
         minimum_scores = sorted(minimum_scores_to_texts.keys())
 
@@ -34,13 +34,13 @@ class Evaluator(object):
         assert user_input.all_questions_answered
 
         questions = questionnaire.get_questions()
-        weightings = self._collect_selected_answers_weightings(questionnaire,
-                questions, user_input)
+        weightings = self._collect_selected_answers_weightings(
+            questionnaire, questions, user_input)
         score = sum(weightings)
         return float(score) / len(questions) * 100
 
     def _collect_selected_answers_weightings(self, questionnaire, questions,
-                user_input):
+                                             user_input):
         for question in questions:
             answer_hash = user_input.get_answer_hash(question.hash)
             answer = questionnaire.get_answer_by_hash(question, answer_hash)

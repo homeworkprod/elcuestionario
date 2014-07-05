@@ -101,12 +101,14 @@ class FlaskTestCase(AbstractFlaskTestCase):
 
         result = self.post()
 
-        expected1 = 'You have answered only <strong>{0} of {1}</strong> questions so far.' \
-                .format(answered, total)
+        expected1 = \
+            'You have answered only <strong>{0} of {1}</strong> questions so far.' \
+            .format(answered, total)
         assertResultBodyContains(result, expected1)
 
-        expected2 = 'Please answer the remaining <strong>{0}</strong> question(s)' \
-                .format(remaining)
+        expected2 = \
+            'Please answer the remaining <strong>{0}</strong> question(s)' \
+            .format(remaining)
         assertResultBodyContains(result, expected2)
 
     @params(

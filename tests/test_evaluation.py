@@ -12,14 +12,16 @@ from .helpers import AbstractTestCase
 class RatingTestCase(TestCase):
 
     def setUp(self):
-        rating_levels = [RatingLevel(minimum_score, text)
-                for minimum_score, text in [
-                    (  0, 'worst'),
-                    ( 30, 'oh-oh'),
-                    ( 60, 'OK-ish'),
-                    ( 90, 'great'),
-                    (100, 'over the top'),
-                ]]
+        rating_levels = [
+            RatingLevel(minimum_score, text)
+            for minimum_score, text in [
+                (  0, 'worst'),
+                ( 30, 'oh-oh'),
+                ( 60, 'OK-ish'),
+                ( 90, 'great'),
+                (100, 'over the top'),
+            ]
+        ]
 
         self.evaluator = Evaluator(rating_levels)
 

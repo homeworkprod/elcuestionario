@@ -29,10 +29,8 @@ class QuestionTestCase(AbstractTestCase):
 
         self.question = self.questionnaire.get_questions()[0]
 
-        answers = list(self.questionnaire.get_answers_for_question(self.question))
-        self.answer1 = answers[0]
-        self.answer2 = answers[1]
-        self.answer3 = answers[2]
+        self.answer1, self.answer2, self.answer3 = \
+            self.questionnaire.get_answers_for_question(self.question)
 
         self.user_input = UserInput([self.question.hash])
 
