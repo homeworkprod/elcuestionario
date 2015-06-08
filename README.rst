@@ -34,13 +34,13 @@ Install Flask_:
 
 .. code:: sh
 
-   $ pip install Flask
+    $ pip install Flask
 
 Make the script to run the application executable:
 
 .. code:: sh
 
-   $ chmod +x runserver.py
+    $ chmod +x runserver.py
 
 This script (which uses the built-in web server) is fine to get up and
 running quickly. However, to actually serve the application on the
@@ -96,7 +96,7 @@ Example:
                 { "text": "checkered", "weighting": 1.1  }
             ]
         }
-    }
+    ]
 
 
 Ratings
@@ -140,12 +140,12 @@ Start the application:
 
 .. code:: sh
 
-   $ ./runserver.py
+    $ ./runserver.py
 
 It will spawn a web server on port 5000.
 
 To access the questionnaire, point a web browser to
-http://localhost:5000.
+http://localhost:5000/.
 
 
 Changes
