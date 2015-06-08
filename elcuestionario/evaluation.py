@@ -19,8 +19,8 @@ class Evaluator(object):
         self._prepare_thresholds_and_ratings()
 
     def _prepare_thresholds_and_ratings(self):
-        minimum_scores_to_texts = dict(
-            (rl.minimum_score, rl.text) for rl in self.rating_levels)
+        minimum_scores_to_texts = {rl.minimum_score: rl.text
+                                   for rl in self.rating_levels}
 
         minimum_scores = sorted(minimum_scores_to_texts.keys())
 
