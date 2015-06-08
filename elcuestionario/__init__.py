@@ -28,6 +28,7 @@ def create_app(filename):
 
     return _create_app(questionnaire, evaluator)
 
+
 def _create_app(questionnaire, evaluator):
     app = Flask(__name__)
     app.register_blueprint(blueprint)
@@ -45,18 +46,22 @@ def shuffled(iterable):
     shuffle(l)
     return l
 
+
 @blueprint.app_context_processor
 def inject_title():
     return {
         'title': current_app.questionnaire.title,
     }
 
+
 @blueprint.route('/', methods=['GET'])
 def view():
     output = {
         'questionnaire': current_app.questionnaire,
     }
+
     return render_template('questionnaire.html', **output)
+
 
 @blueprint.route('/', methods=['POST'])
 def evaluate():

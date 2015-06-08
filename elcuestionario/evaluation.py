@@ -63,4 +63,5 @@ class Evaluator(object):
 
 RatingLevel = namedtuple('RatingLevel', 'minimum_score text')
 
+
 Result = namedtuple('Result', 'score text')

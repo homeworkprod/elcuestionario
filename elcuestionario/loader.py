@@ -21,6 +21,7 @@ def load(f):
     evaluator = load_evaluator(data)
     return questionnaire, evaluator
 
+
 def load_questionnaire(data):
     title = _load_title(data)
 
@@ -31,11 +32,14 @@ def load_questionnaire(data):
 
     return questionnaire
 
+
 def _load_title(data):
     return data['title']
 
+
 def _load_questions(data):
     return map(_load_question, data['questions'])
+
 
 def _load_question(data):
     text = data['text']
@@ -43,17 +47,21 @@ def _load_question(data):
     answers = _load_answers(data)
     return question, answers
 
+
 def _load_answers(data):
     return frozenset(map(_load_answer, data['answers']))
+
 
 def _load_answer(data):
     text = data['text']
     weighting = float(data['weighting'])
     return Answer(text, weighting)
 
+
 def load_evaluator(data):
     rating_levels = list(_load_rating_levels(data))
     return Evaluator(rating_levels)
+
 
 def _load_rating_levels(data):
     for rating_level in data.get('rating_levels', []):
