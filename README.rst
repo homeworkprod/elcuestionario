@@ -30,11 +30,11 @@ Requirements
 Installation
 ------------
 
-Install Flask_:
+Install dependencies:
 
 .. code:: sh
 
-    $ pip install Flask
+    $ pip install -r requirements.txt
 
 Make the script to run the application executable:
 

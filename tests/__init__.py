@@ -6,17 +6,17 @@ Tests for El Cuestionario
 Requirements
 ------------
 
-- nose2_ (tested with version 0.4.7)
+- nose2_
 
 
 Installation
 ------------
 
-Install nose2_:
+Install test dependencies:
 
 .. code:: sh
 
-    $ pip install nose2
+    $ pip install -r requirements-test.txt
 
 
 Usage
