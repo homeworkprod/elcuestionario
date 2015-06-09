@@ -179,6 +179,8 @@ Notable changes since the first release:
 
 - Naming has been adjusted to follow `PEP 8`_ more closely.
 
+- Python 3 is supported.
+
 
 .. _JSON:               http://www.json.com/
 .. _Python:             http://www.python.org/
