@@ -8,6 +8,7 @@ elcuestionario
 :License: GNU General Public License version 2, see LICENSE for details.
 """
 
+import codecs
 from random import shuffle
 
 from flask import Blueprint, current_app, Flask, render_template
@@ -24,7 +25,7 @@ def create_app(filename):
     if not filename:
         raise Exception('No configuration filename specified.')
 
-    with blueprint.open_resource(filename) as f:
+    with codecs.open(filename, encoding='utf-8') as f:
         questionnaire, rating_levels = load(f)
 
     evaluator = Evaluator(rating_levels)
