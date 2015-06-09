@@ -15,19 +15,7 @@ from collections import namedtuple
 class Evaluator(object):
 
     def __init__(self, rating_levels):
-        self.rating_levels = rating_levels
-        self._prepare_thresholds_and_ratings()
-
-    def _prepare_thresholds_and_ratings(self):
-        minimum_scores_to_texts = {rl.minimum_score: rl.text
-                                   for rl in self.rating_levels}
-
-        minimum_scores = sorted(minimum_scores_to_texts.keys())
-
-        # Don't include the lowest value in the thresholds.
-        self.thresholds = minimum_scores[1:]
-
-        self.ratings = list(map(minimum_scores_to_texts.get, minimum_scores))
+        self.rating_level_map = RatingLevelMap(rating_levels)
 
     def calculate_score(self, questionnaire, user_input):
         """Calculate the score depending on the given answers."""
@@ -48,11 +36,7 @@ class Evaluator(object):
 
     def get_rating_text(self, score):
         """Return the rating text for the given score."""
-        if not self.ratings:
-            return
-
-        index = bisect_right(self.thresholds, score)
-        return self.ratings[index]
+        return self.rating_level_map.get_text_for_score(score)
 
     def get_result(self, questionnaire, user_input):
         """Return the evaluation result."""
@@ -65,3 +49,35 @@ RatingLevel = namedtuple('RatingLevel', 'minimum_score text')
 
 
 Result = namedtuple('Result', 'score text')
+
+
+class RatingLevelMap(object):
+
+    def __init__(self, rating_levels):
+        self.thresholds, self.ratings \
+            = prepare_thresholds_and_ratings(rating_levels)
+
+    def get_text_for_score(self, score):
+        """Return the rating text for the given score."""
+        if not self.ratings:
+            return
+
+        index = bisect_right(self.thresholds, score)
+        return self.ratings[index]
+
+
+def prepare_thresholds_and_ratings(rating_levels):
+    minimum_scores_to_texts = map_minimum_scores_to_texts(rating_levels)
+    minimum_scores = sorted(minimum_scores_to_texts.keys())
+
+    # Don't include the lowest value in the thresholds.
+    thresholds = minimum_scores[1:]
+
+    ratings = list(map(minimum_scores_to_texts.get, minimum_scores))
+
+    return thresholds, ratings
+
+
+def map_minimum_scores_to_texts(rating_levels):
+    """Map each rating level's minimum score to its text."""
+    return {rl.minimum_score: rl.text for rl in rating_levels}
