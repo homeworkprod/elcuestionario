@@ -136,16 +136,28 @@ rating text is shown on the result page.
 Usage
 -----
 
-Start the application:
+Start the application with the example configuration:
 
 .. code:: sh
 
-    $ ./runserver.py
+    $ ./runserver.py data/example.json
 
 It will spawn a web server on port 5000.
 
 To access the questionnaire, point a web browser to
 http://localhost:5000/.
+
+You can also specify a custom port to listen on as well as enable debug
+mode:
+
+.. code:: sh
+
+    $ ./runserver.py --debug --port 8080 data/example.json
+
+
+This will make the questionnaire available on http://localhost:8080/ and
+provide an in-browser debugger in case an exception is raised by the
+application.
 
 
 Changes
