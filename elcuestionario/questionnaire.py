@@ -4,7 +4,7 @@
 elcuestionario.questionnaire
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2005-2013 Jochen Kupperschmidt
+:Copyright: 2005-2015 Jochen Kupperschmidt
 :License: GNU General Public License version 2, see LICENSE for details.
 """
 
