@@ -12,6 +12,7 @@ from random import shuffle
 
 from flask import Blueprint, current_app, Flask, render_template
 
+from .evaluation import Evaluator
 from .loader import load
 from .userinput import UserInput
 
@@ -24,7 +25,9 @@ def create_app(filename):
         raise Exception('No configuration filename specified.')
 
     with blueprint.open_resource(filename) as f:
-        questionnaire, evaluator = load(f)
+        questionnaire, rating_levels = load(f)
+
+    evaluator = Evaluator(rating_levels)
 
     return _create_app(questionnaire, evaluator)
 

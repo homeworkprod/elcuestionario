@@ -10,16 +10,18 @@ elcuestionario.loader
 
 import json
 
-from .evaluation import Evaluator, RatingLevel
+from .evaluation import RatingLevel
 from .questionnaire import Answer, Question, Questionnaire
 
 
 def load(f):
-    """Load questionnaire and rating results from a file-like object."""
+    """Load questionnaire and rating levels from a file-like object."""
     data = json.load(f)
+
     questionnaire = load_questionnaire(data)
-    evaluator = load_evaluator(data)
-    return questionnaire, evaluator
+    rating_levels = load_rating_levels(data)
+
+    return questionnaire, rating_levels
 
 
 def load_questionnaire(data):
@@ -58,9 +60,8 @@ def _load_answer(data):
     return Answer(text, weighting)
 
 
-def load_evaluator(data):
-    rating_levels = list(_load_rating_levels(data))
-    return Evaluator(rating_levels)
+def load_rating_levels(data):
+    return list(_load_rating_levels(data))
 
 
 def _load_rating_levels(data):

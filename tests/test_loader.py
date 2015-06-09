@@ -12,8 +12,6 @@ class AbstractLoaderTestCase(AbstractTestCase):
 
         self.title = self.questionnaire.title
 
-        self.rating_levels = self.evaluator.rating_levels
-
     def assertTitleEqual(self, expected):
         self.assertEqual(self.title, expected)
 
