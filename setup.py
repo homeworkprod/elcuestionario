@@ -11,4 +11,7 @@ setup(
     author_email='homework@nwsnet.de',
     url='http://homework.nwsnet.de/releases/8909/#el-cuestionario',
     packages=['elcuestionario'],
+    install_requires=['flask>=0.10.1'],
+    tests_require=['nose2'],
+    test_suite='nose2.collector.collector',
 )
