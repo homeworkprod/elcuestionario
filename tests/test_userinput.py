@@ -47,4 +47,4 @@ class QuestionTestCase(AbstractTestCase):
 
     def assertAnswerIsSelected(self, answer, expected):
         actual = self.user_input.is_answer_selected(self.question, answer)
-        self.assertEquals(actual, expected)
+        self.assertEqual(actual, expected)
