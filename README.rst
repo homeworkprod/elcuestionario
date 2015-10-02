@@ -24,7 +24,7 @@ Requirements
 ------------
 
 - Python_ 2.7+ or 3.3+
-- Flask_ (tested with 0.10.1)
+- Flask_
 
 
 Installation
