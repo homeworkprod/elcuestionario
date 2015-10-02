@@ -38,4 +38,9 @@ setup(
     install_requires=['flask>=0.10.1'],
     tests_require=['nose2'],
     test_suite='nose2.collector.collector',
+    entry_points={
+        'console_scripts': [
+            'elcuestionario=runserver:main',
+        ],
+    },
 )
