@@ -1,0 +1,9 @@
+include *.py
+include *.txt
+include LICENSE
+include tox.ini
+include data/example.json
+recursive-include elcuestionario/static *.css *.js
+recursive-include elcuestionario/templates *.html
+recursive-include screenshots *.png
+recursive-include tests *.py
