@@ -8,6 +8,7 @@ from elcuestionario import create_app
 
 DEFAULT_PORT = 5000
 
+
 def parse_args():
     """Setup and apply the command line arguments parser."""
     parser = argparse.ArgumentParser()
