@@ -75,7 +75,7 @@ Each answer must have weighting, defined as a float number between
 ``0.0`` and ``1.0``.
 
 Exception: I sometimes use a value of ``1.1`` for "bonus answers" which
-allows for an overall score of more than 100%).
+allows for an overall score of more than 100%.
 
 To calculate the overall score, the weighting of each question's answer
 will be used.
