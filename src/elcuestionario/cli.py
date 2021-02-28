@@ -10,7 +10,7 @@ Command line interface to start the application
 
 import argparse
 
-from elcuestionario import create_app
+from .app import create_app
 
 
 DEFAULT_PORT = 5000

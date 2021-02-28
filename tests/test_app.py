@@ -5,7 +5,7 @@
 
 import pytest
 
-from elcuestionario import _create_app
+from elcuestionario.app import _create_app
 from elcuestionario.evaluation import Evaluator
 from elcuestionario.loader import load
 
