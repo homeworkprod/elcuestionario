@@ -24,7 +24,7 @@ def create_app(filename):
         raise Exception('No configuration filename specified.')
 
     with codecs.open(filename, encoding='utf-8') as f:
-        questionnaire, rating_levels = load(f)
+        questionnaire, rating_levels = load(f.read())
 
     evaluator = Evaluator(rating_levels)
 

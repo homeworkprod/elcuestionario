@@ -12,9 +12,9 @@ from .evaluation import RatingLevel
 from .questionnaire import Answer, Question, Questionnaire
 
 
-def load(f):
-    """Load questionnaire and rating levels from a file-like object."""
-    data = json.load(f)
+def load(json_str):
+    """Load questionnaire and rating levels from JSON string."""
+    data = json.loads(json_str)
 
     questionnaire = load_questionnaire(data)
     rating_levels = load_rating_levels(data)
