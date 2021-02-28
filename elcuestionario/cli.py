@@ -1,4 +1,12 @@
-#!/usr/bin/env python
+"""
+elcuestionario.cli
+~~~~~~~~~~~~~~~~~~
+
+Command line interface to start the application
+
+:Copyright: 2005-2021 Jochen Kupperschmidt
+:License: GNU General Public License version 2, see LICENSE for details.
+"""
 
 import argparse
 
@@ -39,7 +47,3 @@ def main():
 
     app = create_app(args.filename)
     app.run(port=args.port, debug=args.debug)
-
-
-if __name__ == '__main__':
-    main()
