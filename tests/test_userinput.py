@@ -1,12 +1,9 @@
+from elcuestionario.loader import load
 from elcuestionario.userinput import UserInput
 
-from .helpers import AbstractTestCase
 
-
-class QuestionTestCase(AbstractTestCase):
-
-    def _get_data_string(self):
-        return '''{
+def test_answered():
+    data = '''{
     "title": "some title",
     "questions": [
         {
@@ -22,27 +19,24 @@ class QuestionTestCase(AbstractTestCase):
 }
 '''
 
-    def setUp(self):
-        super(QuestionTestCase, self).setUp()
+    questionnaire, rating_levels = load(data)
+    questions = questionnaire.get_questions()
 
-        self.question = self.questionnaire.get_questions()[0]
+    question = questions[0]
 
-        self.answer1, self.answer2, self.answer3 = \
-            self.questionnaire.get_answers_for_question(self.question)
+    answer1, answer2, answer3 = questionnaire.get_answers_for_question(question)
 
-        self.user_input = UserInput([self.question.hash])
+    user_input = UserInput([question.hash])
 
-    def test_answered(self):
-        self.assertAnswerIsSelected(self.answer1, False)
-        self.assertAnswerIsSelected(self.answer2, False)
-        self.assertAnswerIsSelected(self.answer3, False)
+    def is_answer_selected(answer):
+        return user_input.is_answer_selected(question, answer)
 
-        self.user_input.answer_question(self.question.hash, self.answer2.hash)
+    assert is_answer_selected(answer1) == False
+    assert is_answer_selected(answer2) == False
+    assert is_answer_selected(answer3) == False
 
-        self.assertAnswerIsSelected(self.answer1, False)
-        self.assertAnswerIsSelected(self.answer2, True)
-        self.assertAnswerIsSelected(self.answer3, False)
+    user_input.answer_question(question.hash, answer2.hash)
 
-    def assertAnswerIsSelected(self, answer, expected):
-        actual = self.user_input.is_answer_selected(self.question, answer)
-        self.assertEqual(actual, expected)
+    assert is_answer_selected(answer1) == False
+    assert is_answer_selected(answer2) == True
+    assert is_answer_selected(answer3) == False

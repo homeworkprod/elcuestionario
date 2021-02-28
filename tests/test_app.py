@@ -1,61 +1,13 @@
-from nose2.tools import params
+import pytest
 
 from elcuestionario import _create_app
-
-from .helpers import AbstractTestCase
-
-
-class AbstractFlaskTestCase(AbstractTestCase):
-
-    def setUp(self):
-        super(AbstractFlaskTestCase, self).setUp()
-
-        app = _create_app(self.questionnaire, self.evaluator)
-        self.client = app.test_client()
-        self.form_data = {}
-
-    def get(self):
-        return self.client.get('/', data=self.form_data)
-
-    def post(self):
-        return self.client.post('/', data=self.form_data)
-
-    def answer_question(self, question_text, answer_text):
-        def find_by_text(items, text):
-            for item in items:
-                if item.text == text:
-                    return item
-
-        def find_question():
-            return find_by_text(self.questions, question_text)
-
-        def find_answer(question):
-            answers = self.questionnaire.get_answers_for_question(question)
-            return find_by_text(answers, answer_text)
-
-        question = find_question()
-        answer = find_answer(question)
-        self._answer_question(question, answer)
-
-    def answer_all_questions(self):
-        for question in self.questions:
-            self.answer_question_with_first_answer(question)
-
-    def answer_question_with_first_answer(self, question):
-        answers = list(self.questionnaire.get_answers_for_question(question))
-        self._answer_question(question, answers[0])
-
-    def _answer_question(self, question, answer):
-        self.form_data[question.hash] = answer.hash
+from elcuestionario.evaluation import Evaluator
+from elcuestionario.loader import load
 
 
-class FlaskTestCase(AbstractFlaskTestCase):
-
-    def setUp(self):
-        super(FlaskTestCase, self).setUp()
-
-    def _get_data_string(self):
-        return '''{
+@pytest.fixture(scope='module')
+def questionnaire_and_rating_levels():
+    data = '''{
     "title": "some title",
     "questions": [
         {
@@ -76,48 +28,90 @@ class FlaskTestCase(AbstractFlaskTestCase):
     ]
 }
 '''
+    questionnaire, rating_levels = load(data)
+    return questionnaire, rating_levels
 
-    def test_get(self):
-        result = self.get()
 
-        for index, question in enumerate(self.questions, start=1):
-            expected = '{0}. {1}'.format(index, question.text)
-            assertResultBodyContains(result, expected)
+@pytest.fixture(scope='module')
+def questionnaire(questionnaire_and_rating_levels):
+    return questionnaire_and_rating_levels[0]
 
-    @params(
+
+@pytest.fixture(scope='module')
+def questions(questionnaire):
+    return questionnaire.get_questions()
+
+
+@pytest.fixture(scope='module')
+def evaluator(questionnaire_and_rating_levels):
+    rating_levels = questionnaire_and_rating_levels[1]
+    return Evaluator(rating_levels)
+
+
+@pytest.fixture(scope='module')
+def client(questionnaire, evaluator):
+    app = _create_app(questionnaire, evaluator)
+    return app.test_client()
+
+
+def test_get(questions, client):
+    result = client.get('/')
+
+    for index, question in enumerate(questions, start=1):
+        expected = '{0}. {1}'.format(index, question.text)
+        assert_result_body_contains(result, expected)
+
+
+@pytest.mark.parametrize(
+    'answered, remaining, total',
+    [
         (0, 2, 2),
         (1, 1, 2),
-    )
-    def test_post_incomplete(self, answered, remaining, total):
-        for question in self.questions[:answered]:
-            self.answer_question_with_first_answer(question)
+    ],
+)
+def test_post_incomplete(questionnaire, questions, client, answered, remaining,
+                         total):
+    form_data = {}
 
-        result = self.post()
+    for question in questions[:answered]:
+        answer_question_with_first_answer(questionnaire, question, form_data)
 
-        expected1 = \
-            'You have answered only <strong>{0} of {1}</strong> questions so far.' \
-            .format(answered, total)
-        assertResultBodyContains(result, expected1)
+    result = submit_form(client, form_data)
 
-        expected2 = \
-            'Please answer the remaining <strong>{0}</strong> question(s)' \
-            .format(remaining)
-        assertResultBodyContains(result, expected2)
+    expected1 = \
+        'You have answered only <strong>{0} of {1}</strong> questions so far.' \
+        .format(answered, total)
+    assert_result_body_contains(result, expected1)
 
-    @params(
+    expected2 = \
+        'Please answer the remaining <strong>{0}</strong> question(s)' \
+        .format(remaining)
+    assert_result_body_contains(result, expected2)
+
+
+@pytest.mark.parametrize(
+    'given_username, expected_username',
+    [
         ('', 'stranger'),
         ('John Doe', 'John Doe'),
-    )
-    def test_username(self, given_username, expected_username):
-        self.form_data['username'] = given_username
-        self.answer_all_questions()
+    ],
+)
+def test_username(questionnaire, questions, client, given_username,
+                  expected_username):
+    form_data = {'username': given_username}
 
-        result = self.post()
+    for question in questions:
+        answer_question_with_first_answer(questionnaire, question, form_data)
 
-        expected = 'Your score, <em>{0}</em>'.format(expected_username)
-        assertResultBodyContains(result, expected)
+    result = submit_form(client, form_data)
 
-    @params(
+    expected = 'Your score, <em>{0}</em>'.format(expected_username)
+    assert_result_body_contains(result, expected)
+
+
+@pytest.mark.parametrize(
+    'questions_and_answers, expected_score',
+    [
         (
             [
                 ('some question', 'bad answer'),
@@ -132,16 +126,46 @@ class FlaskTestCase(AbstractFlaskTestCase):
             ],
             '105.0'
         ),
-    )
-    def test_score(self, questions_and_answers, expected_score):
-        for question_text, answer_text in questions_and_answers:
-            self.answer_question(question_text, answer_text)
+    ],
+)
+def test_score(client, questionnaire, questions, questions_and_answers,
+               expected_score):
+    form_data = {}
 
-        result = self.post()
+    for question_text, answer_text in questions_and_answers:
+        answer_question(questionnaire, questions, question_text, answer_text,
+                        form_data)
 
-        expected = '<p class="score">{0}&thinsp;%</p>'.format(expected_score)
-        assertResultBodyContains(result, expected)
+    result = submit_form(client, form_data)
+
+    expected = '<p class="score">{0}&thinsp;%</p>'.format(expected_score)
+    assert_result_body_contains(result, expected)
 
 
-def assertResultBodyContains(result, expected):
+def answer_question(questionnaire, questions, question_text, answer_text,
+                    form_data):
+    question = find_by_text(questions, question_text)
+
+    answers = questionnaire.get_answers_for_question(question)
+    answer = find_by_text(answers, answer_text)
+
+    form_data[question.hash] = answer.hash
+
+
+def find_by_text(items, text):
+    for item in items:
+        if item.text == text:
+            return item
+
+
+def answer_question_with_first_answer(questionnaire, question, form_data):
+    answers = list(questionnaire.get_answers_for_question(question))
+    form_data[question.hash] = answers[0].hash
+
+
+def submit_form(client, form_data):
+    return client.post('/', data=form_data)
+
+
+def assert_result_body_contains(result, expected):
     assert expected in result.get_data(as_text=True)

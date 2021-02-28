@@ -1,29 +1,12 @@
-from unittest import TestCase
-
-from nose2.tools import params
+import pytest
 
 from elcuestionario.evaluation import Evaluator, RatingLevel
+from elcuestionario.loader import load
 
-from .helpers import AbstractTestCase
 
-
-class RatingTestCase(TestCase):
-
-    def setUp(self):
-        rating_levels = [
-            RatingLevel(minimum_score, text)
-            for minimum_score, text in [
-                (  0, 'worst'),
-                ( 30, 'oh-oh'),
-                ( 60, 'OK-ish'),
-                ( 90, 'great'),
-                (100, 'over the top'),
-            ]
-        ]
-
-        self.evaluator = Evaluator(rating_levels)
-
-    @params(
+@pytest.mark.parametrize(
+    'score, expected',
+    [
         ( -2.3, 'worst'),
         (  0.0, 'worst'),
         (  4.2, 'worst'),
@@ -36,16 +19,27 @@ class RatingTestCase(TestCase):
         ( 99.9, 'great'),
         (100.0, 'over the top'),
         (111.1, 'over the top'),
-    )
-    def test_get_rating(self, score, expected):
-        actual = self.evaluator.get_rating_text(score)
-        self.assertEqual(actual, expected)
+    ],
+)
+def test_rating(score, expected):
+    rating_levels = [
+        RatingLevel(minimum_score, text)
+        for minimum_score, text in [
+            (  0, 'worst'),
+            ( 30, 'oh-oh'),
+            ( 60, 'OK-ish'),
+            ( 90, 'great'),
+            (100, 'over the top'),
+        ]
+    ]
+
+    evaluator = Evaluator(rating_levels)
+
+    assert evaluator.get_rating_text(score) == expected
 
 
-class WithoutRatingTextsTestCase(AbstractTestCase):
-
-    def _get_data_string(self):
-        return '''{
+def test_without_rating_texts():
+    data = '''{
     "title": "some title",
     "questions": [
         {
@@ -57,8 +51,9 @@ class WithoutRatingTextsTestCase(AbstractTestCase):
     ]
 }
 '''
+    _, rating_levels = load(data)
 
-    def test_result_without_text(self):
-        score = 0.5
-        actual = self.evaluator.get_rating_text(score)
-        self.assertEqual(actual, None)
+    evaluator = Evaluator(rating_levels)
+    score = 0.5
+
+    assert evaluator.get_rating_text(score) is None
