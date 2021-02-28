@@ -21,7 +21,7 @@ comment.
 Requirements
 ------------
 
-- Python_ 2.7+ or 3.3+
+- Python_ 3.7+
 - Flask_
 
 
@@ -179,7 +179,7 @@ Notable changes since the first release:
 
 - Naming has been adjusted to follow `PEP 8`_ more closely.
 
-- Python 3 is supported.
+- Added support for Python 3. Dropped support for Python 2.
 
 
 .. _JSON:               http://www.json.com/
