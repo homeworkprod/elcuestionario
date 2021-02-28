@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from elcuestionario.userinput import UserInput
 
 from .helpers import AbstractTestCase

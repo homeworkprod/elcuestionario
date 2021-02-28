@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from elcuestionario.evaluation import RatingLevel
 
 from .helpers import AbstractTestCase
