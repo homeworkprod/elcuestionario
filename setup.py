@@ -30,6 +30,7 @@ setup(
         'Programming Language :: Python :: 3.9',
         'Topic :: Games/Entertainment',
     ],
+    package_dir={'': 'src'},
     packages=['elcuestionario'],
     install_requires=['Flask==1.1.2', 'Werkzeug==1.0.1'],
     entry_points={
