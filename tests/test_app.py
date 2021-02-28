@@ -1,8 +1,3 @@
-try:
-    unicode
-except NameError:
-    unicode = str  # Python 3
-
 from nose2.tools import params
 
 from elcuestionario import _create_app
@@ -60,7 +55,7 @@ class FlaskTestCase(AbstractFlaskTestCase):
         super(FlaskTestCase, self).setUp()
 
     def _get_data_string(self):
-        return u'''{
+        return '''{
     "title": "some title",
     "questions": [
         {
@@ -149,4 +144,4 @@ class FlaskTestCase(AbstractFlaskTestCase):
 
 
 def assertResultBodyContains(result, expected):
-    assert expected in unicode(result.data)
+    assert expected in result.get_data(as_text=True)

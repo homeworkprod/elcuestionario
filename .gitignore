@@ -1,6 +1,5 @@
 # Python bytecode
 __pycache__/
-*.py[co]
 
 # virtual environment
 venv/

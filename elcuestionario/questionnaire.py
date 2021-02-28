@@ -10,7 +10,7 @@ from collections import defaultdict, namedtuple
 import hashlib
 
 
-class Questionnaire(object):
+class Questionnaire:
     """A set of questions, answers, selection states and rating levels."""
 
     def __init__(self, title):

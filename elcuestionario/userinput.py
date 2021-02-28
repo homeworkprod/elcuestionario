@@ -9,7 +9,7 @@ elcuestionario.userinput
 from flask import request
 
 
-class UserInput(object):
+class UserInput:
 
     @classmethod
     def from_request(cls, questionnaire):

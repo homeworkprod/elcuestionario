@@ -45,7 +45,7 @@ class RatingTestCase(TestCase):
 class WithoutRatingTextsTestCase(AbstractTestCase):
 
     def _get_data_string(self):
-        return u'''{
+        return '''{
     "title": "some title",
     "questions": [
         {

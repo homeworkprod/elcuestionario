@@ -23,13 +23,13 @@ class AbstractLoaderTestCase(AbstractTestCase):
         return self.questionnaire.get_answers_for_question(question)
 
     def _get_answer_texts(self, answers):
-        return set(answer.text for answer in answers)
+        return {answer.text for answer in answers}
 
 
 class LoaderTestCase(AbstractLoaderTestCase):
 
     def _get_data_string(self):
-        return u'''{
+        return '''{
     "title": "The Title",
     "questions": [
         {
@@ -68,19 +68,19 @@ class LoaderTestCase(AbstractLoaderTestCase):
         self.assertEqual(self.questions[1].text, 'question 2')
 
     def test_answers(self):
-        self.assertAnswersEqual(0, set([
+        self.assertAnswersEqual(0, {
             'answer 1.1',
             'answer 1.2',
             'answer 1.3',
-        ]))
+        })
 
-        self.assertAnswersEqual(1, set([
+        self.assertAnswersEqual(1, {
             'answer 2.1',
             'answer 2.2',
             'answer 2.3',
             'answer 2.4',
             'answer 2.5',
-        ]))
+        })
 
     def test_rating_levels(self):
         self.assertEqual(self.rating_levels, [
@@ -93,7 +93,7 @@ class LoaderTestCase(AbstractLoaderTestCase):
 class UnicodeLoaderTestCase(AbstractLoaderTestCase):
 
     def _get_data_string(self):
-        return u'''{
+        return '''{
     "title": "Frägebögen",
     "questions": [
         {
@@ -112,19 +112,19 @@ class UnicodeLoaderTestCase(AbstractLoaderTestCase):
 '''
 
     def test_title(self):
-        self.assertTitleEqual(u'Frägebögen')
+        self.assertTitleEqual('Frägebögen')
 
     def test_questions(self):
-        self.assertEqual(self.questions[0].text, u'Farbtöne')
+        self.assertEqual(self.questions[0].text, 'Farbtöne')
 
     def test_answers(self):
-        self.assertAnswersEqual(0, set([
-            u'weiß',
-            u'grün',
-            u'rötlich',
-        ]))
+        self.assertAnswersEqual(0, {
+            'weiß',
+            'grün',
+            'rötlich',
+        })
 
     def test_rating_levels(self):
         self.assertEqual(self.rating_levels, [
-            RatingLevel( 0, u'großartig'),
+            RatingLevel( 0, 'großartig'),
         ])

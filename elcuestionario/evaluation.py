@@ -10,7 +10,7 @@ from bisect import bisect_right
 from collections import namedtuple
 
 
-class Evaluator(object):
+class Evaluator:
 
     def __init__(self, rating_levels):
         self.rating_level_map = RatingLevelMap(rating_levels)
@@ -49,7 +49,7 @@ RatingLevel = namedtuple('RatingLevel', 'minimum_score text')
 Result = namedtuple('Result', 'score text')
 
 
-class RatingLevelMap(object):
+class RatingLevelMap:
 
     def __init__(self, rating_levels):
         self.thresholds, self.ratings \
