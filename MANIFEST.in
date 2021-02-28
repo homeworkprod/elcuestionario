@@ -2,7 +2,5 @@ include *.py
 include *.txt
 include LICENSE
 include data/example.json
-recursive-include src/elcuestionario/static *.css *.js
-recursive-include src/elcuestionario/templates *.html
 recursive-include screenshots *.png
 recursive-include tests *.py
