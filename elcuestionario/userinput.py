@@ -35,8 +35,8 @@ class UserInput:
 
     def answer_question(self, question_hash, answer_hash):
         if question_hash not in self.all_question_hashes:
-            raise KeyError(
-                'Unknown question with hash "{0}".'.format(question_hash))
+            raise KeyError(f'Unknown question with hash "{question_hash}".')
+
         self.answers_by_question[question_hash] = answer_hash
 
     def get_answer_hash(self, question_hash):

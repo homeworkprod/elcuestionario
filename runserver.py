@@ -24,7 +24,7 @@ def parse_args():
         dest='port',
         type=int,
         default=DEFAULT_PORT,
-        help='the port to listen on [default: {:d}]'.format(DEFAULT_PORT),
+        help=f'the port to listen on [default: {DEFAULT_PORT:d}]',
         metavar='PORT')
 
     parser.add_argument('filename')

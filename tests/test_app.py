@@ -58,7 +58,7 @@ def test_get(questions, client):
     result = client.get('/')
 
     for index, question in enumerate(questions, start=1):
-        expected = '{0}. {1}'.format(index, question.text)
+        expected = f'{index}. {question.text}'
         assert_result_body_contains(result, expected)
 
 
@@ -79,13 +79,11 @@ def test_post_incomplete(questionnaire, questions, client, answered, remaining,
     result = submit_form(client, form_data)
 
     expected1 = \
-        'You have answered only <strong>{0} of {1}</strong> questions so far.' \
-        .format(answered, total)
+        f'You have answered only <strong>{answered} of {total}</strong> questions so far.'
     assert_result_body_contains(result, expected1)
 
     expected2 = \
-        'Please answer the remaining <strong>{0}</strong> question(s)' \
-        .format(remaining)
+        f'Please answer the remaining <strong>{remaining}</strong> question(s)'
     assert_result_body_contains(result, expected2)
 
 
@@ -105,7 +103,7 @@ def test_username(questionnaire, questions, client, given_username,
 
     result = submit_form(client, form_data)
 
-    expected = 'Your score, <em>{0}</em>'.format(expected_username)
+    expected = f'Your score, <em>{expected_username}</em>'
     assert_result_body_contains(result, expected)
 
 
@@ -138,7 +136,7 @@ def test_score(client, questionnaire, questions, questions_and_answers,
 
     result = submit_form(client, form_data)
 
-    expected = '<p class="score">{0}&thinsp;%</p>'.format(expected_score)
+    expected = f'<p class="score">{expected_score}&thinsp;%</p>'
     assert_result_body_contains(result, expected)
 
 
