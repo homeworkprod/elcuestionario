@@ -16,6 +16,9 @@ from .loader import load
 from .userinput import UserInput
 
 
+VERSION = '0.4.2-dev'
+
+
 blueprint = Blueprint('blueprint', __name__)
 
 
