@@ -11,7 +11,6 @@ from collections import namedtuple
 
 
 class Evaluator:
-
     def __init__(self, rating_levels):
         self.rating_level_map = RatingLevelMap(rating_levels)
 
@@ -21,12 +20,14 @@ class Evaluator:
 
         questions = questionnaire.get_questions()
         weightings = self._collect_selected_answers_weightings(
-            questionnaire, questions, user_input)
+            questionnaire, questions, user_input
+        )
         score = sum(weightings)
         return float(score) / len(questions) * 100
 
-    def _collect_selected_answers_weightings(self, questionnaire, questions,
-                                             user_input):
+    def _collect_selected_answers_weightings(
+        self, questionnaire, questions, user_input
+    ):
         for question in questions:
             answer_hash = user_input.get_answer_hash(question.hash)
             answer = questionnaire.get_answer_by_hash(question, answer_hash)
@@ -50,10 +51,10 @@ Result = namedtuple('Result', 'score text')
 
 
 class RatingLevelMap:
-
     def __init__(self, rating_levels):
-        self.thresholds, self.ratings \
-            = prepare_thresholds_and_ratings(rating_levels)
+        self.thresholds, self.ratings = prepare_thresholds_and_ratings(
+            rating_levels
+        )
 
     def get_text_for_score(self, score):
         """Return the rating text for the given score."""

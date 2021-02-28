@@ -17,7 +17,8 @@ def parse_args():
         dest='debug',
         action='store_true',
         default=False,
-        help='debug mode')
+        help='debug mode',
+    )
 
     parser.add_argument(
         '--port',
@@ -25,7 +26,8 @@ def parse_args():
         type=int,
         default=DEFAULT_PORT,
         help=f'the port to listen on [default: {DEFAULT_PORT:d}]',
-        metavar='PORT')
+        metavar='PORT',
+    )
 
     parser.add_argument('filename')
 

@@ -69,8 +69,9 @@ def test_get(questions, client):
         (1, 1, 2),
     ],
 )
-def test_post_incomplete(questionnaire, questions, client, answered, remaining,
-                         total):
+def test_post_incomplete(
+    questionnaire, questions, client, answered, remaining, total
+):
     form_data = {}
 
     for question in questions[:answered]:
@@ -78,12 +79,12 @@ def test_post_incomplete(questionnaire, questions, client, answered, remaining,
 
     result = submit_form(client, form_data)
 
-    expected1 = \
-        f'You have answered only <strong>{answered} of {total}</strong> questions so far.'
+    expected1 = f'You have answered only <strong>{answered} of {total}</strong> questions so far.'
     assert_result_body_contains(result, expected1)
 
-    expected2 = \
+    expected2 = (
         f'Please answer the remaining <strong>{remaining}</strong> question(s)'
+    )
     assert_result_body_contains(result, expected2)
 
 
@@ -94,8 +95,9 @@ def test_post_incomplete(questionnaire, questions, client, answered, remaining,
         ('John Doe', 'John Doe'),
     ],
 )
-def test_username(questionnaire, questions, client, given_username,
-                  expected_username):
+def test_username(
+    questionnaire, questions, client, given_username, expected_username
+):
     form_data = {'username': given_username}
 
     for question in questions:
@@ -115,24 +117,26 @@ def test_username(questionnaire, questions, client, given_username,
                 ('some question', 'bad answer'),
                 ('another question', 'okay-ish answer'),
             ],
-            '33.3'
+            '33.3',
         ),
         (
             [
                 ('some question', 'good answer'),
                 ('another question', 'awesome answer'),
             ],
-            '105.0'
+            '105.0',
         ),
     ],
 )
-def test_score(client, questionnaire, questions, questions_and_answers,
-               expected_score):
+def test_score(
+    client, questionnaire, questions, questions_and_answers, expected_score
+):
     form_data = {}
 
     for question_text, answer_text in questions_and_answers:
-        answer_question(questionnaire, questions, question_text, answer_text,
-                        form_data)
+        answer_question(
+            questionnaire, questions, question_text, answer_text, form_data
+        )
 
     result = submit_form(client, form_data)
 
@@ -140,8 +144,9 @@ def test_score(client, questionnaire, questions, questions_and_answers,
     assert_result_body_contains(result, expected)
 
 
-def answer_question(questionnaire, questions, question_text, answer_text,
-                    form_data):
+def answer_question(
+    questionnaire, questions, question_text, answer_text, form_data
+):
     question = find_by_text(questions, question_text)
 
     answers = questionnaire.get_answers_for_question(question)

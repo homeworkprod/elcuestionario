@@ -42,21 +42,29 @@ def test_load():
 
     question1 = questions[0]
     assert question1.text == 'question 1'
-    assert_answer_texts(questionnaire, question1, {
-        'answer 1.1',
-        'answer 1.2',
-        'answer 1.3',
-    })
+    assert_answer_texts(
+        questionnaire,
+        question1,
+        {
+            'answer 1.1',
+            'answer 1.2',
+            'answer 1.3',
+        },
+    )
 
     question2 = questions[1]
     assert question2.text == 'question 2'
-    assert_answer_texts(questionnaire, question2, {
-        'answer 2.1',
-        'answer 2.2',
-        'answer 2.3',
-        'answer 2.4',
-        'answer 2.5',
-    })
+    assert_answer_texts(
+        questionnaire,
+        question2,
+        {
+            'answer 2.1',
+            'answer 2.2',
+            'answer 2.3',
+            'answer 2.4',
+            'answer 2.5',
+        },
+    )
 
     assert rating_levels == [
         RatingLevel( 0, 'bad'),
@@ -93,14 +101,18 @@ def test_load_unicode():
 
     question = questions[0]
     assert question.text == 'Farbtöne'
-    assert_answer_texts(questionnaire, question, {
-        'weiß',
-        'grün',
-        'rötlich',
-    })
+    assert_answer_texts(
+        questionnaire,
+        question,
+        {
+            'weiß',
+            'grün',
+            'rötlich',
+        },
+    )
 
     assert rating_levels == [
-        RatingLevel( 0, 'großartig'),
+        RatingLevel(0, 'großartig'),
     ]
 
 

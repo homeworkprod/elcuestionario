@@ -43,14 +43,12 @@ class Questionnaire:
 
 
 class Question(namedtuple('Question', 'text hash')):
-
     def __new__(cls, text):
         question_hash = 'q_' + _create_hash(text.encode('utf-8'))
         return super(Question, cls).__new__(cls, text, question_hash)
 
 
 class Answer(namedtuple('Answer', 'text weighting hash')):
-
     def __new__(cls, text, weighting):
         answer_hash = 'a_' + _create_hash(text.encode('utf-8'))
         return super(Answer, cls).__new__(cls, text, weighting, answer_hash)

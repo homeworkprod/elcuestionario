@@ -10,7 +10,6 @@ from flask import request
 
 
 class UserInput:
-
     @classmethod
     def from_request(cls, questionnaire):
         user_input = cls(questionnaire.get_question_hashes())
@@ -47,8 +46,9 @@ class UserInput:
 
     def is_answer_selected(self, question, answer):
         found_answer_hash = self.get_answer_hash(question.hash)
-        return (found_answer_hash is not None) and \
-            (found_answer_hash == answer.hash)
+        return (found_answer_hash is not None) and (
+            found_answer_hash == answer.hash
+        )
 
     @property
     def questions_total(self):

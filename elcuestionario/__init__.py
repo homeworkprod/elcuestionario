@@ -74,8 +74,9 @@ def evaluate():
     }
 
     if user_input.all_questions_answered:
-        result = current_app.evaluator.get_result(current_app.questionnaire,
-                                                  user_input)
+        result = current_app.evaluator.get_result(
+            current_app.questionnaire, user_input
+        )
         output['result'] = result
         return render_template('result.html', **output)
     else:
