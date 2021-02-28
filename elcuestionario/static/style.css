@@ -3,18 +3,12 @@ body {
   margin: 40px 0;
   padding: 0;
 }
+
 body {
   background-color: #e8e8e8;
   color: #333333;
   font-family: "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", "Dejavu Sans", Verdana, sans-serif;
   font-size: 90%;
-}
-
-header,
-main,
-section,
-footer {
-  display: block;
 }
 
 header,
@@ -80,6 +74,7 @@ section.name p {
   margin: 0;
   padding: 20px;
 }
+
 section.name input {
   width: 100%;
 }
@@ -88,21 +83,26 @@ section.question p.notification {
   border-bottom: #cccccc solid 1px;
   margin: 0;
 }
+
 section.question ul {
   list-style: none;
   margin: 0;
   padding: 15px;
 }
+
 li {
   margin: 0.25em 0;
   padding: 0;
 }
+
 li input {
   margin-right: 0.5em;
 }
+
 label {
   padding: 0.25em 0.5em 0.25em 0;
 }
+
 label:hover {
   background-color: rgba(0, 0, 0, 0.5);
   border-radius: 4px;
@@ -115,11 +115,13 @@ section.result .text {
   padding: 0;
   text-align: center;
 }
+
 section.result .score {
   font-size: 400%;
   font-weight: bold;
   margin: 20px 0 10px 0;
 }
+
 section.result .text {
   font-style: italic;
   margin: 10px 0 20px 0;
@@ -132,9 +134,11 @@ section.result .text {
   margin: 20px auto 0 auto;
   padding: 4px;
 }
+
 .button-wrapper:hover {
   padding: 5px;
 }
+
 a.button,
 button {
   background-color: #83A94C;
@@ -153,6 +157,7 @@ button {
   text-decoration: none;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 }
+
 .button-wrapper:hover a.button,
 .button-wrapper:hover button {
   background-image: linear-gradient(to bottom, rgba(128, 192, 64, 0.75), rgba(96, 128, 64, 0.75));
@@ -163,16 +168,19 @@ button {
 footer {
   text-align: center;
 }
+
+footer small {
+  opacity: 0.25;
+}
+
+footer:hover small {
+  opacity: 1.0;
+}
+
 footer p {
   border-top: #cccccc solid 1px;
   display: inline-block;
   margin: 40px auto 20px auto;
   padding: 20px 0 0 0;
   text-shadow: 0 1px 1px #ffffff;
-}
-footer small {
-  opacity: 0.25;
-}
-footer:hover small {
-  opacity: 1.0;
 }
