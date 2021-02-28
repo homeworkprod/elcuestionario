@@ -14,7 +14,7 @@ Once all questions are answered, the user's score is calculated based
 on the answers' weight (as defined) and is presented with a suitable
 comment.
 
-:Copyright: 2005-2021 `Jochen Kupperschmidt <http://homework.nwsnet.de/>`_
+:Copyright: 2005-2021 `Jochen Kupperschmidt <https://homework.nwsnet.de/>`_
 :License: GNU General Public License version 2, see LICENSE for details.
 
 
@@ -170,7 +170,7 @@ Notable changes since the first release:
 - WSGI_ (via Werkzeug_) has replaced CGI as the interface to the web
   server to support more `deployment options`_.
 
-- Jinja_ has replaced Kid_ as the template engine.
+- Jinja_ has replaced Kid as the template engine.
 
 - The original script evolved into a Flask_ application with separate
   modules and templates.
@@ -183,12 +183,10 @@ Notable changes since the first release:
 
 
 .. _JSON:               http://www.json.com/
-.. _Python:             http://www.python.org/
-.. _Flask:              http://flask.pocoo.org/
-.. _deployment options: http://flask.pocoo.org/docs/deploying/#deployment
+.. _Python:             https://www.python.org/
+.. _Flask:              https://flask.palletsprojects.com/en/1.1.x/
+.. _deployment options: https://flask.palletsprojects.com/en/1.1.x/deploying/
 .. _WSGI:               http://www.wsgi.org/
-.. _Werkzeug:           http://werkzeug.pocoo.org/
-.. _Jinja:              http://jinja.pocoo.org/
-.. _Kid:                http://www.kid-templating.org/
-.. _ElementTree:        http://effbot.org/zone/element-index.htm
-.. _PEP 8:              http://www.python.org/dev/peps/pep-0008/
+.. _Werkzeug:           https://werkzeug.palletsprojects.com/en/1.0.x/
+.. _Jinja:              https://jinja.palletsprojects.com/en/2.11.x/
+.. _PEP 8:              https://www.python.org/dev/peps/pep-0008/

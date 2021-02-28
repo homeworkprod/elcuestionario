@@ -12,7 +12,7 @@ setup(
     version='0.4.2-dev',
     description='A tiny web application to display and evaluate single-page questionnaires',
     long_description=long_description,
-    url='http://homework.nwsnet.de/releases/8909/#el-cuestionario',
+    url='https://homework.nwsnet.de/releases/8909/#el-cuestionario',
     author='Jochen Kupperschmidt',
     author_email='homework@nwsnet.de',
     license='GPLv2',
