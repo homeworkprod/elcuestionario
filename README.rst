@@ -83,17 +83,17 @@ Example:
 .. code:: json
 
     "questions": [
-        {
-            "text": "What's your favorite color?",
-            "answers": [
-                { "text": "blue",      "weighting": 0.7  },
-                { "text": "green",     "weighting": 0.5  },
-                { "text": "yellow",    "weighting": 0.1  },
-                { "text": "red",       "weighting": 0.25 },
-                { "text": "none",      "weighting": 1.0  },
-                { "text": "checkered", "weighting": 1.1  }
-            ]
-        }
+      {
+        "text": "What's your favorite color?",
+        "answers": [
+          { "text": "blue",      "weighting": 0.7  },
+          { "text": "green",     "weighting": 0.5  },
+          { "text": "yellow",    "weighting": 0.1  },
+          { "text": "red",       "weighting": 0.25 },
+          { "text": "none",      "weighting": 1.0  },
+          { "text": "checkered", "weighting": 1.1  }
+        ]
+      }
     ]
 
 
@@ -121,10 +121,10 @@ Example:
 .. code:: json
 
     "rating_levels": [
-        { "minimum_score":  0, "text": "OMG, please waste time with something else!" },
-        { "minimum_score": 40, "text": "Not bad." },
-        { "minimum_score": 70, "text": "Looking good." },
-        { "minimum_score": 90, "text": "Yeah, great result!" }
+      { "minimum_score":  0, "text": "OMG, please waste time with something else!" },
+      { "minimum_score": 40, "text": "Not bad." },
+      { "minimum_score": 70, "text": "Looking good." },
+      { "minimum_score": 90, "text": "Yeah, great result!" }
     ]
 
 Rating levels are optional. If none are defined in the data file, to

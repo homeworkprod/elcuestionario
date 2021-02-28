@@ -1,41 +1,40 @@
 {
-    "title": "How strange are you?",
-    "questions": [
-        {
-            "text": "What's your favorite color?",
-            "answers": [
-                { "text": "blue",      "weighting": 0.0 },
-                { "text": "green",     "weighting": 0.0 },
-                { "text": "red",       "weighting": 0.4 },
-                { "text": "none",      "weighting": 1.0 },
-                { "text": "checkered", "weighting": 1.1 }
-            ]
-        },
-        {
-            "text": "What is your favorite animal?",
-            "answers": [
-                { "text": "cat",     "weighting": 0.1 },
-                { "text": "dog",     "weighting": 0.0 },
-                { "text": "narwhal", "weighting": 0.8 },
-                { "text": "unicorn", "weighting": 1.0 },
-                { "text": "other",   "weighting": 0.5 }
-            ]
-        },
-        {
-            "text": "Pick a number.",
-            "answers": [
-                { "text": "23",   "weighting": 1.0 },
-                { "text": "42",   "weighting": 0.8 },
-                { "text": "666",  "weighting": 0.5 }
-            ]
-        }
-
-    ],
-    "rating_levels": [
-        { "minimum_score":   0, "text": "Please waste time with something else." },
-        { "minimum_score":  40, "text": "Not bad." },
-        { "minimum_score":  70, "text": "Looking good." },
-        { "minimum_score":  90, "text": "Great result." },
-        { "minimum_score": 100, "text": "You better go see a doctor." }
-    ]
+  "title": "How strange are you?",
+  "questions": [
+    {
+      "text": "What's your favorite color?",
+      "answers": [
+        { "text": "blue",      "weighting": 0.0 },
+        { "text": "green",     "weighting": 0.0 },
+        { "text": "red",       "weighting": 0.4 },
+        { "text": "none",      "weighting": 1.0 },
+        { "text": "checkered", "weighting": 1.1 }
+      ]
+    },
+    {
+      "text": "What is your favorite animal?",
+      "answers": [
+        { "text": "cat",     "weighting": 0.1 },
+        { "text": "dog",     "weighting": 0.0 },
+        { "text": "narwhal", "weighting": 0.8 },
+        { "text": "unicorn", "weighting": 1.0 },
+        { "text": "other",   "weighting": 0.5 }
+      ]
+    },
+    {
+      "text": "Pick a number.",
+      "answers": [
+        { "text": "23",   "weighting": 1.0 },
+        { "text": "42",   "weighting": 0.8 },
+        { "text": "666",  "weighting": 0.5 }
+      ]
+    }
+  ],
+  "rating_levels": [
+    { "minimum_score":   0, "text": "Please waste time with something else." },
+    { "minimum_score":  40, "text": "Not bad." },
+    { "minimum_score":  70, "text": "Looking good." },
+    { "minimum_score":  90, "text": "Great result." },
+    { "minimum_score": 100, "text": "You better go see a doctor." }
+  ]
 }

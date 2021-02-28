@@ -13,24 +13,24 @@ from elcuestionario.loader import load
 @pytest.fixture(scope='module')
 def questionnaire_and_rating_levels():
     data = '''{
-    "title": "some title",
-    "questions": [
-        {
-            "text": "some question",
-            "answers": [
-                { "text": "good answer",     "weighting": 1.0 },
-                { "text": "mediocre answer", "weighting": 0.5 },
-                { "text": "bad answer",      "weighting": 0.0 }
-            ]
-        },
-        {
-            "text": "another question",
-            "answers": [
-                { "text": "awesome answer",  "weighting": 1.1 },
-                { "text": "okay-ish answer", "weighting": 0.666 }
-            ]
-        }
-    ]
+  "title": "some title",
+  "questions": [
+    {
+      "text": "some question",
+      "answers": [
+        { "text": "good answer",     "weighting": 1.0 },
+        { "text": "mediocre answer", "weighting": 0.5 },
+        { "text": "bad answer",      "weighting": 0.0 }
+      ]
+    },
+    {
+      "text": "another question",
+      "answers": [
+        { "text": "awesome answer",  "weighting": 1.1 },
+        { "text": "okay-ish answer", "weighting": 0.666 }
+      ]
+    }
+  ]
 }
 '''
     questionnaire, rating_levels = load(data)

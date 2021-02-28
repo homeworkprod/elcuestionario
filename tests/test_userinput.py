@@ -9,18 +9,18 @@ from elcuestionario.userinput import UserInput
 
 def test_answered():
     data = '''{
-    "title": "some title",
-    "questions": [
-        {
-            "text": "some question",
-            "answers": [
-                { "text": "yes",   "weighting": 1.0 },
-                { "text": "maybe", "weighting": 0.5 },
-                { "text": "no",    "weighting": 0.0 }
-            ]
-        }
-    ],
-    "rating_levels": []
+  "title": "some title",
+  "questions": [
+    {
+      "text": "some question",
+      "answers": [
+        { "text": "yes",   "weighting": 1.0 },
+        { "text": "maybe", "weighting": 0.5 },
+        { "text": "no",    "weighting": 0.0 }
+      ]
+    }
+  ],
+  "rating_levels": []
 }
 '''
 

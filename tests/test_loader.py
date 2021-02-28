@@ -9,32 +9,32 @@ from elcuestionario.loader import load
 
 def test_load():
     data = '''{
-    "title": "The Title",
-    "questions": [
-        {
-            "text": "question 1",
-            "answers": [
-                { "text": "answer 1.1", "weighting": 0.0 },
-                { "text": "answer 1.2", "weighting": 0.5 },
-                { "text": "answer 1.3", "weighting": 1.0 }
-            ]
-        },
-        {
-            "text": "question 2",
-            "answers": [
-                { "text": "answer 2.1", "weighting": 0.0  },
-                { "text": "answer 2.2", "weighting": 0.25 },
-                { "text": "answer 2.3", "weighting": 0.5  },
-                { "text": "answer 2.4", "weighting": 0.75 },
-                { "text": "answer 2.5", "weighting": 1.0  }
-            ]
-        }
-    ],
-    "rating_levels": [
-        { "minimum_score":  0, "text": "bad"  },
-        { "minimum_score": 50, "text": "okay" },
-        { "minimum_score": 80, "text": "good" }
-    ]
+  "title": "The Title",
+  "questions": [
+    {
+      "text": "question 1",
+      "answers": [
+        { "text": "answer 1.1", "weighting": 0.0 },
+        { "text": "answer 1.2", "weighting": 0.5 },
+        { "text": "answer 1.3", "weighting": 1.0 }
+      ]
+    },
+    {
+      "text": "question 2",
+      "answers": [
+        { "text": "answer 2.1", "weighting": 0.0  },
+        { "text": "answer 2.2", "weighting": 0.25 },
+        { "text": "answer 2.3", "weighting": 0.5  },
+        { "text": "answer 2.4", "weighting": 0.75 },
+        { "text": "answer 2.5", "weighting": 1.0  }
+      ]
+    }
+  ],
+  "rating_levels": [
+    { "minimum_score":  0, "text": "bad"  },
+    { "minimum_score": 50, "text": "okay" },
+    { "minimum_score": 80, "text": "good" }
+  ]
 }
 '''
 
@@ -80,20 +80,20 @@ def test_load():
 
 def test_load_unicode():
     data = '''{
-    "title": "Frägebögen",
-    "questions": [
-        {
-            "text": "Farbtöne",
-            "answers": [
-                { "text": "weiß",    "weighting": 1.0 },
-                { "text": "grün",    "weighting": 1.0 },
-                { "text": "rötlich", "weighting": 1.0 }
-            ]
-        }
-    ],
-    "rating_levels": [
-        { "minimum_score": 0, "text": "großartig" }
-    ]
+  "title": "Frägebögen",
+  "questions": [
+    {
+      "text": "Farbtöne",
+      "answers": [
+        { "text": "weiß",    "weighting": 1.0 },
+        { "text": "grün",    "weighting": 1.0 },
+        { "text": "rötlich", "weighting": 1.0 }
+      ]
+    }
+  ],
+  "rating_levels": [
+    { "minimum_score": 0, "text": "großartig" }
+  ]
 }
 '''
 

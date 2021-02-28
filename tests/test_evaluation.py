@@ -45,15 +45,15 @@ def test_rating(score, expected):
 
 def test_without_rating_texts():
     data = '''{
-    "title": "some title",
-    "questions": [
-        {
-            "text": "some question",
-            "answers": [
-                { "text": "some answer", "weighting": 1.0 }
-            ]
-        }
-    ]
+  "title": "some title",
+  "questions": [
+    {
+      "text": "some question",
+      "answers": [
+        { "text": "some answer", "weighting": 1.0 }
+      ]
+    }
+  ]
 }
 '''
     _, rating_levels = load(data)
