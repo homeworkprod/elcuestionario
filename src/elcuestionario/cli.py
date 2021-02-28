@@ -9,6 +9,7 @@ Command line interface to start the application
 """
 
 import argparse
+from pathlib import Path
 
 from .app import create_app
 
@@ -45,5 +46,5 @@ def parse_args():
 def main():
     args = parse_args()
 
-    app = create_app(args.filename)
+    app = create_app(Path(args.filename))
     app.run(port=args.port, debug=args.debug)
