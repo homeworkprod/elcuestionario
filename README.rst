@@ -15,9 +15,7 @@ on the answers' weight (as defined) and is presented with a suitable
 comment.
 
 :Copyright: 2005-2015 `Jochen Kupperschmidt <http://homework.nwsnet.de/>`_
-:Date: 02-Oct-2015 (original release: 26-Apr-2006)
 :License: GNU General Public License version 2, see LICENSE for details.
-:Version: 0.4.1
 
 
 Requirements
@@ -162,6 +160,8 @@ application.
 
 Changes
 -------
+
+First released on 2006-04-26.
 
 Notable changes since the first release:
 

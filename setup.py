@@ -11,7 +11,7 @@ with codecs.open('README.rst', encoding='utf-8') as f:
 
 setup(
     name='El Cuestionario',
-    version='0.4.1',
+    version='0.4.2-dev',
     description='A tiny web application to display and evaluate single-page questionnaires',
     long_description=long_description,
     url='http://homework.nwsnet.de/releases/8909/#el-cuestionario',
