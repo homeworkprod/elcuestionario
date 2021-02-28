@@ -31,7 +31,7 @@ setup(
         'Topic :: Games/Entertainment',
     ],
     packages=['elcuestionario'],
-    install_requires=['flask>=0.10.1'],
+    install_requires=['Flask==1.1.2', 'Werkzeug==1.0.1'],
     entry_points={
         'console_scripts': [
             'elcuestionario=runserver:main',
