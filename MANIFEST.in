@@ -1,3 +1,6 @@
+include .editorconfig
+include .gitignore
+include .travis.yml
 include *.py
 include *.txt
 include LICENSE
