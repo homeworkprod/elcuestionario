@@ -14,7 +14,7 @@ Once all questions are answered, the user's score is calculated based
 on the answers' weight (as defined) and is presented with a suitable
 comment.
 
-:Copyright: 2005-2015 `Jochen Kupperschmidt <http://homework.nwsnet.de/>`_
+:Copyright: 2005-2021 `Jochen Kupperschmidt <http://homework.nwsnet.de/>`_
 :License: GNU General Public License version 2, see LICENSE for details.
 
 

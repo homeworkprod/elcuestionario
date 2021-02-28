@@ -1,3 +1,8 @@
+"""
+:Copyright: 2005-2021 Jochen Kupperschmidt
+:License: GNU General Public License version 2, see LICENSE for details.
+"""
+
 from elcuestionario.evaluation import RatingLevel
 from elcuestionario.loader import load
 

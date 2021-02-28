@@ -2,7 +2,7 @@
 elcuestionario.evaluation
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2005-2015 Jochen Kupperschmidt
+:Copyright: 2005-2021 Jochen Kupperschmidt
 :License: GNU General Public License version 2, see LICENSE for details.
 """
 
